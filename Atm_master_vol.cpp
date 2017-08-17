@@ -67,9 +67,7 @@ Atm_master_vol& Atm_master_vol::begin( int volCon ) {
     // clang-format on
     Machine::begin( state_table, ELSE );
 	vol_control = volCon;
-	AudioMemory(160);
-	sgtl5000_1.enable();
-	sgtl5000_1.volume(0.5);	    
+	AudioMemory(160);	    
 	mixer1.gain(0, 0.5); //sets mixers for 2 wav playback, no effects
     mixer1.gain(1, 0.5);
     mixer2.gain(0, 0.5);
@@ -479,24 +477,24 @@ int Atm_master_vol::state( void ) {
   }
 
 
-Atm_master_vol& Atm_master_vol::setVolume( float volume ) {
+Atm_master_vol& Atm_master_vol::setVolume( float volume_gain ) {
 	if ( vol_control == 0 ){  //master
-		if(volume > 0.8){
-			volume = 0.8; //louder will clip
+		if(volume_gain > 0.8){
+			volume_gain = 0.8; //louder will clip
 		}
-	sgtl5000_1.volume(volume);
+	sgtl5000_1.volume(volume_gain);
 	Serial.println("master vol");
-	Serial.println(volume);
+	Serial.println(volume_gain);
 	}
 	else if ( vol_control == 1 ){  //wav1
-	mixer6.gain(0, volume);
+	mixer6.gain(0, volume_gain);
 	Serial.println("bira 1 volume");
-	Serial.println(volume);
+	Serial.println(volume_gain);
 	}
 	else if ( vol_control == 2 ){  //wav2
-	mixer6.gain(1, volume);
+	mixer6.gain(1, volume_gain);
 	Serial.println("bira 2 volume");
-	Serial.println(volume);
+	Serial.println(volume_gain);
 	}
 	return *this;
 }

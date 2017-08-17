@@ -14,7 +14,7 @@ class Atm_master_vol : public Machine {
 		
 		Atm_master_vol( void ) : Machine(){};
 		Atm_master_vol& begin( int volCon );
-		Atm_master_vol& setVolume( float volume ); 
+		Atm_master_vol& setVolume( float volume_gain ); 
 		Atm_master_vol& trace( Stream& stream );
 		Atm_master_vol& onPress( Machine& machine, int event = 0 );
 		Atm_master_vol& onPress( atm_cb_push_t callback, int idx = 0 ); 
@@ -32,7 +32,7 @@ class Atm_master_vol : public Machine {
 		atm_timer_millis param_timer;
 		int evt_counter;
 		int vol_control;
-		int last_state;
+		//int last_state;
      	int event( int id ); 
      	void action( int id );	
 };

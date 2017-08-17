@@ -25,6 +25,7 @@ for Atm_wav_1_multi_effects_r0
 #include <Automaton.h>
 #include "display_def.h"
 #include "button_counters.h"
+#include "audio_system.h"
 //#include "audio_system.h"
 
 #define SDCARD_CS_PIN    10 // Use these with the Teensy Audio Shield
@@ -85,6 +86,9 @@ void setup() {
    enc2.trace( Serial );
    btn3.trace(Serial);
    btn2.trace(Serial);
+   
+sgtl5000_1.enable();
+sgtl5000_1.volume(0.5);	  
    
 }
 
