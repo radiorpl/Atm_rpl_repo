@@ -16,6 +16,8 @@ triggering display still not working. Adding checkMillis function for on_loop
 r2 TOTAL REWRITE 
 works controlling volumes
 haven't worked out displays yet
+8/19/17 
+attempt to add display
 */	
 #include "Atm_master_vol.h"
 #include "audio_system.h"
@@ -199,21 +201,40 @@ Atm_master_vol& Atm_master_vol::enterDisplay( void ) {
 }
 
 Atm_master_vol& Atm_master_vol::encoderUp( void ) {	
-	volume_position += 1;
-	//m_display = 0;
-	Serial.println("enc up");
-	Serial.println(volume_position);
-	trigger( EVT_VOL_CONTROL );
-	Serial.println(volume_position);
+	if( m_display > param_delay ){
+		m_display = 0;
+		Serial.println("MASTER VOL TRIGGERED");
+		delay(100);
+		trigger( EVT_VOL_CONTROL );
+	}
+	else{
+		volume_position += 1;
+		Serial.println("enc up");
+		Serial.println(volume_position);
+		trigger( EVT_VOL_CONTROL );
+		Serial.println(volume_position);
+		Serial.println(m_display);
+		m_display = 0;
+	}
 	return *this;
 }
 
 Atm_master_vol& Atm_master_vol::encoderDown( void ) {	
-	volume_position -= 1;
-	//m_display = 0;
-	Serial.println("enc down");
-	Serial.println(volume_position);
-	trigger( EVT_VOL_CONTROL );
+	if( m_display > param_delay ){
+		m_display = 0;
+		Serial.println("MASTER VOL TRIGGERED");
+		delay(100);
+		trigger( EVT_VOL_CONTROL );
+	}
+	else{
+		volume_position -= 1;
+		Serial.println("enc down");
+		Serial.println(volume_position);
+		trigger( EVT_VOL_CONTROL );
+		Serial.println(volume_position);
+		Serial.println(m_display);
+		m_display = 0;
+	}
 	return *this;
 }
 
