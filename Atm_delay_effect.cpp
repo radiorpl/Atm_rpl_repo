@@ -14,7 +14,7 @@ int mix_level;
 int time_1_level;
 int fb_1_level;
 
-Atm_sev_seg displayMain;
+extern Atm_sev_seg displayMain;
 
 Atm_delay_effect& Atm_delay_effect::begin() {
   // clang-format off

@@ -15,6 +15,8 @@ works with Atm_wav_1_multi_r0 and Atm_master_vol_r0
 worker
 8/13/17
 for Atm_wav_1_multi_effects_r0
+8/16/17
+fixed master volume by moving sgtl declarations into ino file
 */
 #include <Atm_wav_1.h>
 #include <Atm_master_vol.h>
@@ -26,7 +28,7 @@ for Atm_wav_1_multi_effects_r0
 #include "display_def.h"
 #include "button_counters.h"
 #include "audio_system.h"
-//#include "audio_system.h"
+
 
 #define SDCARD_CS_PIN    10 // Use these with the Teensy Audio Shield
 #define SDCARD_MOSI_PIN  7
@@ -45,6 +47,8 @@ Atm_button btn3;
 Atm_enc_button encBtn1;
 Atm_enc_button encBtn2;
 Atm_delay_effect delayEffect;
+Atm_sev_seg displayMain;
+
 
 
 //const int  buttonPin1 = 3;      //non atm button
@@ -65,12 +69,13 @@ void setup() {
    volMaster.begin(0);
    volWav1.begin(1);
    volWav2.begin(2);
+   delayEffect.begin();
    enc1.begin(1, 0);
-   enc1.onChange( ATM_DOWN, wav1, wav1.EVT_ENC_UP );
-   enc1.onChange( ATM_UP, wav1, wav1.EVT_ENC_DOWN );
+   enc1.onChange( ATM_UP, wav1, wav1.EVT_ENC_UP );
+   enc1.onChange( ATM_DOWN, wav1, wav1.EVT_ENC_DOWN );
    enc2.begin(4, 6);
-   enc2.onChange( ATM_DOWN, volMaster, volMaster.EVT_ENC_UP );
-   enc2.onChange( ATM_UP, volMaster, volMaster.EVT_ENC_DOWN );
+   enc2.onChange( ATM_UP, volMaster, volMaster.EVT_ENC_UP );
+   enc2.onChange( ATM_DOWN, volMaster, volMaster.EVT_ENC_DOWN );
    enc2.debounce( 10 );  
    btn1.begin(2);
    btn2.begin(18);
@@ -79,16 +84,22 @@ void setup() {
    btn3.onPress( encBtn2, encBtn2.EVT_BTN_1 );
    encBtn1.begin(1);
    encBtn2.begin(2);
-   //displayMain.begin();
-  
+   displayMain.begin();
+   sgtl5000_1.enable();
+   sgtl5000_1.volume(0.3);	
+   /*
    wav1.trace(Serial);
    wav2.trace(Serial);
-   enc2.trace( Serial );
-   btn3.trace(Serial);
-   btn2.trace(Serial);
    
-sgtl5000_1.enable();
-sgtl5000_1.volume(0.5);	  
+   btn3.trace(Serial);
+   
+   */
+   displayMain.trace(Serial);
+   volMaster.trace(Serial);
+   //volWav1.trace(Serial);
+   //volWav2.trace(Serial);
+   //enc2.trace( Serial );
+  
    
 }
 
@@ -110,17 +121,20 @@ void loop() {
     btn1.onPress( wav2, wav2.EVT_BTN_1 );
     }
 //switch which volume the encoder controls
+  
   if (enc_button_counter_2 == 0){						//counter 2 is for number of volume instance
-    enc2.onChange( ATM_DOWN, volMaster, volMaster.EVT_ENC_UP );
-    enc2.onChange( ATM_UP, volMaster, volMaster.EVT_ENC_DOWN );
+    enc2.onChange( ATM_UP, volMaster, volMaster.EVT_ENC_UP );
+    enc2.onChange( ATM_DOWN, volMaster, volMaster.EVT_ENC_DOWN );
     }
+	
   else if (enc_button_counter_2 == 1){
-    enc2.onChange( ATM_DOWN, volWav1, volWav1.EVT_ENC_UP );
-    enc2.onChange( ATM_UP, volWav1, volWav1.EVT_ENC_DOWN );
+    enc2.onChange( ATM_UP, volWav1, volWav1.EVT_ENC_UP );
+    enc2.onChange( ATM_DOWN, volWav1, volWav1.EVT_ENC_DOWN );
     }
   else if (enc_button_counter_2 == 2){
-    enc2.onChange( ATM_DOWN, volWav2, volWav2.EVT_ENC_UP );
-    enc2.onChange( ATM_UP, volWav2, volWav2.EVT_ENC_DOWN );
+    enc2.onChange( ATM_UP, volWav2, volWav2.EVT_ENC_UP );
+    enc2.onChange( ATM_DOWN, volWav2, volWav2.EVT_ENC_DOWN );
     }
+	
   automaton.run();
 }

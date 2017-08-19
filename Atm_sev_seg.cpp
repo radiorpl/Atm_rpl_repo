@@ -37,16 +37,16 @@ int level = 0;
 Atm_sev_seg& Atm_sev_seg::begin() {
   // clang-format off
   const static state_t state_table[] PROGMEM = {
-    /*                ON_ENTER  			ON_LOOP  		ON_EXIT   EVT_HOME		EVT_OFF  EVT_MASTER_VOL  EVT_VOL_WAV_1  EVT_VOL_WAV_1  EVT_TRACK_WAV_1  EVT_TRACK_WAV_2  EVT_PLAY_WAV_1  EVT_PLAY_WAV_2  ELSE */
-    /*        HOME */    ENT_HOME,      	ENT_HOME,      	 	-1,     -1,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_1,           -1,             -1,           -1,             -1,           -1,
-	/*         OFF */    ENT_OFF,      		ENT_OFF,      		-1,     -1,    			-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_1,           -1,             -1,           -1,             -1,           -1,       
-    /*  MASTER_VOL */    ENT_MASTER_VOL,  	ENT_MASTER_VOL,  	-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_1,           -1,             -1,           -1,             -1,           -1,
-    /*   VOL_WAV_1 */    ENT_VOL_WAV_1, 	ENT_VOL_WAV_1,      -1,     HOME,     		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_1,           -1,             -1,           -1,             -1,           -1,
-    /*   VOL_WAV_2 */    ENT_VOL_WAV_2,   	ENT_VOL_WAV_2,      -1,     HOME,     		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_1,           -1,             -1,           -1,             -1,           -1,
-    /* TRACK_WAV_1 */    ENT_TRACK_WAV_1,  	ENT_TRACK_WAV_1,    -1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_1,           -1,             -1,           -1,             -1,           -1,
-    /* TRACK_WAV_2 */    ENT_TRACK_WAV_2, 	ENT_TRACK_WAV_2,    -1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_1,           -1,             -1,           -1,             -1,           -1,
-    /*  PLAY_WAV_1 */    ENT_PLAY_WAV_1,  	ENT_PLAY_WAV_1,     -1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_1,           -1,             -1,           -1,             -1,           -1,
-    /*  PLAY_WAV_2 */    ENT_PLAY_WAV_2,  	ENT_PLAY_WAV_2,     -1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_1,           -1,             -1,           -1,             -1,           -1,
+    /*                ON_ENTER  			ON_LOOP  		ON_EXIT   EVT_HOME		EVT_OFF  EVT_MASTER_VOL  EVT_VOL_WAV_1  EVT_VOL_WAV_2  EVT_TRACK_WAV_1  EVT_TRACK_WAV_2  EVT_PLAY_WAV_1  EVT_PLAY_WAV_2  ELSE */
+    /*        HOME */    ENT_HOME,      		-1,      	 	-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,           -1,             -1,           -1,             -1,           -1,
+	/*         OFF */    ENT_OFF,      			-1,      		-1,     HOME,    		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,           -1,             -1,           -1,             -1,           -1,       
+    /*  MASTER_VOL */    ENT_MASTER_VOL,  		-1,  			-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,           -1,             -1,           -1,             -1,           -1,
+    /*   VOL_WAV_1 */    ENT_VOL_WAV_1, 		-1,      		-1,     HOME,     		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,           -1,             -1,           -1,             -1,           -1,
+    /*   VOL_WAV_2 */    ENT_VOL_WAV_2,   		-1,      		-1,     HOME,     		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,           -1,             -1,           -1,             -1,           -1,
+    /* TRACK_WAV_1 */    ENT_TRACK_WAV_1,  	ENT_TRACK_WAV_1,    -1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,           -1,             -1,           -1,             -1,           -1,
+    /* TRACK_WAV_2 */    ENT_TRACK_WAV_2, 	ENT_TRACK_WAV_2,    -1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,           -1,             -1,           -1,             -1,           -1,
+    /*  PLAY_WAV_1 */    ENT_PLAY_WAV_1,  	ENT_PLAY_WAV_1,     -1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,           -1,             -1,           -1,             -1,           -1,
+    /*  PLAY_WAV_2 */    ENT_PLAY_WAV_2,  	ENT_PLAY_WAV_2,     -1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,           -1,             -1,           -1,             -1,           -1,
   };
   // clang-format on
   Machine::begin( state_table, ELSE );
@@ -107,27 +107,27 @@ void Atm_sev_seg::action( int id ) {
   switch ( id ) {
   	case ENT_HOME:
   	  //write(0, 11); write(1, 11); write(2, 36); write(3, 2); //BB-2
-	  //Serial.println("HOME");
+	Serial.println("HOME");
   	  return;
 	case ENT_OFF:
-	  write(0, 37); write(1, 37); write(2, 37); write(3, 37); //all off
+	  //write(0, 37); write(1, 37); write(2, 37); write(3, 37); //all off
 	  Serial.println("----");
 	  return;
 	case ENT_MASTER_VOL:
 	  level = mas_vol_level;
-	  write(0, 31); write(1, 24); write(2, 21); writeLevel(level); //VOL(level)
+	  //write(0, 31); write(1, 24); write(2, 21); writeLevel(level); //VOL(level)
 	  Serial.print("MASTER VOL ");
 	  Serial.print(level);
 	  return;
   	case ENT_VOL_WAV_1:
 	  level = vol_wav_1_level;
-  	  write(0, 31); write(1, 21); write(2, 1); writeLevel(level); //VL1(level)
+  	  //write(0, 31); write(1, 21); write(2, 1); writeLevel(level); //VL1(level)
 	  Serial.print("VOL 1 ");
 	  Serial.print(level);
 	  return;
     case ENT_VOL_WAV_2:
 	  level = vol_wav_2_level;
-      write(0, 31); write(1, 21); write(2, 2); writeLevel(level); //VL2(level)
+      //write(0, 31); write(1, 21); write(2, 2); writeLevel(level); //VL2(level)
 	  Serial.print("VOL 2 ");
 	  Serial.print(level);
   	  return;
@@ -241,6 +241,6 @@ Atm_sev_seg& Atm_sev_seg::writeLevel( int level ) {
 
 Atm_sev_seg& Atm_sev_seg::trace( Stream & stream ) {
   Machine::setTrace( &stream, atm_serial_debug::trace,
-    "SEV_SEG\0EVT_ENC_UP_1\0EVT_ENC_DOWN_1\0EVT_ENC_UP_2\0EVT_ENC_DOWN_2\0EVT_ENC_UP_3\0EVT_ENC_DOWN_3\0EVT_ENC_UP_4\0EVT_ENC_DOWN_4\0EVT_BTN_1\0EVT_BTN_2\0EVT_BTN_3\0EVT_BTN_4\0ELSE\0OFF\0HOME\0MASTER_VOL\0VOL_WAV_1\0VOL_WAV_2\0TRACK_WAV_1\0TRACK_WAV_2\0PLAY_WAV_1\0PLAY_WAV_2" );
+    "SEV_SEG\0EVT_HOME\0EVT_OFF\0EVT_MASTER_VOL\0EVT_VOL_WAV_1\0EVT_VOL_WAV_2\0EVT_TRACK_WAV_1\0EVT_TRACK_WAV_2\0EVT_PLAY_WAV_1\0EVT_PLAY_WAV_2\0ELSE\0HOME\0OFF\0MASTER_VOL\0VOL_WAV_1\0VOL_WAV_2\0TRACK_WAV_1\0TRACK_WAV_2\0PLAY_WAV_1\0PLAY_WAV_2" );
   return *this;
 }
