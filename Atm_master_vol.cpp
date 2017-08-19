@@ -125,11 +125,11 @@ Atm_master_vol& Atm_master_vol::setVolume( void ) {
 		if( volume_position > 27 ){
 			volume_position = 28; 	// 0.81, louder will clip master               
 		}			
-		sgtl5000_1.volume( volume_array[volume_position] );
-		Serial.println( "master vol" );
-		Serial.println( volume_position );
-		Serial.println( "volume" );
-		Serial.println( volume_array[volume_position] );
+		sgtl5000_1.volume(volume_array[volume_position]);
+		Serial.println("master vol");
+		Serial.println(volume_position);
+		Serial.println("volume");
+		Serial.println(volume_array[volume_position]);
 	}
 	else if ( vol_control == 1 ){  	//wav1
 		if( volume_position < 1 ){
@@ -137,14 +137,11 @@ Atm_master_vol& Atm_master_vol::setVolume( void ) {
 		}
 		if( volume_position > 32 ){
 			volume_position = 33; 	              
-		}
-		//if ( volume_position != last_volume_position ) {			
+		}		
 		mixer6.gain(0, volume_array[volume_position]);
 		Serial.println("bira 1 volume");
 		Serial.println(volume_position);
 		Serial.println(volume_array[volume_position]);
-		//}
-		//last_volume_position = volume_position;
 	}
 	else if ( vol_control == 2 ){  	//wav2
 		if( volume_position < 1 ){
@@ -152,15 +149,13 @@ Atm_master_vol& Atm_master_vol::setVolume( void ) {
 		}
 		if( volume_position > 32 ){
 			volume_position = 33; 	               
-		}
-		//if ( volume_position != last_volume_position ) {	
+		}	
 		last_volume_position = volume_position;	
 		mixer6.gain(1, volume_array[volume_position]);
 		Serial.println("bira 2 volume");
 		Serial.println(volume_position);
 		Serial.println(volume_array[volume_position]);
-		//}
-		//last_volume_position = volume_position;
+
 	}
 	return *this;
 }
@@ -181,21 +176,21 @@ Atm_master_vol& Atm_master_vol::checkMillis( int m_instance ) {
 	return *this;
 }
 
-Atm_master_vol& Atm_master_vol::enterHome( void ){
+Atm_master_vol& Atm_master_vol::enterHome( void ) {
 	trigger( displayMain.EVT_HOME );
 	return *this;
 }
 	
 Atm_master_vol& Atm_master_vol::enterDisplay( void ) {
-	if ( vol_control == 0){
+	if ( vol_control == 0) {
 		trigger( displayMain.EVT_MASTER_VOL );
 		Serial.println("MASTER VOL TRIGGERED");
 	}
-	else if ( vol_control == 1){
+	else if ( vol_control == 1) {
 		trigger( displayMain.EVT_VOL_WAV_1 );
 		Serial.println("VOL 1 TRIGGERED");
 	}
-	else if ( vol_control == 2){
+	else if ( vol_control == 2) {
 		trigger( displayMain.EVT_VOL_WAV_2 );
 		Serial.println("VOL 2 TRIGGERED");
 	}
@@ -205,7 +200,6 @@ Atm_master_vol& Atm_master_vol::enterDisplay( void ) {
 
 Atm_master_vol& Atm_master_vol::encoderUp( void ) {	
 	volume_position += 1;
-	//trigger( EVT_VOL_CONTROL );
 	//m_display = 0;
 	Serial.println("enc up");
 	Serial.println(volume_position);
@@ -216,7 +210,6 @@ Atm_master_vol& Atm_master_vol::encoderUp( void ) {
 
 Atm_master_vol& Atm_master_vol::encoderDown( void ) {	
 	volume_position -= 1;
-	//trigger( EVT_VOL_CONTROL );
 	//m_display = 0;
 	Serial.println("enc down");
 	Serial.println(volume_position);
