@@ -62,8 +62,7 @@ void setup() {
      while (1) {
        Serial.println("Unable to access the SD card");   
      }   
-   }
-   
+   }   
    wav1.begin(1);    //start wav instances
    wav2.begin(2);
    volMaster.begin(0);
@@ -76,7 +75,7 @@ void setup() {
    enc2.begin(4, 6);
    enc2.onChange( ATM_UP, volMaster, volMaster.EVT_ENC_UP );
    enc2.onChange( ATM_DOWN, volMaster, volMaster.EVT_ENC_DOWN );
-   enc2.debounce( 10 );  
+   enc2.debounce( 5 );  
    btn1.begin(2);
    btn2.begin(18);
    btn2.onPress( encBtn1, encBtn1.EVT_BTN_1 );
