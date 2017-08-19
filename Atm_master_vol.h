@@ -24,8 +24,7 @@ class Atm_master_vol : public Machine {
 		Atm_master_vol& onPress( Machine& machine, int event = 0 );
 		Atm_master_vol& onPress( atm_cb_push_t callback, int idx = 0 ); 
 		Atm_master_vol& trigger( int event );
-		int state( void );
-		//atm_counter controlCounter; 
+		int state( void ); 
 
 		
 		
@@ -41,8 +40,6 @@ class Atm_master_vol : public Machine {
 		int last_volume_position;
 		int volume_position;
 		int vol_control;
-		float volume;
-		//int last_state;
      	int event( int id ); 
      	void action( int id );
 		float volume_array [34]{

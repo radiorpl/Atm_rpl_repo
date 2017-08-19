@@ -124,16 +124,12 @@ Atm_master_vol& Atm_master_vol::setVolume( void ) {
 		}
 		if( volume_position > 27 ){
 			volume_position = 28; 	// 0.81, louder will clip master               
-		}		
-		if ( volume_position != last_volume_position ) {	
-		volume = volume_array[volume_position];
-		sgtl5000_1.volume(volume);
-		Serial.println("master vol");
-		Serial.println(volume_position);
-		Serial.println("volume");
-		Serial.println(volume);
-		}
-		last_volume_position = volume_position;
+		}			
+		sgtl5000_1.volume( volume_array[volume_position] );
+		Serial.println( "master vol" );
+		Serial.println( volume_position );
+		Serial.println( "volume" );
+		Serial.println( volume_array[volume_position] );
 	}
 	else if ( vol_control == 1 ){  	//wav1
 		if( volume_position < 1 ){
