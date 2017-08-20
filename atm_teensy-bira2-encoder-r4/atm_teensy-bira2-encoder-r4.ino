@@ -48,8 +48,7 @@ Atm_enc_button encBtn1;
 Atm_enc_button encBtn2;
 Atm_delay_effect delayEffect;
 Atm_sev_seg displayMain;
-
-
+Atm_timer timer;
 
 //const int  buttonPin1 = 3;      //non atm button
 //const int  buttonPin2 = 7;      //non atm button
@@ -85,6 +84,8 @@ void setup() {
    encBtn1.begin(1);
    encBtn2.begin(2);
    displayMain.begin();
+   timer.begin(3000);
+   timer.onFinish( displayMain, displayMain.EVT_HOME );
    
    sgtl5000_1.enable();
    sgtl5000_1.volume(0.3);	
