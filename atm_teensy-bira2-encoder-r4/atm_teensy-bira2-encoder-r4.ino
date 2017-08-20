@@ -84,6 +84,7 @@ void setup() {
    encBtn1.begin(1);
    encBtn2.begin(2);
    displayMain.begin();
+   
    sgtl5000_1.enable();
    sgtl5000_1.volume(0.3);	
    /*
@@ -122,7 +123,7 @@ void loop() {
 //switch which volume the encoder controls
   
   if (enc_button_counter_2 == 0){						//counter 2 is for number of volume instance
-    enc2.onChange( ATM_UP, volMaster, volMaster.EVT_ENC_UP );
+	enc2.onChange( ATM_UP, volMaster, volMaster.EVT_ENC_UP );
     enc2.onChange( ATM_DOWN, volMaster, volMaster.EVT_ENC_DOWN );
     }
 	
