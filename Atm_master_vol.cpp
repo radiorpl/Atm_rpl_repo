@@ -32,7 +32,7 @@ Atm_master_vol& Atm_master_vol::begin( int vol_con ) {
   	// clang-format off
 	static const state_t state_table[] PROGMEM = {
 		/*               	ON_ENTER    			ON_LOOP   		ON_EXIT		EVT_ENC_UP		EVT_ENC_DOWN		EVT_BTN_1		EVT_TIMER 	EVT_VOL_CONTROL 	ELSE */	 				
-		/*VOL_CONTROL */	ENT_VOL_CONTROL, 		-1,					-1,			VOL_UP,	  	 	VOL_DOWN,			-1,		 	    -1,		ENT_VOL_CONTROL,		-1,	
+		/*VOL_CONTROL */	ENT_VOL_CONTROL, 		ENT_CHECK_MILLIS,					-1,			VOL_UP,	  	 	VOL_DOWN,			-1,		 	    -1,		ENT_VOL_CONTROL,		-1,	
 		/*VOL_UP 	  */	ENT_VOL_UP, 			-1,					-1,			-1,	  	 		-1,					-1,				-1,		ENT_VOL_CONTROL,		-1,
 		/*VOL_DOWN 	  */	ENT_VOL_DOWN, 			-1,					-1,			-1,	  	 		-1,					-1,				-1,		ENT_VOL_CONTROL,		-1,
 	};
@@ -159,7 +159,8 @@ Atm_master_vol& Atm_master_vol::setVolume( void ) {
 
 Atm_master_vol& Atm_master_vol::checkMillis( void ) {
 	if ( m_display  == param_delay ) {
-			trigger( EVT_TIMER );
+			//trigger( EVT_TIMER );
+		displayMain.trigger( displayMain.EVT_HOME );
 			Serial.println("param timer");
 			Serial.println("HOME TRIGGERED");
 			
