@@ -1,7 +1,9 @@
 #include "Atm_enc_button.h"
 
 byte enc_button_counter_1;
+byte last_enc_button_counter_1;
 byte enc_button_counter_2;
+byte last_enc_button_counter_2;
 byte enc_button_counter_3;
 byte enc_button_counter_4;
 byte enc_button_counter_5;

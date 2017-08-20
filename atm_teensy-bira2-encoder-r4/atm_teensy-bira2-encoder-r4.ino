@@ -81,6 +81,7 @@ void setup() {
    btn2.onPress( encBtn1, encBtn1.EVT_BTN_1 );
    btn3.begin(16);
    btn3.onPress( encBtn2, encBtn2.EVT_BTN_1 );
+   //btn3.onPress2( volMaster, volMaster.EVT_BTN_1);
    encBtn1.begin(1);
    encBtn2.begin(2);
    displayMain.begin();
@@ -105,7 +106,7 @@ void setup() {
 
 void loop() {
   //control of encoder and button function for track and stop/start
-  if (enc_button_counter_1 == 0){ 						//counter 1 is for number of bira instances
+  if (enc_button_counter_1 == 0){ 						//counter 1 is for number of bira instances, attached to btn2
     enc1.onChange( ATM_DOWN, wav1, wav1.EVT_ENC_UP ); //control bira 1
     enc1.onChange( ATM_UP, wav1, wav1.EVT_ENC_DOWN );
     }
@@ -122,18 +123,32 @@ void loop() {
     }
 //switch which volume the encoder controls
   
-  if (enc_button_counter_2 == 0){						//counter 2 is for number of volume instance
+  if (enc_button_counter_2 == 0){						//counter 2 is for number of volume instance, attached to btn3
 	enc2.onChange( ATM_UP, volMaster, volMaster.EVT_ENC_UP );
     enc2.onChange( ATM_DOWN, volMaster, volMaster.EVT_ENC_DOWN );
-    }
 	
+	if( enc_button_counter_2 != last_enc_button_counter_2 ){
+		displayMain.trigger( displayMain.EVT_MASTER_VOL );
+	}
+	last_enc_button_counter_2 = enc_button_counter_2;
+    }	
   else if (enc_button_counter_2 == 1){
     enc2.onChange( ATM_UP, volWav1, volWav1.EVT_ENC_UP );
     enc2.onChange( ATM_DOWN, volWav1, volWav1.EVT_ENC_DOWN );
+	
+	if( enc_button_counter_2 != last_enc_button_counter_2 ){
+		displayMain.trigger( displayMain.EVT_VOL_WAV_1 );
+	}
+	last_enc_button_counter_2 = enc_button_counter_2;
     }
   else if (enc_button_counter_2 == 2){
     enc2.onChange( ATM_UP, volWav2, volWav2.EVT_ENC_UP );
     enc2.onChange( ATM_DOWN, volWav2, volWav2.EVT_ENC_DOWN );
+
+	if( enc_button_counter_2 != last_enc_button_counter_2 ){
+		displayMain.trigger( displayMain.EVT_VOL_WAV_2 );
+	}
+	last_enc_button_counter_2 = enc_button_counter_2;
     }
 	
   automaton.run();

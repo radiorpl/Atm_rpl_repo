@@ -32,7 +32,7 @@ Atm_master_vol& Atm_master_vol::begin( int vol_con ) {
   	// clang-format off
 	static const state_t state_table[] PROGMEM = {
 		/*               	ON_ENTER    			ON_LOOP   		ON_EXIT		EVT_ENC_UP		EVT_ENC_DOWN		EVT_BTN_1		EVT_TIMER 	EVT_VOL_CONTROL 	ELSE */	 				
-		/*VOL_CONTROL */	ENT_VOL_CONTROL, 		ENT_CHECK_MILLIS,					-1,			VOL_UP,	  	 	VOL_DOWN,			-1,		 	    -1,		ENT_VOL_CONTROL,		-1,	
+		/*VOL_CONTROL */	ENT_VOL_CONTROL, 		-1,					-1,			VOL_UP,	  	 	VOL_DOWN,			-1,		 	    -1,		ENT_VOL_CONTROL,		-1,	
 		/*VOL_UP 	  */	ENT_VOL_UP, 			-1,					-1,			-1,	  	 		-1,					-1,				-1,		ENT_VOL_CONTROL,		-1,
 		/*VOL_DOWN 	  */	ENT_VOL_DOWN, 			-1,					-1,			-1,	  	 		-1,					-1,				-1,		ENT_VOL_CONTROL,		-1,
 	};
@@ -82,7 +82,6 @@ void Atm_master_vol::action( int id ) {
 			return;
 		case ENT_HOME:
 			enterHome();
-			Serial.println("enter home");
 		 	return;
 			
 		case ENT_VOL_CONTROL:
@@ -169,7 +168,10 @@ Atm_master_vol& Atm_master_vol::checkMillis( void ) {
 }
 
 Atm_master_vol& Atm_master_vol::enterHome( void ) {
-	onPress( displayMain, displayMain.EVT_HOME );
+	Serial.print(vol_control);
+	Serial.print(" ");
+	Serial.println("evt_btn_1");
+	//onPress( displayMain, displayMain.EVT_HOME );
 	//trigger( EVT_VOL_CONTROL );
 	return *this;
 }
@@ -194,8 +196,9 @@ Atm_master_vol& Atm_master_vol::enterDisplay( void ) {
 Atm_master_vol& Atm_master_vol::encoderUp( void ) {	
 	if( m_display > param_delay ){
 		m_display = 0;
-		Serial.println("wait display triggered");
+		Serial.println("wait display triggered");			//if display delay expired, display parameter and wait
 		if ( vol_control == 0 ){
+			displayMain.trigger( displayMain.EVT_MASTER_VOL );
 		}
 		else if ( vol_control == 1 ){
 			displayMain.trigger( displayMain.EVT_VOL_WAV_1 );	
@@ -207,7 +210,7 @@ Atm_master_vol& Atm_master_vol::encoderUp( void ) {
 		trigger( EVT_VOL_CONTROL );
 	}
 	else {
-		volume_position += 1;
+		volume_position += 1;								//otherwise, volume increment up
 		Serial.println("enc up");
 		Serial.println(volume_position);
 		trigger( EVT_VOL_CONTROL );

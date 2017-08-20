@@ -118,19 +118,19 @@ void Atm_sev_seg::action( int id ) {
 	  //write(0, 31); write(1, 24); write(2, 21); writeLevel(level); //VOL(level)
 	  Serial.println("MASTER VOL sev seg");
 	  Serial.println("MASTER VOL sev seg");
-	  Serial.print(level);
+	  Serial.println(level);
 	  return;
   	case ENT_VOL_WAV_1:
 	  level = vol_wav_1_level;
   	  //write(0, 31); write(1, 21); write(2, 1); writeLevel(level); //VL1(level)
 	  Serial.print("VOL 1 sev seg");
-	  Serial.print(level);
+	  Serial.println(level);
 	  return;
     case ENT_VOL_WAV_2:
 	  level = vol_wav_2_level;
       //write(0, 31); write(1, 21); write(2, 2); writeLevel(level); //VL2(level)
 	  Serial.print("VOL 2 sev seg");
-	  Serial.print(level);
+	  Serial.println(level);
   	  return;
    	case ENT_TRACK_WAV_1:
       write(0, 29); write(1, 27); write(2, 1); writeLevel(level); //tr1(level)
