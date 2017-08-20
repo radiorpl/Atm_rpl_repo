@@ -8,15 +8,15 @@ Works controlling master vol along with Atm_wav_1_loop_r2
 
 class Atm_master_vol : public Machine {
 	public:
-		enum { VOL_CONTROL, VOL_UP, VOL_DOWN }; //STATES
-		enum { EVT_ENC_UP, EVT_ENC_DOWN, EVT_BTN_1, EVT_TIMER, EVT_VOL_CONTROL, ELSE }; //EVENTS
+		enum { VOL_CONTROL, VOL_UP, VOL_DOWN, BTN_1 }; //STATES
+		enum { EVT_ENC_UP, EVT_ENC_DOWN, EVT_BTN_1, EVT_VOL_CONTROL, ELSE }; //EVENTS
 		//enum {WAV_START, WAV_STOP}; //ACTIONS
 		
 		Atm_master_vol( void ) : Machine(){};
 		Atm_master_vol& begin( int vol_con );
 		Atm_master_vol& setVolume( void );
 		Atm_master_vol& checkMillis( void );
-		Atm_master_vol& enterHome( void );
+		Atm_master_vol& btn1( void );
 		Atm_master_vol& enterDisplay( void );
 		Atm_master_vol& encoderUp( void );
 		Atm_master_vol& encoderDown( void ); 
@@ -29,7 +29,7 @@ class Atm_master_vol : public Machine {
 		
 		
 	private:
-     	enum { ENT_CHECK_MILLIS, ENT_HOME, ENT_DISPLAY, ENT_VOL_CONTROL, ENT_VOL_UP, ENT_VOL_DOWN }; // ACTIONS
+     	enum { ENT_BTN_1, ENT_VOL_CONTROL, ENT_VOL_UP, ENT_VOL_DOWN }; // ACTIONS
      	enum { ON_PRESS, CONN_MAX }; // CONNECTORS
      	atm_connector connectors[CONN_MAX];
 		elapsedMillis m_display;

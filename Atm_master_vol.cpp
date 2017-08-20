@@ -18,6 +18,8 @@ works controlling volumes
 haven't worked out displays yet
 8/19/17 
 attempt to add display
+8/20/17
+successfully connected sev seg
 */	
 #include "Atm_master_vol.h"
 #include "audio_system.h"
@@ -31,10 +33,11 @@ int vol_wav_2_level;
 Atm_master_vol& Atm_master_vol::begin( int vol_con ) {
   	// clang-format off
 	static const state_t state_table[] PROGMEM = {
-		/*               	ON_ENTER    			ON_LOOP   		ON_EXIT		EVT_ENC_UP		EVT_ENC_DOWN		EVT_BTN_1		EVT_TIMER 	EVT_VOL_CONTROL 	ELSE */	 				
-		/*VOL_CONTROL */	ENT_VOL_CONTROL, 		-1,					-1,			VOL_UP,	  	 	VOL_DOWN,			-1,		 	    -1,		ENT_VOL_CONTROL,		-1,	
-		/*VOL_UP 	  */	ENT_VOL_UP, 			-1,					-1,			-1,	  	 		-1,					-1,				-1,		ENT_VOL_CONTROL,		-1,
-		/*VOL_DOWN 	  */	ENT_VOL_DOWN, 			-1,					-1,			-1,	  	 		-1,					-1,				-1,		ENT_VOL_CONTROL,		-1,
+		/*               	ON_ENTER    			ON_LOOP   		ON_EXIT		EVT_ENC_UP		EVT_ENC_DOWN		EVT_BTN_1	 	EVT_VOL_CONTROL 	ELSE */	 				
+		/*VOL_CONTROL */	ENT_VOL_CONTROL, 		-1,					-1,			VOL_UP,	  	 	VOL_DOWN,			BTN_1,		   VOL_CONTROL,		-1,	
+		/*VOL_UP 	  */	ENT_VOL_UP, 			-1,					-1,			-1,	  	 		-1,					-1,				VOL_CONTROL,		-1,
+		/*VOL_DOWN 	  */	ENT_VOL_DOWN, 			-1,					-1,			-1,	  	 		-1,					-1,				VOL_CONTROL,		-1,
+		/*BTN_1 	  */	ENT_BTN_1, 				-1,					-1,			-1,	  	 		-1,					-1,				VOL_CONTROL,		-1,
 	};
     // clang-format on
     Machine::begin( state_table, ELSE );
@@ -62,8 +65,6 @@ int Atm_master_vol::event( int id ) {
 		return 0;	
     case EVT_BTN_1:
 		return 0;
-	case EVT_TIMER:
-		return 0;	
 	case EVT_VOL_CONTROL:
 		return 0;
   	}  
@@ -77,17 +78,13 @@ int Atm_master_vol::event( int id ) {
  */
 void Atm_master_vol::action( int id ) {
 	switch ( id ) {
-		case ENT_CHECK_MILLIS:
-			checkMillis();
 			return;
-		case ENT_HOME:
-			enterHome();
-		 	return;
-			
+		case ENT_BTN_1:    ///actually just reset counter frome evt_btn_1
+			btn1();
+			return;		
 		case ENT_VOL_CONTROL:
 			setVolume();
-			return;
-		
+			return;		
 		case ENT_VOL_UP:
 			encoderUp();
 			return;	
@@ -167,29 +164,11 @@ Atm_master_vol& Atm_master_vol::checkMillis( void ) {
 	return *this;
 }
 
-Atm_master_vol& Atm_master_vol::enterHome( void ) {
-	Serial.print(vol_control);
-	Serial.print(" ");
-	Serial.println("evt_btn_1");
-	//onPress( displayMain, displayMain.EVT_HOME );
-	//trigger( EVT_VOL_CONTROL );
-	return *this;
-}
-	
-Atm_master_vol& Atm_master_vol::enterDisplay( void ) {
-	if ( vol_control == 0) {
-		displayMain.trigger( displayMain.EVT_VOL_WAV_1 );
-		Serial.println("MASTER VOL TRIGGERED");
-	}
-	else if ( vol_control == 1) {
-		displayMain.trigger( displayMain.EVT_VOL_WAV_1 );
-		Serial.println("VOL 1 TRIGGERED");
-	}
-	else if ( vol_control == 2) {
-		displayMain.trigger( displayMain.EVT_VOL_WAV_2 );
-		Serial.println("VOL 2 TRIGGERED");
-	}
-	//m_display = 0;
+Atm_master_vol& Atm_master_vol::btn1( void ) {
+	Serial.print("m_display = ");
+	Serial.println(m_display);
+	trigger( EVT_VOL_CONTROL );
+	m_display = 0;
 	return *this;
 }
 
@@ -276,6 +255,6 @@ Atm_master_vol& Atm_master_vol::onPress( atm_cb_push_t callback, int idx ) {
 
 Atm_master_vol& Atm_master_vol::trace( Stream & stream ) {
   Machine::setTrace( &stream, atm_serial_debug::trace,
-    "MASTER_VOL\0\EVT_ENC_UP\0EVT_ENC_DOWN\0EVT_BTN_1\0EVT_TIMER\0EVT_VOL_CONTROL\0ELSE\0VOL_CONTROL" );
+    "MASTER_VOL\0\EVT_ENC_UP\0EVT_ENC_DOWN\0EVT_BTN_1\0EVT_TIMER\0EVT_VOL_CONTROL\0ELSE\0VOL_CONTROL\0VOL_UP\0VOL_DOWN\0BTN_1" );
   return *this;
 }

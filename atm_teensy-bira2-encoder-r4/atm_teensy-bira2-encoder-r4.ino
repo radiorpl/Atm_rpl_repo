@@ -129,6 +129,7 @@ void loop() {
 	
 	if( enc_button_counter_2 != last_enc_button_counter_2 ){
 		displayMain.trigger( displayMain.EVT_MASTER_VOL );
+		volMaster.trigger( volMaster.EVT_BTN_1 );
 	}
 	last_enc_button_counter_2 = enc_button_counter_2;
     }	
@@ -138,6 +139,7 @@ void loop() {
 	
 	if( enc_button_counter_2 != last_enc_button_counter_2 ){
 		displayMain.trigger( displayMain.EVT_VOL_WAV_1 );
+		volWav1.trigger( volWav1.EVT_BTN_1 );
 	}
 	last_enc_button_counter_2 = enc_button_counter_2;
     }
@@ -147,6 +149,7 @@ void loop() {
 
 	if( enc_button_counter_2 != last_enc_button_counter_2 ){
 		displayMain.trigger( displayMain.EVT_VOL_WAV_2 );
+		volWav2.trigger( volWav2.EVT_BTN_1 );
 	}
 	last_enc_button_counter_2 = enc_button_counter_2;
     }
