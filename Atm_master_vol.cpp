@@ -175,15 +175,15 @@ Atm_master_vol& Atm_master_vol::enterHome( void ) {
 	
 Atm_master_vol& Atm_master_vol::enterDisplay( void ) {
 	if ( vol_control == 0) {
-		onPress( displayMain, displayMain.EVT_MASTER_VOL );
+		displayMain.trigger( displayMain.EVT_VOL_WAV_1 );
 		Serial.println("MASTER VOL TRIGGERED");
 	}
 	else if ( vol_control == 1) {
-		displayMain.vol1();
+		displayMain.trigger( displayMain.EVT_VOL_WAV_1 );
 		Serial.println("VOL 1 TRIGGERED");
 	}
 	else if ( vol_control == 2) {
-		displayMain.vol2();
+		displayMain.trigger( displayMain.EVT_VOL_WAV_2 );
 		Serial.println("VOL 2 TRIGGERED");
 	}
 	//m_display = 0;
@@ -195,7 +195,6 @@ Atm_master_vol& Atm_master_vol::encoderUp( void ) {
 		m_display = 0;
 		Serial.println("wait display triggered");
 		if ( vol_control == 0 ){
-			displayMain.trigger( displayMain.EVT_MASTER_VOL );
 		}
 		else if ( vol_control == 1 ){
 			displayMain.trigger( displayMain.EVT_VOL_WAV_1 );	
