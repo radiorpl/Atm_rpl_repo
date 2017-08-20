@@ -14,8 +14,7 @@ class Atm_sev_seg: public Machine {
   int state( void );
   Atm_sev_seg& write( int digit, int character );
   Atm_sev_seg& writeLevel( int level );
-
-
+  
 
  private:
   enum { ENT_OFF, ENT_HOME, ENT_MASTER_VOL, ENT_VOL_WAV_1, ENT_VOL_WAV_2, ENT_TRACK_WAV_1, ENT_TRACK_WAV_2, ENT_PLAY_WAV_1, ENT_PLAY_WAV_2 }; // ACTIONS

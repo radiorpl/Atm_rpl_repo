@@ -107,7 +107,7 @@ void Atm_sev_seg::action( int id ) {
   switch ( id ) {
   	case ENT_HOME:
   	  //write(0, 11); write(1, 11); write(2, 36); write(3, 2); //BB-2
-	Serial.println("HOME");
+	  Serial.println("HOME-sev-seg");
   	  return;
 	case ENT_OFF:
 	  //write(0, 37); write(1, 37); write(2, 37); write(3, 37); //all off
@@ -116,19 +116,20 @@ void Atm_sev_seg::action( int id ) {
 	case ENT_MASTER_VOL:
 	  level = mas_vol_level;
 	  //write(0, 31); write(1, 24); write(2, 21); writeLevel(level); //VOL(level)
-	  Serial.print("MASTER VOL ");
+	  Serial.println("MASTER VOL sev seg");
+	  Serial.println("MASTER VOL sev seg");
 	  Serial.print(level);
 	  return;
   	case ENT_VOL_WAV_1:
 	  level = vol_wav_1_level;
   	  //write(0, 31); write(1, 21); write(2, 1); writeLevel(level); //VL1(level)
-	  Serial.print("VOL 1 ");
+	  Serial.print("VOL 1 sev seg");
 	  Serial.print(level);
 	  return;
     case ENT_VOL_WAV_2:
 	  level = vol_wav_2_level;
       //write(0, 31); write(1, 21); write(2, 2); writeLevel(level); //VL2(level)
-	  Serial.print("VOL 2 ");
+	  Serial.print("VOL 2 sev seg");
 	  Serial.print(level);
   	  return;
    	case ENT_TRACK_WAV_1:
@@ -232,8 +233,6 @@ Atm_sev_seg& Atm_sev_seg::writeLevel( int level ) {
 /* Public event methods
  *
  */
-
-
 
 /* State trace method
  * Sets the symbol table and the default logging method for serial monitoring
