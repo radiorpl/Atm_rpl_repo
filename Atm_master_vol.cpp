@@ -32,7 +32,7 @@ Atm_master_vol& Atm_master_vol::begin( int vol_con ) {
   	// clang-format off
 	static const state_t state_table[] PROGMEM = {
 		/*               	ON_ENTER    			ON_LOOP   		ON_EXIT		EVT_ENC_UP		EVT_ENC_DOWN		EVT_BTN_1		EVT_TIMER 	EVT_VOL_CONTROL 	ELSE */	 				
-		/*VOL_CONTROL */	ENT_VOL_CONTROL, 		-1,					-1,		VOL_UP,	  	 	VOL_DOWN,				-1,				-1,		ENT_VOL_CONTROL,		-1,	
+		/*VOL_CONTROL */	ENT_VOL_CONTROL, 		-1,					-1,			VOL_UP,	  	 	VOL_DOWN,			-1,		 	    -1,		ENT_VOL_CONTROL,		-1,	
 		/*VOL_UP 	  */	ENT_VOL_UP, 			-1,					-1,			-1,	  	 		-1,					-1,				-1,		ENT_VOL_CONTROL,		-1,
 		/*VOL_DOWN 	  */	ENT_VOL_DOWN, 			-1,					-1,			-1,	  	 		-1,					-1,				-1,		ENT_VOL_CONTROL,		-1,
 	};
@@ -78,16 +78,12 @@ int Atm_master_vol::event( int id ) {
 void Atm_master_vol::action( int id ) {
 	switch ( id ) {
 		case ENT_CHECK_MILLIS:
-			checkMillis(0);
-			checkMillis(1);
+			checkMillis();
 			return;
 		case ENT_HOME:
 			enterHome();
-			//Serial.println(evt_counter);
+			Serial.println("enter home");
 		 	return;
-  		case ENT_DISPLAY:
-			enterDisplay();
-  		  	return;
 			
 		case ENT_VOL_CONTROL:
 			setVolume();
@@ -151,8 +147,7 @@ Atm_master_vol& Atm_master_vol::setVolume( void ) {
 		}
 		if( volume_position > 32 ){
 			volume_position = 33; 	               
-		}	
-		last_volume_position = volume_position;	
+		}		
 		mixer6.gain(1, volume_array[volume_position]);
 		Serial.println("bira 2 volume");
 		Serial.println(volume_position);
@@ -162,38 +157,33 @@ Atm_master_vol& Atm_master_vol::setVolume( void ) {
 	return *this;
 }
 
-Atm_master_vol& Atm_master_vol::checkMillis( int m_instance ) {
-	if ( m_instance == 0 ) {
-		if ( m_display > display_delay && m_display < (display_delay +2) ) {
-	 		trigger( EVT_VOL_CONTROL );
-			//Serial.println(evt_counter);
-		}
-	}
-	else if ( m_instance == 1 ){
-		if ( m_display > param_delay && m_display < (param_delay +2) ) {
+Atm_master_vol& Atm_master_vol::checkMillis( void ) {
+	if ( m_display  == param_delay ) {
 			trigger( EVT_TIMER );
-			//Serial.println("param timer");
+			Serial.println("param timer");
+			Serial.println("HOME TRIGGERED");
+			
 		}
-	}
 	return *this;
 }
 
 Atm_master_vol& Atm_master_vol::enterHome( void ) {
-	trigger( displayMain.EVT_HOME );
+	onPress( displayMain, displayMain.EVT_HOME );
+	//trigger( EVT_VOL_CONTROL );
 	return *this;
 }
 	
 Atm_master_vol& Atm_master_vol::enterDisplay( void ) {
 	if ( vol_control == 0) {
-		trigger( displayMain.EVT_MASTER_VOL );
+		onPress( displayMain, displayMain.EVT_MASTER_VOL );
 		Serial.println("MASTER VOL TRIGGERED");
 	}
 	else if ( vol_control == 1) {
-		trigger( displayMain.EVT_VOL_WAV_1 );
+		displayMain.vol1();
 		Serial.println("VOL 1 TRIGGERED");
 	}
 	else if ( vol_control == 2) {
-		trigger( displayMain.EVT_VOL_WAV_2 );
+		displayMain.vol2();
 		Serial.println("VOL 2 TRIGGERED");
 	}
 	//m_display = 0;
@@ -203,16 +193,24 @@ Atm_master_vol& Atm_master_vol::enterDisplay( void ) {
 Atm_master_vol& Atm_master_vol::encoderUp( void ) {	
 	if( m_display > param_delay ){
 		m_display = 0;
-		Serial.println("MASTER VOL TRIGGERED");
-		delay(100);
+		Serial.println("wait display triggered");
+		if ( vol_control == 0 ){
+			displayMain.trigger( displayMain.EVT_MASTER_VOL );
+		}
+		else if ( vol_control == 1 ){
+			displayMain.trigger( displayMain.EVT_VOL_WAV_1 );	
+		}
+		else if ( vol_control == 2 ){
+			displayMain.trigger( displayMain.EVT_VOL_WAV_2 );	
+		}		
+		delay(display_delay);
 		trigger( EVT_VOL_CONTROL );
 	}
-	else{
+	else {
 		volume_position += 1;
 		Serial.println("enc up");
 		Serial.println(volume_position);
 		trigger( EVT_VOL_CONTROL );
-		Serial.println(volume_position);
 		Serial.println(m_display);
 		m_display = 0;
 	}
@@ -222,11 +220,20 @@ Atm_master_vol& Atm_master_vol::encoderUp( void ) {
 Atm_master_vol& Atm_master_vol::encoderDown( void ) {	
 	if( m_display > param_delay ){
 		m_display = 0;
-		Serial.println("MASTER VOL TRIGGERED");
+		Serial.println("wait display triggered");
+		if ( vol_control == 0 ){
+			displayMain.trigger( displayMain.EVT_MASTER_VOL );
+		}
+		else if ( vol_control == 1 ){
+			displayMain.trigger( displayMain.EVT_VOL_WAV_1 );	
+		}
+		else if ( vol_control == 2 ){
+			displayMain.trigger( displayMain.EVT_VOL_WAV_2 );	
+		}		
 		delay(100);
 		trigger( EVT_VOL_CONTROL );
 	}
-	else{
+	else {
 		volume_position -= 1;
 		Serial.println("enc down");
 		Serial.println(volume_position);

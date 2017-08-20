@@ -15,7 +15,7 @@ class Atm_master_vol : public Machine {
 		Atm_master_vol( void ) : Machine(){};
 		Atm_master_vol& begin( int vol_con );
 		Atm_master_vol& setVolume( void );
-		Atm_master_vol& checkMillis( int m_instance );
+		Atm_master_vol& checkMillis( void );
 		Atm_master_vol& enterHome( void );
 		Atm_master_vol& enterDisplay( void );
 		Atm_master_vol& encoderUp( void );
@@ -32,12 +32,9 @@ class Atm_master_vol : public Machine {
      	enum { ENT_CHECK_MILLIS, ENT_HOME, ENT_DISPLAY, ENT_VOL_CONTROL, ENT_VOL_UP, ENT_VOL_DOWN }; // ACTIONS
      	enum { ON_PRESS, CONN_MAX }; // CONNECTORS
      	atm_connector connectors[CONN_MAX];
-		//atm_timer_millis display_timer;
-		//atm_timer_millis param_timer;
 		elapsedMillis m_display;
 		int display_delay;
 		int param_delay;	
-		int last_volume_position;
 		int volume_position;
 		int vol_control;
      	int event( int id ); 
