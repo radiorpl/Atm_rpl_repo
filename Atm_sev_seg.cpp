@@ -123,13 +123,13 @@ void Atm_sev_seg::action( int id ) {
   	case ENT_VOL_WAV_1:
 	  level = vol_wav_1_level;
   	  //write(0, 31); write(1, 21); write(2, 1); writeLevel(level); //VL1(level)
-	  Serial.print("VOL 1 sev seg");
+	  Serial.println("VOL 1 sev seg");
 	  Serial.println(level);
 	  return;
     case ENT_VOL_WAV_2:
 	  level = vol_wav_2_level;
       //write(0, 31); write(1, 21); write(2, 2); writeLevel(level); //VL2(level)
-	  Serial.print("VOL 2 sev seg");
+	  Serial.println("VOL 2 sev seg");
 	  Serial.println(level);
   	  return;
    	case ENT_TRACK_WAV_1:

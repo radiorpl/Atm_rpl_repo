@@ -124,6 +124,36 @@ Atm_master_vol& Atm_master_vol::setVolume( void ) {
 		Serial.println(volume_position);
 		Serial.println("volume");
 		Serial.println(volume_array[volume_position]);
+		if ( volume_position > -1 && volume_position < 3){
+			mas_vol_level = 0;
+		}
+		else if ( volume_position > 2 && volume_position < 6){
+			mas_vol_level = 1;
+		}
+		else if ( volume_position > 5 && volume_position < 9){
+			mas_vol_level = 2;
+		}
+		else if ( volume_position > 8 && volume_position < 12){
+			mas_vol_level = 3;
+		}
+		else if ( volume_position > 11 && volume_position < 15){
+			mas_vol_level = 4;
+		}
+		else if ( volume_position > 14 && volume_position < 18){
+			mas_vol_level = 5;
+		}
+		else if ( volume_position > 17 && volume_position < 21){
+			mas_vol_level = 6;
+		}
+		else if ( volume_position > 20 && volume_position < 24){
+			mas_vol_level = 7;
+		}
+		else if ( volume_position > 23 && volume_position < 27){
+			mas_vol_level = 8;
+		}
+		else if ( volume_position > 26 && volume_position < 29){
+			mas_vol_level = 9;
+		}
 	}
 	else if ( vol_control == 1 ){  	//wav1
 		if( volume_position < 1 ){
@@ -136,6 +166,36 @@ Atm_master_vol& Atm_master_vol::setVolume( void ) {
 		Serial.println("bira 1 volume");
 		Serial.println(volume_position);
 		Serial.println(volume_array[volume_position]);
+		if ( volume_position > -1 && volume_position < 4){
+			mas_vol_level = 0;
+		}
+		else if ( volume_position > 3 && volume_position < 7){
+			vol_wav_1_level = 1;
+		}
+		else if ( volume_position > 6 && volume_position < 10){
+			vol_wav_1_level = 2;
+		}
+		else if ( volume_position > 9 && volume_position < 13){
+			vol_wav_1_level = 3;
+		}
+		else if ( volume_position > 12 && volume_position < 16){
+			vol_wav_1_level = 4;
+		}
+		else if ( volume_position > 15 && volume_position < 19){
+			vol_wav_1_level = 5;
+		}
+		else if ( volume_position > 18 && volume_position < 23){
+			vol_wav_1_level = 6;
+		}
+		else if ( volume_position > 22 && volume_position < 27){
+			vol_wav_1_level = 7;
+		}
+		else if ( volume_position > 26 && volume_position < 31){
+			vol_wav_1_level = 8;
+		}
+		else if ( volume_position > 30 && volume_position < 33){
+			vol_wav_1_level = 9;
+		}
 	}
 	else if ( vol_control == 2 ){  	//wav2
 		if( volume_position < 1 ){
@@ -148,6 +208,36 @@ Atm_master_vol& Atm_master_vol::setVolume( void ) {
 		Serial.println("bira 2 volume");
 		Serial.println(volume_position);
 		Serial.println(volume_array[volume_position]);
+		if ( volume_position > -1 && volume_position < 4){
+			mas_vol_level = 0;
+		}
+		else if ( volume_position > 3 && volume_position < 7){
+			vol_wav_2_level = 1;
+		}
+		else if ( volume_position > 6 && volume_position < 10){
+			vol_wav_2_level = 2;
+		}
+		else if ( volume_position > 9 && volume_position < 13){
+			vol_wav_2_level = 3;
+		}
+		else if ( volume_position > 12 && volume_position < 16){
+			vol_wav_2_level = 4;
+		}
+		else if ( volume_position > 15 && volume_position < 19){
+			vol_wav_2_level = 5;
+		}
+		else if ( volume_position > 18 && volume_position < 23){
+			vol_wav_2_level = 6;
+		}
+		else if ( volume_position > 22 && volume_position < 27){
+			vol_wav_2_level = 7;
+		}
+		else if ( volume_position > 26 && volume_position < 31){
+			vol_wav_2_level = 8;
+		}
+		else if ( volume_position > 30 && volume_position < 33){
+			vol_wav_2_level = 9;
+		}
 
 	}
 	return *this;
