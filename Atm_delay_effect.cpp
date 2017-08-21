@@ -71,15 +71,19 @@ int Atm_delay_effect::event( int id ) {
 void Atm_delay_effect::action( int id ) {
   switch ( id ) {
 	case ENT_OFF:
-
+	  off();
 	  return;
 	case ENT_CONTROL:
+	  setLevel();
 	  return;
 	case ENT_ENC_UP:
+	  encUp();
 	  return;
 	case ENT_ENC_DOWN:
+	  encDown();
 	  return;
 	case ENT_BTN_1:
+	  btn1();
 	  return;
 	}
 }
@@ -261,7 +265,6 @@ Atm_delay_effect& Atm_delay_effect::encUp( void ) {
 		Serial.println("enc up");
 		Serial.println(param_position);
 		trigger( EVT_CONTROL );
-		//Serial.println(m_display);
 		timer.trigger( timer.EVT_START );
 	}
 	return *this;
@@ -284,11 +287,10 @@ Atm_delay_effect& Atm_delay_effect::encDown( void ) {
 		trigger( EVT_CONTROL );
 	}
 	else {
-		param_position -= 1;								//otherwise, param increment up
+		param_position -= 1;								//otherwise, param increment down
 		Serial.println("enc down");
 		Serial.println(param_position);
 		trigger( EVT_CONTROL );
-		//Serial.println(m_display);
 		timer.trigger( timer.EVT_START );
 	}
 	return *this;
