@@ -67,7 +67,7 @@ void setup() {
    volMaster.begin(0);
    volWav1.begin(1);
    volWav2.begin(2);
-   delayEffect.begin();
+   delayEffect.begin(1);
    enc1.begin(1, 0);
    enc1.onChange( ATM_UP, wav1, wav1.EVT_ENC_UP );
    enc1.onChange( ATM_DOWN, wav1, wav1.EVT_ENC_DOWN );
@@ -85,7 +85,7 @@ void setup() {
    encBtn2.begin(2);
    displayMain.begin();
    timer.begin(3000);
-   timer.onFinish( displayMain, displayMain.EVT_HOME );
+   timer.onFinish( displayMain, displayMain.EVT_HOME );	
    
    sgtl5000_1.enable();
    sgtl5000_1.volume(0.3);	
