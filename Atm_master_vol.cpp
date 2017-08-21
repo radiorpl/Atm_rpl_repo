@@ -77,8 +77,7 @@ int Atm_master_vol::event( int id ) {
  */
 void Atm_master_vol::action( int id ) {
 	switch ( id ) {
-			return;
-		case ENT_BTN_1:    ///actually just reset counter frome evt_btn_1
+		case ENT_BTN_1:    //reset counter frome evt_btn_1
 			btn1();
 			return;		
 		case ENT_VOL_CONTROL:
