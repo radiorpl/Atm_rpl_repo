@@ -31,8 +31,7 @@ class Atm_master_vol : public Machine {
      	enum { ON_PRESS, CONN_MAX }; // CONNECTORS
      	atm_connector connectors[CONN_MAX];
 		//elapsedMillis m_display;
-		int display_delay;
-		int param_delay;	
+		int display_delay;	
 		int volume_position;
 		int vol_control;
      	int event( int id ); 

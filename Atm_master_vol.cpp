@@ -53,7 +53,6 @@ Atm_master_vol& Atm_master_vol::begin( int vol_con ) {
 	mixer6.gain(0, 0.5);
 	mixer9.gain(0, 0.5);	//mix with effects
 	display_delay = 100;  //wait after entering screen state
-	param_delay = 3000;   //wait before return home
     return *this;	
 }
 
@@ -244,8 +243,6 @@ Atm_master_vol& Atm_master_vol::setVolume( void ) {
 }
 
 Atm_master_vol& Atm_master_vol::btn1( void ) {
-	//Serial.print("m_display = ");
-	//Serial.println(m_display);
 	trigger( EVT_VOL_CONTROL );
 	timer.trigger( timer.EVT_START );
 	Serial.println("trigger timer");
