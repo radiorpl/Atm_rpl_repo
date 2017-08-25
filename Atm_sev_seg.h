@@ -13,7 +13,9 @@ class Atm_sev_seg: public Machine {
   Atm_sev_seg& trigger( int event );
   int state( void );
   Atm_sev_seg& write( int digit, int character );
+  Atm_sev_seg& writeBlink( int digit, int character );
   Atm_sev_seg& writeLevel( int level );
+  Atm_sev_seg& writeLevelBlink( int level );
   
 
  private:
@@ -24,47 +26,20 @@ class Atm_sev_seg: public Machine {
   //int digPins[4] = { 9, 10, 11, 12};
   //int segPins[8] = { 2, 14, 7, 8, 6, 20, 21, 5 };
   //serial test pins
-  int digPins[1] = { 31 };
-  int segPins[1] = { 30 };  
-  byte numberLetter[38] = {     
-    B11000000, // 0
-    B11111001, // 1
-    B10100100, // 2
-    B10110000, // 3
-    B10011001, // 4
-    B10010010, // 5
-    B10000010, // 6
-    B11111000, // 7
-    B10000000, // 8
-    B10010000,  // 9
-    B10001000, // 10 A
-    B10000011, // 11 b
-    B11000110, // 12 C
-    B10100001, // 13 d
-    B10000110, // 14 E
-    B10001110, // 15 F
-    B10010000, // 16 g
-    B10001001, // 17 H
-    B11001111, // 18 I
-    B11000001, // 19 J
-    B10001001, // 20 K = H
-    B11000111, // 21 L
-    B11101010, // 22 m
-    B10101011, // 23 n
-    B11000000, // 24 O = 0
-    B10001100, // 25 P
-    B10011000, // 26 q
-    B10101111, // 27 r
-    B10010010, // 28 S
-    B10000111, // 29 t
-    B11000001, // 30 U
-    B11100011, // 31 v
-    B11010101, // 32 w
-    B10001001, // 33 X = H
-    B10010001, // 34 y
-    B10100100,  // 35 Z = 2
-	B10111111,  // 36 -
-    B11111111  // 37 all off      
-  }; 
+  byte digPins[4] = { 2, 3, 4, 5 };   //digit pins
+  byte pinCountDig = 4;         //number of digits
+  byte command [3] = { 21, 19, 20 }; //21 is first led register with auto increment, so send 21, then 2 btyes for led0-3 and then led4-7 19 is psc1, 20 is pwm1
+  
+  //non-blinking characters
+  //             0    1   2  3   4   5   6    7   8   9   A  b    c   d  E    F   g  h   i   j   L   m    n  o   p   q   r   s   t   u   y   Z   -    _   ^   .  " "
+  byte seg0 [37] { 0,  65, 16, 0,  65, 4,  4,  64, 0,  64, 64, 5,  21, 1,  20, 84, 0,  69, 85, 1,  21, 68, 69, 5,  80, 64, 85, 4,  21, 5,  65, 16, 85, 21, 84, 85, 85 };
+  byte seg1 [37] { 80, 85, 68, 69, 65, 65, 64, 85, 64, 65, 64, 64, 68, 68, 64, 64, 65, 64, 84, 84, 80, 84, 68, 68, 64, 65, 68, 65, 64, 84, 65, 68, 69, 85, 85, 21, 85};
+  
+  //blink
+  //                  0    1    2    3    4    5    6    7    8    9    A    b    c    d    E    F    g    h    i   j    L    m    n    o    p    q   r     s   t
+  //    																																							-   _  ^  . " "
+  byte segBlink0 [37] {255, 125, 223, 255, 125, 247, 247, 127, 255, 127, 127, 245, 213, 253, 215, 87,  255, 117, 85, 253, 213, 119, 117, 245, 95,  127, 85,  247, 213, 245, 125, 223, 85,  213, 87, 85,  85 };
+  byte segBlink1 [37] {95,  85,  119, 117, 125, 125, 127, 85,  127, 125, 127, 127, 119, 119, 127, 127, 125, 127, 87, 87,  95,  87,  119, 119, 127, 125, 119, 125, 127, 87,  125, 119, 117, 85,  85, 213, 85 };
+
 
 };

@@ -2,6 +2,8 @@
 8/8/16
 started, compiled, basic operation and triggers tested, haven't tested with audio yet
 -member of Atm_wav_1_multi_r5
+8/24/17
+rewrite for PCA9551 i2c led controller 
 === Common Anode digits ===
 Arduino  Display  Digit
  9         12       0 Leftmost
@@ -31,6 +33,7 @@ segment code, Bxxxxxxxx
 */ 
 #include "Atm_sev_seg.h"
 #include "display_levels.h"
+#include "Wire.h"
 
 int level = 0;
 
@@ -38,36 +41,27 @@ Atm_sev_seg& Atm_sev_seg::begin() {
   // clang-format off
   const static state_t state_table[] PROGMEM = {
     /*                ON_ENTER  			ON_LOOP  		ON_EXIT   EVT_HOME		EVT_OFF  EVT_MASTER_VOL  EVT_VOL_WAV_1  EVT_VOL_WAV_2  EVT_TRACK_WAV_1  EVT_TRACK_WAV_2  EVT_PLAY_WAV_1  EVT_PLAY_WAV_2  ELSE */
-    /*        HOME */    ENT_HOME,      		-1,      	 	-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,           -1,             -1,           -1,             -1,           -1,
-	/*         OFF */    ENT_OFF,      			-1,      		-1,     HOME,    		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,           -1,             -1,           -1,             -1,           -1,       
-    /*  MASTER_VOL */    ENT_MASTER_VOL,  		-1,  			-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,           -1,             -1,           -1,             -1,           -1,
-    /*   VOL_WAV_1 */    ENT_VOL_WAV_1, 		-1,      		-1,     HOME,     		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,           -1,             -1,           -1,             -1,           -1,
-    /*   VOL_WAV_2 */    ENT_VOL_WAV_2,   		-1,      		-1,     HOME,     		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,           -1,             -1,           -1,             -1,           -1,
-    /* TRACK_WAV_1 */    ENT_TRACK_WAV_1,  	ENT_TRACK_WAV_1,    -1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,           -1,             -1,           -1,             -1,           -1,
-    /* TRACK_WAV_2 */    ENT_TRACK_WAV_2, 	ENT_TRACK_WAV_2,    -1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,           -1,             -1,           -1,             -1,           -1,
-    /*  PLAY_WAV_1 */    ENT_PLAY_WAV_1,  	ENT_PLAY_WAV_1,     -1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,           -1,             -1,           -1,             -1,           -1,
-    /*  PLAY_WAV_2 */    ENT_PLAY_WAV_2,  	ENT_PLAY_WAV_2,     -1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,           -1,             -1,           -1,             -1,           -1,
+    /*        HOME */    ENT_HOME,      		-1,      	 	-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,           -1,             -1,           -1,             -1,           HOME,
+	/*         OFF */    ENT_OFF,      			-1,      		-1,     HOME,    		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,           -1,             -1,           -1,             -1,           OFF,       
+    /*  MASTER_VOL */    ENT_MASTER_VOL,  		-1,  			-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,           -1,             -1,           -1,             -1,           MASTER_VOL,
+    /*   VOL_WAV_1 */    ENT_VOL_WAV_1, 		-1,      		-1,     HOME,     		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,           -1,             -1,           -1,             -1,           VOL_WAV_1,
+    /*   VOL_WAV_2 */    ENT_VOL_WAV_2,   		-1,      		-1,     HOME,     		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,           -1,             -1,           -1,             -1,           VOL_WAV_2,
+    /* TRACK_WAV_1 */    ENT_TRACK_WAV_1,  	    -1,    			-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,           -1,             -1,           -1,             -1,           TRACK_WAV_1,
+    /* TRACK_WAV_2 */    ENT_TRACK_WAV_2, 	    -1,    			-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,           -1,             -1,           -1,             -1,           TRACK_WAV_2,
+    /*  PLAY_WAV_1 */    ENT_PLAY_WAV_1,  	    -1,     		-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,           -1,             -1,           -1,             -1,           PLAY_WAV_1,
+    /*  PLAY_WAV_2 */    ENT_PLAY_WAV_2,  	    -1,     		-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,           -1,             -1,           -1,             -1,           PLAY_WAV_2,
   };
   // clang-format on
   Machine::begin( state_table, ELSE );
-  //GPIOD_PDDR=0xff;    //PORT_D
-  //GPIOD_PDOR=0x00;
-  pinMode( digPins[0], OUTPUT ); //set digPins
-  /*
-  pinMode( digPins[1], OUTPUT );
-  pinMode( digPins[2], OUTPUT );
-  pinMode( digPins[3], OUTPUT );
-  */
-  pinMode( segPins[0], OUTPUT ); //set segPins
-  /*
-  pinMode( segPins[1], OUTPUT );
-  pinMode( segPins[2], OUTPUT );
-  pinMode( segPins[3], OUTPUT );
-  pinMode( segPins[4], OUTPUT );
-  pinMode( segPins[5], OUTPUT );
-  pinMode( segPins[6], OUTPUT );
-  pinMode( segPins[7], OUTPUT );
-  */
+  for ( int pinDig = 0; pinDig < pinCountDig; pinDig++ ) {    // set digit pins as outputs
+    pinMode(digPins[pinDig], OUTPUT);
+  }
+  Wire.begin();					//begin i2c
+  Wire.beginTransmission(96);  //set blink time
+  Wire.write(command[1]);
+  Wire.write(18); 			  //.5
+  Wire.write(128);				// 50% duty
+  Wire.endTransmission();
   return *this;          
 }
 
@@ -106,11 +100,11 @@ int Atm_sev_seg::event( int id ) {
 void Atm_sev_seg::action( int id ) {
   switch ( id ) {
   	case ENT_HOME:
-  	  //write(0, 11); write(1, 11); write(2, 36); write(3, 2); //BB-2
+	  write(0, 11); write(1, 11); write(2, 36); write(3, 2); //BB-2
 	  Serial.println("HOME-sev-seg");
   	  return;
 	case ENT_OFF:
-	  //write(0, 37); write(1, 37); write(2, 37); write(3, 37); //all off
+	  write(0, 0); write(1, 0); write(2, 0); write(3, 0); //0s
 	  Serial.println("----");
 	  return;
 	case ENT_MASTER_VOL:
@@ -172,59 +166,196 @@ int Atm_sev_seg::state( void ) {
 }
 
 Atm_sev_seg& Atm_sev_seg::write( int digit, int character ){
-	if (digit == 0){
-	    //digitalWriteFast(digPins[0],HIGH); //first digit on
-	    //digitalWriteFast(digPins[1],LOW); //other pins off
-	    //digitalWriteFast(digPins[2],LOW);
-	    //digitalWriteFast(digPins[3],LOW);
-	    //GPIOD_PDOR=numberLetter[character]; //set character
+		//write digits
+	  if (digit == 0){
+		digitalWriteFast(digPins[0],HIGH); //first digit on
+	    digitalWriteFast(digPins[1],LOW); //other pins off
+	    digitalWriteFast(digPins[2],LOW);
+	    digitalWriteFast(digPins[3],LOW);
+	  	//i2c
+	  	Wire.beginTransmission(96);
+	  	Wire.write(command[0]);
+		Wire.write(seg0[character]);
+		Wire.write(seg1[character]);
+	  	Wire.endTransmission();
 	    delay(2);
+	  	Wire.beginTransmission(96);
+	  	Wire.write(command[0]);
+		Wire.write(seg0[36]);
+		Wire.write(seg1[36]);
+	  	Wire.endTransmission();
 	 }
-	 /*
 	  else if (digit == 1) {
 	    digitalWriteFast(digPins[0],LOW); //other pins off
 	    digitalWriteFast(digPins[1],HIGH); //second digit on
 	    digitalWriteFast(digPins[2],LOW);
 	    digitalWriteFast(digPins[3],LOW);
-	    GPIOD_PDOR=numberLetter[character]; //set character
-		Serial.println("dig 2");
-		Serial.println(character);
+	  	Wire.beginTransmission(96);
+	  	Wire.write(command[0]);
+		Wire.write(seg0[character]);
+		Wire.write(seg1[character]);
+	  	Wire.endTransmission();
+	    //Serial.println(digit);
 	    delay(2);
+	  	Wire.beginTransmission(96);
+	  	Wire.write(command[0]);
+		Wire.write(seg0[36]);
+		Wire.write(seg1[36]);
+	  	Wire.endTransmission();
 	  }
 	  else if (digit == 2) {
 	    digitalWriteFast(digPins[0],LOW); //other pins off
 	    digitalWriteFast(digPins[1],LOW); 
 	    digitalWriteFast(digPins[2],HIGH); //third digit on 
 	    digitalWriteFast(digPins[3],LOW);
-	    GPIOD_PDOR=numberLetter[character]; //set character
-		Serial.println("dig 3");
-		Serial.println(character);
+	  	Wire.beginTransmission(96);
+	  	Wire.write(command[0]);
+		Wire.write(seg0[character]);
+		Wire.write(seg1[character]);
+	  	Wire.endTransmission();
 	    delay(2);
+	  	Wire.beginTransmission(96);
+	  	Wire.write(command[0]);
+		Wire.write(seg0[36]);
+		Wire.write(seg1[36]);
+	  	Wire.endTransmission();
 	  }  
 	  else if (digit == 3) {
 	    digitalWriteFast(digPins[0],LOW); //other pins off
 	    digitalWriteFast(digPins[1],LOW); 
 	    digitalWriteFast(digPins[2],LOW);  
 	    digitalWriteFast(digPins[3],HIGH); //Fourth digit on
-	    GPIOD_PDOR=numberLetter[character]; //set character
-		Serial.println("dig 4");
-		Serial.println(character);
+	  	Wire.beginTransmission(96);
+	  	Wire.write(command[0]);
+		Wire.write(seg0[character]);
+		Wire.write(seg1[character]);
+	  	Wire.endTransmission();
 	    delay(2);
+	  	Wire.beginTransmission(96);
+	  	Wire.write(command[0]);
+		Wire.write(seg0[36]);
+		Wire.write(seg1[36]);
+	  	Wire.endTransmission();
 	  }
-	 */
   return *this;
 }
 
+Atm_sev_seg& Atm_sev_seg::writeBlink( int digit, int character ){
+		//write digits
+	  if (digit == 0){
+		digitalWriteFast(digPins[0],HIGH); //first digit on
+	    digitalWriteFast(digPins[1],LOW); //other pins off
+	    digitalWriteFast(digPins[2],LOW);
+	    digitalWriteFast(digPins[3],LOW);
+	  	//i2c
+	  	Wire.beginTransmission(96);
+	  	Wire.write(command[0]);
+		Wire.write(segBlink0[character]);
+		Wire.write(segBlink1[character]);
+	  	Wire.endTransmission();
+	    delay(2);
+	  	Wire.beginTransmission(96);
+	  	Wire.write(command[0]);
+		Wire.write(segBlink0[36]);
+		Wire.write(segBlink1[36]);
+	  	Wire.endTransmission();
+	 }
+	  else if (digit == 1) {
+	    digitalWriteFast(digPins[0],LOW); //other pins off
+	    digitalWriteFast(digPins[1],HIGH); //second digit on
+	    digitalWriteFast(digPins[2],LOW);
+	    digitalWriteFast(digPins[3],LOW);
+	  	Wire.beginTransmission(96);
+	  	Wire.write(command[0]);
+		Wire.write(segBlink0[character]);
+		Wire.write(segBlink1[character]);
+	  	Wire.endTransmission();
+	    //Serial.println(digit);
+	    delay(2);
+	  	Wire.beginTransmission(96);
+	  	Wire.write(command[0]);
+		Wire.write(segBlink0[36]);
+		Wire.write(segBlink1[36]);
+	  	Wire.endTransmission();
+	  }
+	  else if (digit == 2) {
+	    digitalWriteFast(digPins[0],LOW); //other pins off
+	    digitalWriteFast(digPins[1],LOW); 
+	    digitalWriteFast(digPins[2],HIGH); //third digit on 
+	    digitalWriteFast(digPins[3],LOW);
+	  	Wire.beginTransmission(96);
+	  	Wire.write(command[0]);
+		Wire.write(segBlink0[character]);
+		Wire.write(segBlink1[character]);
+	  	Wire.endTransmission();
+	    delay(2);
+	  	Wire.beginTransmission(96);
+	  	Wire.write(command[0]);
+		Wire.write(segBlink0[36]);
+		Wire.write(segBlink1[36]);
+	  	Wire.endTransmission();
+	  }  
+	  else if (digit == 3) {
+	    digitalWriteFast(digPins[0],LOW); //other pins off
+	    digitalWriteFast(digPins[1],LOW); 
+	    digitalWriteFast(digPins[2],LOW);  
+	    digitalWriteFast(digPins[3],HIGH); //Fourth digit on
+	  	Wire.beginTransmission(96);
+	  	Wire.write(command[0]);
+		Wire.write(segBlink0[character]);
+		Wire.write(segBlink1[character]);
+	  	Wire.endTransmission();
+	    delay(2);
+	  	Wire.beginTransmission(96);
+	  	Wire.write(command[0]);
+		Wire.write(segBlink0[36]);
+		Wire.write(segBlink1[36]);
+	  	Wire.endTransmission();
+	  }
+  return *this;
+}
+
+
 Atm_sev_seg& Atm_sev_seg::writeLevel( int level ) {
     	digitalWriteFast(digPins[0],LOW); //other pins off
-    	//digitalWriteFast(digPins[1],LOW); 
-    	//digitalWriteFast(digPins[2],LOW);  
-    	//digitalWriteFast(digPins[3],HIGH); //Fourth digit on
-		//GPIOD_PDOR=numberLetter[level]; //set character
-		Serial.println(level);
+    	digitalWriteFast(digPins[1],LOW); 
+    	digitalWriteFast(digPins[2],LOW);  
+    	digitalWriteFast(digPins[3],HIGH); //Fourth digit on
+	  	Wire.beginTransmission(96);
+	  	Wire.write(command[0]);
+		Wire.write(seg0[level]);
+		Wire.write(seg1[level]);
+	  	Wire.endTransmission();
+		//Serial.println(level);
 		delay(2);
+	  	Wire.beginTransmission(96);
+	  	Wire.write(command[0]);
+		Wire.write(segBlink0[36]);
+		Wire.write(segBlink1[36]);
+	  	Wire.endTransmission();
 		return *this;
 }
+
+Atm_sev_seg& Atm_sev_seg::writeLevelBlink( int level ) {
+    	digitalWriteFast(digPins[0],LOW); //other pins off
+    	digitalWriteFast(digPins[1],LOW); 
+    	digitalWriteFast(digPins[2],LOW);  
+    	digitalWriteFast(digPins[3],HIGH); //Fourth digit on
+	  	Wire.beginTransmission(96);
+	  	Wire.write(command[0]);
+		Wire.write(segBlink0[level]);
+		Wire.write(segBlink1[level]);
+	  	Wire.endTransmission();
+		//Serial.println(level);
+		delay(2);
+	  	Wire.beginTransmission(96);
+	  	Wire.write(command[0]);
+		Wire.write(segBlink0[36]);
+		Wire.write(segBlink1[36]);
+	  	Wire.endTransmission();
+		return *this;
+}
+	
 	
 /* Nothing customizable below this line                          
  ************************************************************************************************
