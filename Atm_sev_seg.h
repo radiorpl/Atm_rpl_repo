@@ -26,7 +26,7 @@ class Atm_sev_seg: public Machine {
   //int digPins[4] = { 9, 10, 11, 12};
   //int segPins[8] = { 2, 14, 7, 8, 6, 20, 21, 5 };
   //serial test pins
-  byte digPins[4] = { 2, 3, 4, 5 };   //digit pins
+  byte digPins[4] = { 0, 1, 2, 3 };   //digit pins
   byte pinCountDig = 4;         //number of digits
   byte command [3] = { 21, 19, 20 }; //21 is first led register with auto increment, so send 21, then 2 btyes for led0-3 and then led4-7 19 is psc1, 20 is pwm1
   
