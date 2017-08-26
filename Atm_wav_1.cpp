@@ -63,8 +63,9 @@ AudioConnection          patchCord24(mixer9, 0, i2s1, 1);
 AudioControlSGTL5000     sgtl5000_1;     //xy=478,626
 // GUItool: end automatically generated code
 
-// GUItool: end automatically generated code
-
+//display levels
+int track_1_level;
+int track_2_level;
 
 Atm_wav_1& Atm_wav_1::begin( int instance ) {
   	// clang-format off
@@ -109,21 +110,57 @@ void Atm_wav_1::action( int id ) {
 	switch ( id ) {
 		case ENT_WAV_1_ON:
 			play("DRONE1.WAV");
+			if ( playerNo == 1 ) {
+				track_1_level = 1;
+			}
+			else if( playerNo == 1 ) {
+				track_2_level = 1;
+			}
 			return;
 		case ENT_WAV_2_ON:
 			play("DRONE2.WAV");
+			if ( playerNo == 1 ) {
+				track_1_level = 2;
+			}
+			else if( playerNo == 1 ) {
+				track_2_level = 2;
+			}
 			return;
 		case ENT_WAV_3_ON:
 			play("DRONE3.WAV");
+			if ( playerNo == 1 ) {
+				track_1_level = 3;
+			}
+			else if( playerNo == 1 ) {
+				track_2_level = 3;
+			}
 			return;	
 		case ENT_WAV_4_ON:
 			play("DRONE4.WAV");
+			if ( playerNo == 1 ) {
+				track_1_level = 4;
+			}
+			else if( playerNo == 1 ) {
+				track_2_level = 4;
+			}
 			return;
 		case ENT_WAV_5_ON:
 			play("DRONE5.WAV");
+			if ( playerNo == 1 ) {
+				track_1_level = 5;
+			}
+			else if( playerNo == 1 ) {
+				track_2_level = 5;
+			}
 			return;				
 		case ENT_WAV_OFF:
 			stop();
+			if ( playerNo == 1 ) {
+				track_1_level = 32;
+			}
+			else if( playerNo == 1 ) {
+				track_2_level = 32;
+			}
 			return;
 		case ENT_PLAY_CHECK:
 			playCheck();

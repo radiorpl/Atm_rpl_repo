@@ -20,3 +20,5 @@ extern int delay_gain_1_level;
 extern int delay_gain_2_level;
 extern int delay_gain_3_level;
 extern int delay_gain_4_level;
+//track 
+extern int track_1_level;

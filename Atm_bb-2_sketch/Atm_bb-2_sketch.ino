@@ -17,6 +17,8 @@ worker
 for Atm_wav_1_multi_effects_r0
 8/16/17
 fixed master volume by moving sgtl declarations into ino file
+8/25/17
+modify for 5 encoders/switches, PCA9551, display
 */
 #include <Atm_wav_1.h>
 #include <Atm_master_vol.h>
@@ -34,18 +36,11 @@ fixed master volume by moving sgtl declarations into ino file
 #define SDCARD_MOSI_PIN  7
 #define SDCARD_SCK_PIN   14
 
-Atm_wav_1 wav1;    //declare atm machines
-Atm_wav_1 wav2;
-Atm_master_vol volMaster;   
-Atm_master_vol volWav1;
-Atm_master_vol volWav2;
-Atm_encoder enc1;
-Atm_encoder enc2;
-Atm_button btn1;
-Atm_button btn2;
-Atm_button btn3;
-Atm_enc_button encBtn1;
-Atm_enc_button encBtn2;
+Atm_wav_1 wav1, wav2;    //declare atm machines
+Atm_master_vol volMaster, volWav1,volWav2;   
+Atm_encoder enc1, enc2, enc3, enc4, enc5;
+Atm_button btn1, btn2, btn3, btn4, btn5;
+Atm_enc_button encBtn1, encBtn2, encBtn3, encBtn4, encBtn5;
 Atm_delay_effect delayEffect;
 Atm_sev_seg displayMain;
 Atm_timer timer;
@@ -68,36 +63,45 @@ void setup() {
    volWav1.begin(1);
    volWav2.begin(2);
    delayEffect.begin(1);
-   enc1.begin(33, 24);
-   enc1.onChange( ATM_UP, wav1, wav1.EVT_ENC_UP );
-   enc1.onChange( ATM_DOWN, wav1, wav1.EVT_ENC_DOWN );
+   enc1.begin(23, 24);
+   //enc1.onChange( ATM_UP, wav1, wav1.EVT_ENC_UP );
+   //enc1.onChange( ATM_DOWN, wav1, wav1.EVT_ENC_DOWN );
    enc2.begin(25, 26);
-   enc2.onChange( ATM_UP, volMaster, volMaster.EVT_ENC_UP );
-   enc2.onChange( ATM_DOWN, volMaster, volMaster.EVT_ENC_DOWN );
-   enc2.debounce( 5 );  
-   btn1.begin(4);
-   btn2.begin(5);
-   btn2.onPress( encBtn1, encBtn1.EVT_BTN_1 );
-   btn3.begin(8);
-   btn3.onPress( encBtn2, encBtn2.EVT_BTN_1 );
-   btn3.onPress2( volMaster, volMaster.EVT_BTN_1);
+   //enc2.onChange( ATM_UP, volMaster, volMaster.EVT_ENC_UP );
+   //enc2.onChange( ATM_DOWN, volMaster, volMaster.EVT_ENC_DOWN );
+   enc3.begin(27, 28);
+   enc4.begin(29, 30);
+   enc5.begin(31, 32);
+   enc2.debounce(5);  
+   btn1.begin(2);
+   btn2.begin(18);
+   btn3.begin(16);
+   btn4.begin();
+   btn5.begin();
    encBtn1.begin(1);
    encBtn2.begin(2);
+   encBtn3.begin(1);
+   encBtn4.begin(2);
+   encBtn5.begin(1);
+   btn2.onPress( encBtn1, encBtn1.EVT_BTN_1 );
+   btn3.onPress( encBtn2, encBtn2.EVT_BTN_1 );
+   //btn3.onPress2( volMaster, volMaster.EVT_BTN_1);
+
    displayMain.begin();
    timer.begin(3000);
    timer.onFinish( displayMain, displayMain.EVT_HOME );	
    
    sgtl5000_1.enable();
    sgtl5000_1.volume(0.3);	
- 
+   /*
    wav1.trace(Serial);
    wav2.trace(Serial);
    
-   //btn3.trace(Serial);
+   btn3.trace(Serial);
    
-   
-   //displayMain.trace(Serial);
-   //volMaster.trace(Serial);
+   */
+   displayMain.trace(Serial);
+   volMaster.trace(Serial);
    //volWav1.trace(Serial);
    //volWav2.trace(Serial);
    //enc2.trace( Serial );

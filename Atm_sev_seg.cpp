@@ -100,49 +100,50 @@ int Atm_sev_seg::event( int id ) {
 void Atm_sev_seg::action( int id ) {
   switch ( id ) {
   	case ENT_HOME:
-	  write(0, 11); write(1, 11); write(2, 36); write(3, 2); //BB-2
-	  Serial.println("HOME-sev-seg");
+	  write(0, 11); write(1, 11); write(2, 32); write(3, 2); //bb-2
+	  //Serial.println("HOME-sev-seg");
   	  return;
 	case ENT_OFF:
-	  write(0, 0); write(1, 0); write(2, 0); write(3, 0); //0s
-	  Serial.println("----");
+	  write(0, 36); write(1, 36); write(2, 36); write(3, 36); //all off
+	  //Serial.println("----");
 	  return;
 	case ENT_MASTER_VOL:
 	  level = mas_vol_level;
-	  //write(0, 31); write(1, 24); write(2, 21); writeLevel(level); //VOL(level)
-	  Serial.println("MASTER VOL sev seg");
-	  Serial.println("MASTER VOL sev seg");
-	  Serial.println(level);
+	  write(0, 21); write(1, 10); write(2, 27); writeLevel(level); //mAS(level)
+	  //Serial.println("MASTER VOL sev seg");
+	  //Serial.println(level);
 	  return;
   	case ENT_VOL_WAV_1:
 	  level = vol_wav_1_level;
-  	  //write(0, 31); write(1, 21); write(2, 1); writeLevel(level); //VL1(level)
-	  Serial.println("VOL 1 sev seg");
-	  Serial.println(level);
+  	  write(0, 28); write(1, 26); write(2, 10); writeLevel(level); //trA(level)
+	  //Serial.println("VOL 1 sev seg");
+	  //Serial.println(level);
 	  return;
     case ENT_VOL_WAV_2:
 	  level = vol_wav_2_level;
-      //write(0, 31); write(1, 21); write(2, 2); writeLevel(level); //VL2(level)
-	  Serial.println("VOL 2 sev seg");
-	  Serial.println(level);
+  	  write(0, 28); write(1, 26); write(2, 11); writeLevel(level); //trb(level)
+	  //Serial.println("VOL 1 sev seg");
+	  //Serial.println(level);
   	  return;
    	case ENT_TRACK_WAV_1:
-      write(0, 29); write(1, 27); write(2, 1); writeLevel(level); //tr1(level)
-	  Serial.print("TRACK 1 ");
-	  Serial.print(level);
+	  level = track_1_level;
+      write(0, 28); write(1, 26); write(2, 10); writeLevel(level); //trA(level)
+	  //Serial.print("TRACK 1 ");
+	  //Serial.print(level);
   	  return;
     case ENT_TRACK_WAV_2:
-      write(0, 29); write(1, 27); write(2, 2); writeLevel(level); //tr2(level)
-	  Serial.print("TRACK 2 ");
-	  Serial.print(level);
+	  level = track_2_level;
+      write(0, 28); write(1, 26); write(2, 11); writeLevel(level); //trb(level)
+	  //Serial.print("TRACK 2 ");
+	  //Serial.print(level);
       return;
 	case ENT_PLAY_WAV_1:
-	  write(0, 32); write(1, 10); write(2, 31); write(3, 1); ///WAV1
-	  Serial.println("WAV 1");
+	  write(0, 24); write(1, 20); write(2, 30); write(3, 10); ///PLyA
+	  //Serial.println("WAV 1");
 	  return;
   	case ENT_PLAY_WAV_2:
-  	  write(0, 32); write(1, 10); write(2, 31); write(3, 2); ///WAV2
-	  Serial.println("WAV 2");
+  	  write(0, 24); write(1, 20); write(2, 30); write(3, 11); ///PLyb
+	  //Serial.println("WAV 2");
   	  return;
 	  
   }
