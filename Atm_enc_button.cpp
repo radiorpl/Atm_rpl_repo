@@ -1,19 +1,22 @@
 #include "Atm_enc_button.h"
 
 byte enc_button_counter_1;
-byte last_enc_button_counter_1;
 byte enc_button_counter_2;
-byte last_enc_button_counter_2;
 byte enc_button_counter_3;
 byte enc_button_counter_4;
 byte enc_button_counter_5;
+byte last_enc_button_counter_1;
+byte last_enc_button_counter_2;
+byte last_enc_button_counter_3;
+byte last_enc_button_counter_4;
+byte last_enc_button_counter_5;
 
 Atm_enc_button& Atm_enc_button::begin(int encButton) {
   // clang-format off
   const static state_t state_table[] PROGMEM = {
     /*             	ON_ENTER  ON_LOOP  ON_EXIT  EVT_BTN_1  	ELSE */
 	/* IDLE		 */ -1,  		  -1,      -1,  COUNT_UP,   	-1,    
-	/* COUNT_UP */ ENT_COUNT_UP,  -1,      -1, COUNT_UP,   	-1,
+	/* COUNT_UP */ ENT_COUNT_UP,  -1,      -1,  COUNT_UP,   	-1,
   };
   // clang-format on
   Machine::begin( state_table, ELSE );
@@ -84,19 +87,19 @@ Atm_enc_button& Atm_enc_button::count( void ) {
 		enc_button_counter_5++;
 	}				
 	
-	if ( enc_button_counter_1 > 1 ){
+	if ( enc_button_counter_1 > 1 ){    //number of options for function menu -1
 		enc_button_counter_1 = 0;
 	}
-	if ( enc_button_counter_2 > 2 ){
+	if ( enc_button_counter_2 > 2 ){    //track select
 		enc_button_counter_2 = 0;
 	}
-	if ( enc_button_counter_3 > 1 ){
+	if ( enc_button_counter_3 > 2 ){     //volumes
 		enc_button_counter_1 = 0;
 	}
-	if ( enc_button_counter_4 > 1 ){
+	if ( enc_button_counter_4 > 0 ){     //effects
 		enc_button_counter_2 = 0;
 	}
-	if ( enc_button_counter_5 > 4 ){
+	if ( enc_button_counter_5 > 4 ){     //effect parameters
 		enc_button_counter_1 = 0;
 	}
   return *this;
