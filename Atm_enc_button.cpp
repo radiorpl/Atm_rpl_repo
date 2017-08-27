@@ -95,7 +95,7 @@ Atm_enc_button& Atm_enc_button::countUp( void ) {  //==========changed button ra
 	else if ( encBtn == 5){
 		enc_button_counter_5++;
 	}				
-  	if ( enc_button_counter_1 > 1 ){    //number of options for function menu -1 
+  	if ( enc_button_counter_1 > 2 ){    //number of options for function menu -1 
   		enc_button_counter_1 = 0;
   	}
   	if ( enc_button_counter_2 > 1 ){    //track select
@@ -110,7 +110,7 @@ Atm_enc_button& Atm_enc_button::countUp( void ) {  //==========changed button ra
   	if ( enc_button_counter_5 > 0 ){     //effect parameters
   		enc_button_counter_5 = 0;
   	}
-	Serial.println( enc_button_counter_1 );
+	Serial.println( enc_button_counter_2 );
   return *this;
 }
 Atm_enc_button& Atm_enc_button::countDown( void ) {
@@ -168,7 +168,7 @@ Atm_enc_button& Atm_enc_button::btn_1() {
 
 Atm_enc_button& Atm_enc_button::trace( Stream & stream ) {
   Machine::setTrace( &stream, atm_serial_debug::trace,
-    "MACHINE\0EVT_BTN_1\0ELSE\0COUNT_UP" );
+    "ENCBUTTON\0EVT_BTN_1\0EVT_ENC_UP\0EVT_ENC_DOWN\0ELSE\0IDLE\0COUNT_UP\0COUNT_DOWN" );
   return *this;
 }
 
