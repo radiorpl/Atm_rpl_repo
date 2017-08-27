@@ -34,6 +34,7 @@ class Atm_master_vol : public Machine {
 		int display_delay;	
 		int volume_position;
 		int vol_control;
+		int last_vol_control;
      	int event( int id ); 
      	void action( int id );
 		float volume_array [34]{
