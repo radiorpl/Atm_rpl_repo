@@ -123,34 +123,34 @@ Atm_master_vol& Atm_master_vol::setVolume( void ) {
 		Serial.println(volume_position);
 		Serial.println("volume");
 		Serial.println(volume_array[volume_position]);
-		if ( volume_position > -1 && volume_position < 3){
+		if ( volume_position == 1 ){
 			mas_vol_level = 0;
 		}
-		else if ( volume_position > 2 && volume_position < 6){
+		else if ( volume_position == 3 ){
 			mas_vol_level = 1;
 		}
-		else if ( volume_position > 5 && volume_position < 9){
+		else if ( volume_position == 7 ){
 			mas_vol_level = 2;
 		}
-		else if ( volume_position > 8 && volume_position < 12){
+		else if ( volume_position == 11 ) {
 			mas_vol_level = 3;
 		}
-		else if ( volume_position > 11 && volume_position < 15){
+		else if ( volume_position == 14 ){
 			mas_vol_level = 4;
 		}
-		else if ( volume_position > 14 && volume_position < 18){
+		else if ( volume_position == 17){
 			mas_vol_level = 5;
 		}
-		else if ( volume_position > 17 && volume_position < 21){
+		else if ( volume_position == 20){
 			mas_vol_level = 6;
 		}
-		else if ( volume_position > 20 && volume_position < 24){
+		else if ( volume_position == 23 ){
 			mas_vol_level = 7;
 		}
-		else if ( volume_position > 23 && volume_position < 27){
+		else if ( volume_position == 26 ){
 			mas_vol_level = 8;
 		}
-		else if ( volume_position > 26 && volume_position < 29){
+		else if ( volume_position == 28 ){
 			mas_vol_level = 9;
 		}
 	}
@@ -244,7 +244,7 @@ Atm_master_vol& Atm_master_vol::setVolume( void ) {
 
 Atm_master_vol& Atm_master_vol::btn1( void ) {
     if ( paramTimer.state() == 0 ) {
-		delayTimer.trigger( delayTimer.EVT_START ); //==================unnecessary?
+		//delayTimer.trigger( delayTimer.EVT_START ); //==================unnecessary?
    		paramTimer.trigger( paramTimer.EVT_START );
    		Serial.println("wait display triggered");
 		if ( vol_control == 0) {
@@ -278,7 +278,7 @@ Atm_master_vol& Atm_master_vol::btn1( void ) {
 Atm_master_vol& Atm_master_vol::encoderUp( void ) {	
 	if( paramTimer.state() == 0 ){
 		paramTimer.trigger( paramTimer.EVT_START );
-		Serial.println("wait display triggered");			//if display delay expired, display parameter and wait
+		Serial.println("wait display triggered");
 		if ( vol_control == 0 ){
 			displayMain.trigger( displayMain.EVT_MASTER_VOL );
 		}
@@ -302,16 +302,14 @@ Atm_master_vol& Atm_master_vol::encoderUp( void ) {
 		else if ( vol_control == 2 ){
 			displayMain.trigger( displayMain.EVT_VOL_WAV_2 );	
 		}		
-		delay(display_delay);
-										//otherwise, volume increment up
 		Serial.println("enc up");
 		Serial.println(volume_position);
 		trigger( EVT_VOL_CONTROL );
-		//Serial.println(m_display);
 		paramTimer.trigger( paramTimer.EVT_START );
 	}
 	return *this;
 }
+
 
 Atm_master_vol& Atm_master_vol::encoderDown( void ) {	
 	if( paramTimer.state() == 0 ){
@@ -344,7 +342,6 @@ Atm_master_vol& Atm_master_vol::encoderDown( void ) {
 		Serial.println(volume_position);
 		trigger( EVT_VOL_CONTROL );
 		Serial.println(volume_position);
-		//Serial.println(m_display);
 		paramTimer.trigger( paramTimer.EVT_START );
 	}
 	return *this;

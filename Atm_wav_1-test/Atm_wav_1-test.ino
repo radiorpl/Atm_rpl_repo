@@ -40,7 +40,7 @@ void setup() {
    enc1.begin(33, 24);
    enc2.begin(25, 26);
    enc3.begin(27, 28);
-   enc3.debounce(5);
+   enc3.debounce(30);    //if debounce too fast, trouble reading encoder
    btn1.begin(4);
    btn2.begin(5);
    btn3.begin(8);
