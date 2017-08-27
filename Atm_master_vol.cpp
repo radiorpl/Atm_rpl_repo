@@ -24,6 +24,7 @@ successfully connected sev seg
 #include "Atm_master_vol.h"
 #include "audio_system.h"
 #include "display_def.h"
+#include "button_counters.h"
 
 int mas_vol_level; //variables for display
 int vol_wav_1_level; 
@@ -259,13 +260,13 @@ Atm_master_vol& Atm_master_vol::btn1( void ) {
 		trigger( EVT_VOL_CONTROL );
 	}
 	else {
-		if ( vol_control == 0) {
+		if ( enc_button_counter_3 == 0) {
 		displayMain.trigger( displayMain.EVT_MASTER_VOL );
 		}
-		else if ( vol_control == 1) {
+		else if ( enc_button_counter_3 == 1) {
 		displayMain.trigger( displayMain.EVT_VOL_WAV_1 );
 		}
-		else if ( vol_control == 2) {
+		else if ( enc_button_counter_3 == 2) {
 		displayMain.trigger( displayMain.EVT_VOL_WAV_2 );
 		}
 		paramTimer.trigger( paramTimer.EVT_START );
