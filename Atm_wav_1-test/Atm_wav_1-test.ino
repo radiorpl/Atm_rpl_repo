@@ -85,7 +85,7 @@ void loop() {
 	  	enc3.onChange( ATM_UP, volWav1, volWav1.EVT_ENC_UP );
 	  	enc3.onChange( ATM_DOWN, volWav1, volWav1.EVT_ENC_DOWN );
 	}
-	else if ( enc_button_counter_3 == 1 ) {
+	else if ( enc_button_counter_3 == 2 ) {
 	  	enc3.onChange( ATM_UP, volWav2, volWav2.EVT_ENC_UP );
 	  	enc3.onChange( ATM_DOWN, volWav2, volWav2.EVT_ENC_DOWN );
 	}

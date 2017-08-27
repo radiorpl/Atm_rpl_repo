@@ -291,7 +291,18 @@ Atm_master_vol& Atm_master_vol::encoderUp( void ) {
 		trigger( EVT_VOL_CONTROL );
 	}
 	else {
-		volume_position += 1;								//otherwise, volume increment up
+		volume_position += 1;
+		if ( vol_control == 0 ){
+			displayMain.trigger( displayMain.EVT_MASTER_VOL );
+		}
+		else if ( vol_control == 1 ){
+			displayMain.trigger( displayMain.EVT_VOL_WAV_1 );	
+		}
+		else if ( vol_control == 2 ){
+			displayMain.trigger( displayMain.EVT_VOL_WAV_2 );	
+		}		
+		delay(display_delay);
+										//otherwise, volume increment up
 		Serial.println("enc up");
 		Serial.println(volume_position);
 		trigger( EVT_VOL_CONTROL );
@@ -319,6 +330,15 @@ Atm_master_vol& Atm_master_vol::encoderDown( void ) {
 	}
 	else {
 		volume_position -= 1;
+		if ( vol_control == 0 ){
+			displayMain.trigger( displayMain.EVT_MASTER_VOL );
+		}
+		else if ( vol_control == 1 ){
+			displayMain.trigger( displayMain.EVT_VOL_WAV_1 );	
+		}
+		else if ( vol_control == 2 ){
+			displayMain.trigger( displayMain.EVT_VOL_WAV_2 );	
+		}		
 		Serial.println("enc down");
 		Serial.println(volume_position);
 		trigger( EVT_VOL_CONTROL );

@@ -15,12 +15,13 @@ looping works
 add display stuff
 */
 #include "Atm_wav_1.h"
-
+#include "display_def.h"
 #include <Audio.h>
 #include <Wire.h>
 #include <SPI.h>
 #include <SD.h>
 #include <SerialFlash.h>
+
 
 // GUItool: begin automatically generated code
 AudioPlaySdWav           playSdWav2;     //xy=88,160
