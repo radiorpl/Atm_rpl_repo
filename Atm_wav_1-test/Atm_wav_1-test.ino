@@ -18,7 +18,7 @@ Atm_wav_1 wav1, wav2;                               //declare atm machines
 Atm_master_vol volMaster, volWav1, volWav2;
 Atm_encoder enc1, enc2, enc3;
 Atm_button btn1, btn2, btn3;
-Atm_enc_button encBtn1, encBtn2, encButton3;
+Atm_enc_button encBtn1, encBtn2, encBtn3;
 Atm_sev_seg displayMain;
 Atm_timer delayTimer, paramTimer;
 
@@ -43,8 +43,10 @@ void setup() {
    enc3.debounce(5);
    btn1.begin(4);
    btn2.begin(5);
+   btn3.begin(8);
    encBtn1.begin(1);
    encBtn2.begin(2);
+   encBtn3.begin(3);
    displayMain.begin();
    paramTimer.begin(3000);
    paramTimer.onFinish( displayMain, displayMain.EVT_HOME );	 
@@ -74,9 +76,19 @@ void loop() {
 		enc2.onChange( ATM_UP, wav2, wav2.EVT_ENC_UP );
 		enc2.onChange( ATM_DOWN, wav2, wav2.EVT_ENC_DOWN );
 	}
-	enc3.onChange( ATM_UP, volMaster, volMaster.EVT_ENC_UP );
-	enc3.onChange( ATM_DOWN, volMaster, volMaster.EVT_ENC_DOWN );
-	
+	btn3.onPress( encBtn3, encBtn3.EVT_BTN_1 );   //===============encoder and btn 3 control volumes
+	if ( enc_button_counter_3 == 0 ) {
+	  	enc3.onChange( ATM_UP, volMaster, volMaster.EVT_ENC_UP );
+	  	enc3.onChange( ATM_DOWN, volMaster, volMaster.EVT_ENC_DOWN );
+	}
+	else if ( enc_button_counter_3 == 1 ) {
+	  	enc3.onChange( ATM_UP, volWav1, volWav1.EVT_ENC_UP );
+	  	enc3.onChange( ATM_DOWN, volWav1, volWav1.EVT_ENC_DOWN );
+	}
+	else if ( enc_button_counter_3 == 1 ) {
+	  	enc3.onChange( ATM_UP, volWav2, volWav2.EVT_ENC_UP );
+	  	enc3.onChange( ATM_DOWN, volWav2, volWav2.EVT_ENC_DOWN );
+	}
 	
 	automaton.run();
 }

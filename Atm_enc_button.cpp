@@ -136,8 +136,8 @@ Atm_enc_button& Atm_enc_button::countDown( void ) {
   	if ( enc_button_counter_2 < 0 ){    //track select
   		enc_button_counter_2 = 1;
   	}
-  	if ( enc_button_counter_3 < 1 ){     //volumes
-  		enc_button_counter_3 = 0;
+  	if ( enc_button_counter_3 < 0 ){     //volumes
+  		enc_button_counter_3 = 2;
   	}
   	if ( enc_button_counter_4 < 1 ){     //effects
   		enc_button_counter_4 = 0;
