@@ -141,7 +141,7 @@ void Atm_wav_1::action( int id ) {
 				track_1_level = 4;
 			}
 			else if( playerNo == 2 ) {
-				track_2_level = 4;
+				track_2_level = 4;  
 			}
 			return;
 		case ENT_WAV_5_ON:

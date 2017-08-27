@@ -28,7 +28,7 @@ class Atm_wav_1 : public Machine {
 		
 		Atm_wav_1( void ) : Machine(){};
 		Atm_wav_1& begin( int instance );
-		Atm_wav_1& play( const char *filename ); 
+		Atm_wav_1& play( const char *filename );   
 		Atm_wav_1& stop( void );
 		Atm_wav_1& playCheck( void );
 		Atm_wav_1& trace( Stream& stream );
