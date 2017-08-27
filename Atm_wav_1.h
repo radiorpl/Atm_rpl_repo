@@ -22,7 +22,7 @@ looping works
 
 class Atm_wav_1 : public Machine {
 	public:
-		enum { WAV_1_ON, WAV_2_ON, WAV_3_ON, WAV_4_ON, WAV_5_ON, WAV_OFF }; //STATES
+		enum { WAV_OFF, WAV_1_ON, WAV_2_ON, WAV_3_ON, WAV_4_ON, WAV_5_ON }; //STATES
 		enum { EVT_ENC_DOWN, EVT_ENC_UP, EVT_BTN_1, EVT_PLAY_CHECK, ELSE }; //EVENTS
 		//enum {WAV_START, WAV_STOP}; //ACTIONS
 		

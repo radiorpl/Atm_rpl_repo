@@ -38,7 +38,7 @@ void setup() {
    volWav1.begin(1);
    volWav2.begin(2);
    enc1.begin(33, 24);
-   enc2.begin(25, 26);
+   enc2.begin(26, 25);
    enc3.begin(27, 28);
    enc3.debounce(30);    //if debounce too fast, trouble reading encoder
    btn1.begin(4);
@@ -59,7 +59,7 @@ void setup() {
    volMaster.trace(Serial);  
 }
 
-
+//===================================================
 void loop() {
 	enc1.onChange( ATM_UP, encBtn1, encBtn1.EVT_ENC_UP );     //=========encoder and btn 1 control start stop different wavs
 	enc1.onChange( ATM_DOWN, encBtn1, encBtn1.EVT_ENC_DOWN ); //on this one encoders change count and btn does action
@@ -69,17 +69,17 @@ void loop() {
 	else if ( enc_button_counter_1	 == 1 ) {
 	  btn1.onPress( wav2, wav2.EVT_BTN_1 );
 	}
-	
+//====================================================	
 	btn2.onPress( encBtn2, encBtn2.EVT_BTN_1 );   //=============encoder and btn 2 control track selection
 	if ( enc_button_counter_2 == 0 ) {             //button does count, encoders do action
 		enc2.onChange( ATM_UP, wav1, wav1.EVT_ENC_UP );
 		enc2.onChange( ATM_DOWN, wav1, wav1.EVT_ENC_DOWN );
 	}
-	else if ( enc_button_counter_2	 == 1 ) {
+	else if ( enc_button_counter_2	== 1 ) {
 		enc2.onChange( ATM_UP, wav2, wav2.EVT_ENC_UP );
 		enc2.onChange( ATM_DOWN, wav2, wav2.EVT_ENC_DOWN );
 	}
-	
+//=================================================================	
 	if ( paramTimer.state() == 0 ) {
 		if ( enc_button_counter_3 == 0 ) {
 		btn3.onPress( volMaster, volMaster.EVT_BTN_1 );		//===============encoder and btn 3 control volumes
@@ -117,5 +117,6 @@ void loop() {
 	  	enc3.onChange( ATM_UP, volWav2, volWav2.EVT_ENC_UP );
 	  	enc3.onChange( ATM_DOWN, volWav2, volWav2.EVT_ENC_DOWN );
 	}
+//====================================================================	
 	automaton.run();
 }

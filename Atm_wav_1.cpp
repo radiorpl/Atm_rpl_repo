@@ -67,17 +67,20 @@ AudioControlSGTL5000     sgtl5000_1;     //xy=478,626
 //display levels
 int track_1_level;
 int track_2_level;
+int last_track_1_level;
+int last_track_2_level;
 
 Atm_wav_1& Atm_wav_1::begin( int instance ) {
   	// clang-format off
 	static const state_t state_table[] PROGMEM = {
 		/*               	ON_ENTER    		ON_LOOP    	ON_EXIT		EVT_ENC_UP		EVT_ENC_DOWN		EVT_BTN_1	EVT_PLAY_CHECK     	ELSE */
+		/*	WAV_OFF */		ENT_WAV_OFF,		-1,				-1,		-1,	 				-1,				WAV_1_ON,		-1,				-1,
 		/*	WAV_1_ON */		ENT_WAV_1_ON, 	ENT_PLAY_CHECK,		-1,		WAV_2_ON,	  	 	-1,				WAV_OFF,	WAV_1_ON,			-1,	  
 		/*	WAV_2_ON */		ENT_WAV_2_ON, 	ENT_PLAY_CHECK,		-1,		WAV_3_ON,	  	 WAV_1_ON,			WAV_OFF,	WAV_2_ON,			-1,
 		/*	WAV_3_ON */		ENT_WAV_3_ON, 	ENT_PLAY_CHECK,		-1,		WAV_4_ON,	  	 WAV_2_ON,			WAV_OFF,	WAV_3_ON,			-1,
 		/*	WAV_4_ON */		ENT_WAV_4_ON, 	ENT_PLAY_CHECK,		-1,		WAV_5_ON,	  	 WAV_3_ON,			WAV_OFF,	WAV_4_ON,			-1,
 		/*	WAV_5_ON */		ENT_WAV_5_ON, 	ENT_PLAY_CHECK,		-1,		-1,	  	 		 WAV_4_ON,			WAV_OFF,	WAV_5_ON,			-1,
-		/*	WAV_OFF */		ENT_WAV_OFF,		-1,				-1,		-1,	 				-1,				WAV_1_ON,		-1,				-1,
+		
 		
 		
 		
@@ -113,46 +116,96 @@ void Atm_wav_1::action( int id ) {
 			play("DRONE1.WAV");
 			if ( playerNo == 1 ) {
 				track_1_level = 1;
+				if (track_1_level != last_track_1_level ) {
+					paramTimer.trigger ( paramTimer.EVT_START );
+					displayMain.trigger( displayMain.EVT_TRACK_WAV_1 );
+				}
 			}
 			else if( playerNo == 2 ) {
 				track_2_level = 1;
+				if (track_2_level != last_track_2_level ) {
+					paramTimer.trigger ( paramTimer.EVT_START );
+					displayMain.trigger( displayMain.EVT_TRACK_WAV_2 );
+				}
 			}
+			last_track_1_level = track_1_level;
+			last_track_2_level = track_2_level;
 			return;
 		case ENT_WAV_2_ON:
 			play("DRONE2.WAV");
 			if ( playerNo == 1 ) {
 				track_1_level = 2;
+				if (track_1_level != last_track_1_level ) {
+					paramTimer.trigger ( paramTimer.EVT_START );
+					displayMain.trigger( displayMain.EVT_TRACK_WAV_1 );
+				}
 			}
 			else if( playerNo == 2 ) {
 				track_2_level = 2;
+				if (track_2_level != last_track_2_level ) {
+					paramTimer.trigger ( paramTimer.EVT_START );
+					displayMain.trigger( displayMain.EVT_TRACK_WAV_2 );
+				}
 			}
+			last_track_1_level = track_1_level;
+			last_track_2_level = track_2_level;
 			return;
 		case ENT_WAV_3_ON:
 			play("DRONE3.WAV");
 			if ( playerNo == 1 ) {
 				track_1_level = 3;
+				if (track_1_level != last_track_1_level ) {
+					paramTimer.trigger ( paramTimer.EVT_START );
+					displayMain.trigger( displayMain.EVT_TRACK_WAV_1 );
+				}
 			}
 			else if( playerNo == 2 ) {
 				track_2_level = 3;
+				if (track_2_level != last_track_2_level ) {
+					paramTimer.trigger ( paramTimer.EVT_START );
+					displayMain.trigger( displayMain.EVT_TRACK_WAV_2 );
+				}
 			}
+			last_track_1_level = track_1_level;
+			last_track_2_level = track_2_level;
 			return;	
 		case ENT_WAV_4_ON:
 			play("DRONE4.WAV");
 			if ( playerNo == 1 ) {
 				track_1_level = 4;
+				if (track_1_level != last_track_1_level ) {
+					paramTimer.trigger ( paramTimer.EVT_START );
+					displayMain.trigger( displayMain.EVT_TRACK_WAV_1 );
+				}
 			}
 			else if( playerNo == 2 ) {
-				track_2_level = 4;  
+				track_2_level = 4;
+				if (track_2_level != last_track_2_level ) {
+					paramTimer.trigger ( paramTimer.EVT_START );
+					displayMain.trigger( displayMain.EVT_TRACK_WAV_2 );
+				}
 			}
+			last_track_1_level = track_1_level;
+			last_track_2_level = track_2_level;
 			return;
 		case ENT_WAV_5_ON:
 			play("DRONE5.WAV");
 			if ( playerNo == 1 ) {
 				track_1_level = 5;
+				if (track_1_level != last_track_1_level ) {
+					paramTimer.trigger ( paramTimer.EVT_START );
+					displayMain.trigger( displayMain.EVT_TRACK_WAV_1 );
+				}
 			}
 			else if( playerNo == 2 ) {
 				track_2_level = 5;
+				if (track_2_level != last_track_2_level ) {
+					paramTimer.trigger ( paramTimer.EVT_START );
+					displayMain.trigger( displayMain.EVT_TRACK_WAV_2 );
+				}
 			}
+			last_track_1_level = track_1_level;
+			last_track_2_level = track_2_level;
 			return;				
 		case ENT_WAV_OFF:
 			stop();
@@ -162,6 +215,8 @@ void Atm_wav_1::action( int id ) {
 			else if( playerNo == 2 ) {
 				track_2_level = 0;
 			}
+			last_track_1_level = track_1_level;
+			last_track_2_level = track_2_level;
 			return;
 		case ENT_PLAY_CHECK:
 			playCheck();
@@ -256,7 +311,7 @@ Atm_wav_1& Atm_wav_1::onPress( atm_cb_push_t callback, int idx ) {
 
 Atm_wav_1& Atm_wav_1::trace( Stream & stream ) {
   Machine::setTrace( &stream, atm_serial_debug::trace,
-    "WAV_1\0EVT_ENC_UP\0EVT_ENC_DOWN\0EVT_BTN_1\0EVT_PLAY_CHECK\0ELSE\0WAV_1_ON\0WAV_2_ON\0WAV_3_ON\0WAV_4_ON\0WAV_5_ON\0WAV_OFF" );
+    "WAV_1\0EVT_ENC_UP\0EVT_ENC_DOWN\0EVT_BTN_1\0EVT_PLAY_CHECK\0ELSE\0WAV_OFF\0WAV_1_ON\0WAV_2_ON\0WAV_3_ON\0WAV_4_ON\0WAV_5_ON" );
   return *this;
 }
 /*
