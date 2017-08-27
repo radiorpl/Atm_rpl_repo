@@ -123,35 +123,35 @@ Atm_master_vol& Atm_master_vol::setVolume( void ) {
 		Serial.println(volume_position);
 		Serial.println("volume");
 		Serial.println(volume_array[volume_position]);
-		if ( volume_position == 1 ){
-			mas_vol_level = 0;
-		}
-		else if ( volume_position == 3 ){
-			mas_vol_level = 1;
-		}
-		else if ( volume_position == 7 ){
-			mas_vol_level = 2;
-		}
-		else if ( volume_position == 11 ) {
-			mas_vol_level = 3;
-		}
-		else if ( volume_position == 14 ){
-			mas_vol_level = 4;
-		}
-		else if ( volume_position == 17){
-			mas_vol_level = 5;
-		}
-		else if ( volume_position == 20){
-			mas_vol_level = 6;
-		}
-		else if ( volume_position == 23 ){
-			mas_vol_level = 7;
-		}
-		else if ( volume_position == 26 ){
-			mas_vol_level = 8;
-		}
-		else if ( volume_position == 28 ){
-			mas_vol_level = 9;
+		if ( volume_position > -1 && volume_position < 3){
+				mas_vol_level = 0;
+			}
+			else if ( volume_position > 2 && volume_position < 6){
+				mas_vol_level = 1;
+			}
+			else if ( volume_position > 5 && volume_position < 9){
+				mas_vol_level = 2;
+			}
+			else if ( volume_position > 8 && volume_position < 12){
+				mas_vol_level = 3;
+			}
+			else if ( volume_position > 11 && volume_position < 15){
+				mas_vol_level = 4;
+			}
+			else if ( volume_position > 14 && volume_position < 18){
+				mas_vol_level = 5;
+			}
+			else if ( volume_position > 17 && volume_position < 21){
+				mas_vol_level = 6;
+			}
+			else if ( volume_position > 20 && volume_position < 24){
+				mas_vol_level = 7;
+			}
+			else if ( volume_position > 23 && volume_position < 27){
+				mas_vol_level = 8;
+			}
+			else if ( volume_position > 26 && volume_position < 29){
+				mas_vol_level = 9;
 		}
 	}
 	else if ( vol_control == 1 ){  	//wav1
