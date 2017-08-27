@@ -61,16 +61,28 @@ void setup() {
 
 //===================================================
 void loop() {
-	enc1.onChange( ATM_UP, encBtn1, encBtn1.EVT_ENC_UP );     //=========encoder and btn 1 control start stop different wavs
-	enc1.onChange( ATM_DOWN, encBtn1, encBtn1.EVT_ENC_DOWN ); //on this one encoders change count and btn does action
-	if ( enc_button_counter_1 == 0 ) {
-	  btn1.onPress( wav1, wav1.EVT_BTN_1 );
+	if ( paramTimer.state() == 0) {
+		if ( enc_button_counter_1 == 0 ) {
+			btn1.onPress ( paramTimer, paramTimer.EVT_START );
+			btn1.onPress ( 1, displayMain, displayMain.EVT_PLAY_WAV_1 );
+		}
+		else if ( enc_button_counter_1 == 1 ) {
+			btn1.onPress ( paramTimer, paramTimer.EVT_START );
+			btn1.onPress ( 1, displayMain, displayMain.EVT_PLAY_WAV_2 );
+		}
 	}
-	else if ( enc_button_counter_1	 == 1 ) {
-	  btn1.onPress( wav2, wav2.EVT_BTN_1 );
+	else {
+		enc1.onChange( ATM_UP, encBtn1, encBtn1.EVT_ENC_UP );     //=========encoder and btn 1 control start stop different wavs
+		enc1.onChange( ATM_DOWN, encBtn1, encBtn1.EVT_ENC_DOWN ); //on this one encoders change count and btn does action
+		if ( enc_button_counter_1 == 0 ) {
+		  btn1.onPress( wav1, wav1.EVT_BTN_1 );
+		}
+		else if ( enc_button_counter_1	 == 1 ) {
+		  btn1.onPress( wav2, wav2.EVT_BTN_1 );
+		}
 	}
 //====================================================	
-	if ( paramTimer.state() == 0) {
+	if ( paramTimer.state() == 0) {		//====================trigger display for wav players if display is home
 		if ( enc_button_counter_2 == 0 ) {
 			btn2.onPress ( paramTimer, paramTimer.EVT_START );
 			btn2.onPress ( 1, displayMain, displayMain.EVT_TRACK_WAV_1 );
