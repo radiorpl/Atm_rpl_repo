@@ -57,13 +57,22 @@ void setup() {
 
 
 void loop() {
-	enc1.onChange( ATM_UP, encBtn1, encBtn1.EVT_ENC_UP );
+	enc1.onChange( ATM_UP, encBtn1, encBtn1.EVT_ENC_UP );     //=========encoder and btn 1 control start stop different wavs
 	enc1.onChange( ATM_DOWN, encBtn1, encBtn1.EVT_ENC_DOWN );
 	if ( enc_button_counter_1 == 0 ) {
 	  btn1.onPress( wav1, wav1.EVT_BTN_1 );
 	}
 	else if ( enc_button_counter_1	 == 1 ) {
 	  btn1.onPress( wav2, wav2.EVT_BTN_1 );
+	}
+	btn2.onPress( encBtn2, encBtn2.EVT_BTN_1 );   //=============encoder and btn 2 control track selection
+	if ( enc_button_counter_2 == 0 ) {
+		enc2.onChange( ATM_UP, wav1, wav1.EVT_ENC_UP );
+		enc2.onChange( ATM_DOWN, wav1, wav1.EVT_ENC_DOWN );
+	}
+	else if ( enc_button_counter_2	 == 1 ) {
+		enc2.onChange( ATM_UP, wav2, wav2.EVT_ENC_UP );
+		enc2.onChange( ATM_DOWN, wav2, wav2.EVT_ENC_DOWN );
 	}
 	enc3.onChange( ATM_UP, volMaster, volMaster.EVT_ENC_UP );
 	enc3.onChange( ATM_DOWN, volMaster, volMaster.EVT_ENC_DOWN );
