@@ -59,7 +59,7 @@ Atm_sev_seg& Atm_sev_seg::begin() {
   Wire.begin();					//begin i2c
   Wire.beginTransmission(96);  //set blink time
   Wire.write(command[1]);
-  Wire.write(18); 			  //.5
+  Wire.write(18); 			  //500ms
   Wire.write(128);				// 50% duty
   Wire.endTransmission();
   return *this;          

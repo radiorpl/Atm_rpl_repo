@@ -74,13 +74,14 @@ Atm_wav_1& Atm_wav_1::begin( int instance ) {
   	// clang-format off
 	static const state_t state_table[] PROGMEM = {
 		/*               	ON_ENTER    	ON_LOOP    	ON_EXIT		EVT_WAV_OFF		EVT_WAV_PLAY	 EVT_ENC_UP		EVT_ENC_DOWN	EVT_BTN_1	EVT_PLAY_CHECK     	ELSE */
-		/*	WAV_OFF */		ENT_WAV_OFF,	 -1,		  -1,	      WAV_PLAY,		  WAV_PLAY,	      TRACK_UP,	  	 TRACK_DOWN,	  BTN_1,		-1,			   	-1,
-		/* WAV_PLAY */		ENT_WAV_PLAY, ENT_PLAY_CHECK, -1,	      WAV_OFF,		  WAV_PLAY,	      TRACK_UP,	  	 TRACK_DOWN,	  BTN_1,     WAV_PLAY,			-1,	  
-		/* TRACK_UP */		ENT_TRACK_UP,	 -1,		  -1,	      WAV_OFF,		  WAV_PLAY,			-1,		        -1,	 			-1,			-1,				-1,
-	  /* TRACK_DOWN */		ENT_TRACK_DOWN,	 -1,		  -1,	      WAV_OFF,		  WAV_PLAY,			-1,		        -1,	 			-1,			-1,				-1,
-		/*	BTN_1   */		ENT_BTN_1,		 -1,		  -1,	      WAV_OFF,		  WAV_PLAY,			-1,		        -1,	 			-1,			-1,				-1,
-		
+		/*	WAV_OFF */		ENT_WAV_OFF,	 -1,		  -1,	      WAV_OFF,	  	  WAV_PLAY,	        -1,	  	        -1,	          BTN_1,		-1,			   	-1,
+		/* WAV_PLAY */		ENT_WAV_PLAY, PLAY_CHECK,     -1,	      WAV_OFF,		  WAV_PLAY,	      TRACK_UP,	  	 TRACK_DOWN,	  BTN_1,     	-1,				-1,	  
+		/* TRACK_UP */		ENT_TRACK_UP,	 -1,		  -1,	      WAV_OFF,	      WAV_PLAY,			-1,		        -1,	 			-1,			-1,				-1,
+	  /* TRACK_DOWN */		ENT_TRACK_DOWN,	 -1,		  -1,	      WAV_OFF,	      WAV_PLAY,			-1,		        -1,	 			-1,			-1,				-1,
+		/*	BTN_1   */		ENT_BTN_1,		 -1,		  -1,	      WAV_OFF,	      WAV_PLAY,			-1,		        -1,	 			-1,			-1,				-1,
+	/*	PLAY_CHECK  */		ENT_PLAY_CHECK,	 -1,		  -1,	      WAV_OFF,	      WAV_PLAY,			-1,		        -1,	 			-1,			-1,				-1,	
 	};
+	
     // clang-format on
     Machine::begin( state_table, ELSE );	//r2 moved audio setup to master vol
 	player_instance = instance;
@@ -209,8 +210,8 @@ Atm_wav_1& Atm_wav_1::play( const char *filename ) {
 		last_track_1_level = track_1_level;
 	    }
 	}
-	else if ( player_instance == 2 || playSdWav2.isPlaying() == false) {
-		if ( track_2_level != last_track_2_level ) {
+	else if ( player_instance == 2 ) {
+		if ( track_2_level != last_track_2_level || playSdWav2.isPlaying() == false ) {
 		playSdWav2.play( filename ); //play wav file
 		last_track_2_level = track_2_level;
 		}
@@ -223,10 +224,13 @@ Atm_wav_1& Atm_wav_1::play( const char *filename ) {
 Atm_wav_1& Atm_wav_1::stop( void ) {
 	if ( player_instance == 1 ){
 	playSdWav1.stop(); //stop wav file
+	track_1_level = 0;
 	Serial.println("stop 1");
+	//Serial.println(state());
 	}
 	else if ( player_instance == 2 ){
 	playSdWav2.stop(); //stop wav file
+	track_2_level = 0;
 	Serial.println("stop 2");
 	}
 	return *this;
@@ -298,28 +302,51 @@ Atm_wav_1& Atm_wav_1::btn1( void ) {
 		displayMain.trigger( displayMain.EVT_TRACK_WAV_2 );
 		}							
 		delay(display_delay);
-		trigger( EVT_WAV_PLAY );
-	}
-	else {
-		trigger( EVT_WAV_PLAY );
 		if ( player_instance == 1 ) {
-		displayMain.trigger( displayMain.EVT_TRACK_WAV_1 );
+			if ( track_1_level == 0 ) {
+				trigger( EVT_WAV_OFF );
+			}
+			else {
+				trigger( EVT_WAV_PLAY);
+			}
 		}
 		else if ( player_instance == 2 ) {
-		displayMain.trigger( displayMain.EVT_TRACK_WAV_2 );
+			if ( track_2_level == 0 ) {
+				trigger( EVT_WAV_OFF );
+			}
+			else {
+				trigger( EVT_WAV_PLAY);
+			}
+		}		 
+	}
+	else {
+		if ( player_instance == 1 ) {
+			if ( track_1_level == 0 ) {
+				trigger( EVT_WAV_OFF );
+			}
+			else {
+				trigger( EVT_WAV_PLAY);
+			}
 		}
-		paramTimer.trigger( paramTimer.EVT_START );
+		else if ( player_instance == 2 ) {
+			if ( track_2_level == 0 ) {
+				trigger( EVT_WAV_OFF );
+			}
+			else {
+				trigger( EVT_WAV_PLAY);
+			}
+		}
 	}
 	return *this;
 }
-Atm_wav_1& Atm_wav_1::playCheck( void ) {
+Atm_wav_1& Atm_wav_1::playCheck( void ) {    //================================NEW saturday night: track_1_level in if
 	
-	if ( player_instance == 1 && playSdWav1.isPlaying() == false ) { //doesn't stop trigger with true/false or 0/1
-		trigger( EVT_PLAY_CHECK );
+	if ( player_instance == 1 /*&& track_1_level != 0*/ && playSdWav1.isPlaying() == false ) { //doesn't stop trigger with true/false or 0/1
+		trigger( EVT_WAV_PLAY );
 		Serial.println("playCheck");
 	}
-	else if ( player_instance == 2 && playSdWav2.isPlaying() == false ) { //doesn't stop trigger with true/false or 0/1
-		trigger( EVT_PLAY_CHECK );
+	else if ( player_instance == 2 /*&& track_1_level != 0 */&& playSdWav2.isPlaying() == false ) { //doesn't stop trigger with true/false or 0/1
+		trigger( EVT_WAV_PLAY );
 		Serial.println("playCheck");
 	}
 			

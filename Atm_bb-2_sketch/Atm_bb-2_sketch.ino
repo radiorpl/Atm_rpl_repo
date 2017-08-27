@@ -32,11 +32,11 @@ modify for 5 encoders/switches, PCA9551, display
 #include "audio_system.h"
 
 
-#define SDCARD_CS_PIN    10 // Use these with the Teensy Audio Shield
+#define SDCARD_CS_PIN    10      // Use these with the Teensy Audio Shield
 #define SDCARD_MOSI_PIN  7
 #define SDCARD_SCK_PIN   14
 
-Atm_wav_1 wav1, wav2;    //declare atm machines
+Atm_wav_1 wav1, wav2;                               //declare atm machines
 Atm_master_vol volMaster, volWav1,volWav2;   
 Atm_encoder enc1, enc2, enc3, enc4, enc5;
 Atm_button btn1, btn2, btn3, btn4, btn5;
@@ -45,14 +45,11 @@ Atm_delay_effect delayEffect;
 Atm_sev_seg displayMain;
 Atm_timer timer;
 
-//const int  buttonPin1 = 3;      //non atm button
-//const int  buttonPin2 = 7;      //non atm button
-
 void setup() {
    Serial.begin( 9600 );
    SPI.setMOSI(SDCARD_MOSI_PIN);
    SPI.setSCK(SDCARD_SCK_PIN);
-    if (!(SD.begin(SDCARD_CS_PIN))) {
+    if (!(SD.begin(SDCARD_CS_PIN))) {              //To do: change to start in different mode when sd missing
      while (1) {
        Serial.println("Unable to access the SD card");   
      }   
@@ -63,7 +60,7 @@ void setup() {
    volWav1.begin(1);
    volWav2.begin(2);
    delayEffect.begin(1);
-   enc1.begin(23, 24);
+   enc1.begin(33, 24);
    //enc1.onChange( ATM_UP, wav1, wav1.EVT_ENC_UP );
    //enc1.onChange( ATM_DOWN, wav1, wav1.EVT_ENC_DOWN );
    enc2.begin(25, 26);
@@ -73,35 +70,32 @@ void setup() {
    enc4.begin(29, 30);
    enc5.begin(31, 32);
    enc2.debounce(5);  
-   btn1.begin(2);
-   btn2.begin(18);
-   btn3.begin(16);
-   btn4.begin();
-   btn5.begin();
+   btn1.begin(4);
+   btn2.begin(5);
+   btn3.begin(8);
+   btn4.begin(16);
+   btn5.begin(17);
    encBtn1.begin(1);
    encBtn2.begin(2);
-   encBtn3.begin(1);
-   encBtn4.begin(2);
-   encBtn5.begin(1);
-   btn2.onPress( encBtn1, encBtn1.EVT_BTN_1 );
-   btn3.onPress( encBtn2, encBtn2.EVT_BTN_1 );
+   encBtn3.begin(3);
+   encBtn4.begin(4);
+   encBtn5.begin(5);
+   btn1.onPress( encBtn1, encBtn1.EVT_BTN_1 );
+   btn2.onPress( encBtn2, encBtn2.EVT_BTN_1 );
+   btn3.onPress( encBtn3, encBtn3.EVT_BTN_1 );
+   btn4.onPress( encBtn4, encBtn4.EVT_BTN_1 );
+   btn5.onPress( encBtn5, encBtn5.EVT_BTN_1 );
    //btn3.onPress2( volMaster, volMaster.EVT_BTN_1);
-
    displayMain.begin();
    timer.begin(3000);
-   timer.onFinish( displayMain, displayMain.EVT_HOME );	
-   
+   timer.onFinish( displayMain, displayMain.EVT_HOME );	 
    sgtl5000_1.enable();
-   sgtl5000_1.volume(0.3);	
-   /*
+   sgtl5000_1.volume(0.3);	   
    wav1.trace(Serial);
-   wav2.trace(Serial);
-   
-   btn3.trace(Serial);
-   
-   */
+   wav2.trace(Serial);   
+   //btn3.trace(Serial);
    displayMain.trace(Serial);
-   volMaster.trace(Serial);
+   //volMaster.trace(Serial);
    //volWav1.trace(Serial);
    //volWav2.trace(Serial);
    //enc2.trace( Serial );

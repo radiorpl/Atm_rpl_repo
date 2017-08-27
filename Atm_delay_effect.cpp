@@ -245,8 +245,8 @@ Atm_delay_effect& Atm_delay_effect::setLevel( void ) {
 }
 
 Atm_delay_effect& Atm_delay_effect::encUp( void ) {	
-	if( timer.state() == 0 ){
-		timer.trigger( timer.EVT_START );
+	if( paramTimer.state() == 0 ){
+		paramTimer.trigger( paramTimer.EVT_START );
 		Serial.println("wait display triggered");			//if display delay expired, display parameter and wait
 		if ( param_control == 0 ){
 			displayMain.trigger( displayMain.EVT_MASTER_VOL );
@@ -265,14 +265,14 @@ Atm_delay_effect& Atm_delay_effect::encUp( void ) {
 		Serial.println("enc up");
 		Serial.println(param_position);
 		trigger( EVT_CONTROL );
-		timer.trigger( timer.EVT_START );
+		paramTimer.trigger( paramTimer.EVT_START );
 	}
 	return *this;
 }
 
 Atm_delay_effect& Atm_delay_effect::encDown( void ) {	
-	if( timer.state() == 0 ){
-		timer.trigger( timer.EVT_START );
+	if( paramTimer.state() == 0 ){
+		paramTimer.trigger( paramTimer.EVT_START );
 		Serial.println("wait display triggered");			//if display delay expired, display parameter and wait
 		if ( param_control == 0 ){
 			displayMain.trigger( displayMain.EVT_MASTER_VOL );
@@ -291,21 +291,21 @@ Atm_delay_effect& Atm_delay_effect::encDown( void ) {
 		Serial.println("enc down");
 		Serial.println(param_position);
 		trigger( EVT_CONTROL );
-		timer.trigger( timer.EVT_START );
+		paramTimer.trigger( paramTimer.EVT_START );
 	}
 	return *this;
 }
 
 Atm_delay_effect& Atm_delay_effect::btn1( void ) {
 	trigger( EVT_CONTROL );
-	timer.trigger( timer.EVT_START );
-	Serial.println("trigger timer");
+	paramTimer.trigger( paramTimer.EVT_START );
+	Serial.println("trigger paramTimer");
 	return *this;
 }
 
 Atm_delay_effect& Atm_delay_effect::off( void ) {
-	timer.trigger( timer.EVT_START );
-	Serial.println("trigger timer");
+	paramTimer.trigger( paramTimer.EVT_START );
+	Serial.println("trigger paramTimer");
     mixer3.gain(0, 0.0);		//signal inputs
     mixer3.gain(1, 0.0);
   	mixer3.gain(2, 0.0);		//feedback inputs
