@@ -70,15 +70,27 @@ void loop() {
 	  btn1.onPress( wav2, wav2.EVT_BTN_1 );
 	}
 //====================================================	
-	btn2.onPress( encBtn2, encBtn2.EVT_BTN_1 );   //=============encoder and btn 2 control track selection
-	if ( enc_button_counter_2 == 0 ) {             //button does count, encoders do action
-		enc2.onChange( ATM_UP, wav1, wav1.EVT_ENC_UP );
-		enc2.onChange( ATM_DOWN, wav1, wav1.EVT_ENC_DOWN );
+	if ( paramTimer.state() == 0) {
+		if ( enc_button_counter_2 == 0 ) {
+			btn2.onPress ( paramTimer, paramTimer.EVT_START );
+			btn2.onPress ( 1, displayMain, displayMain.EVT_TRACK_WAV_1 );
+		}
+		else if ( enc_button_counter_2 == 1 ) {
+			btn2.onPress ( paramTimer, paramTimer.EVT_START );
+			btn2.onPress ( 1, displayMain, displayMain.EVT_TRACK_WAV_2 );
+		}
 	}
-	else if ( enc_button_counter_2	== 1 ) {
-		enc2.onChange( ATM_UP, wav2, wav2.EVT_ENC_UP );
-		enc2.onChange( ATM_DOWN, wav2, wav2.EVT_ENC_DOWN );
-	}
+	else{
+		btn2.onPress( encBtn2, encBtn2.EVT_BTN_1 );   //=============encoder and btn 2 control track selection
+		if ( enc_button_counter_2 == 0 ) {             //button does count, encoders do action
+			enc2.onChange( ATM_UP, wav1, wav1.EVT_ENC_UP );
+			enc2.onChange( ATM_DOWN, wav1, wav1.EVT_ENC_DOWN );
+		}
+		else if ( enc_button_counter_2	== 1 ) {
+			enc2.onChange( ATM_UP, wav2, wav2.EVT_ENC_UP );
+			enc2.onChange( ATM_DOWN, wav2, wav2.EVT_ENC_DOWN );
+		}
+}
 //=================================================================	
 	if ( paramTimer.state() == 0 ) {
 		if ( enc_button_counter_3 == 0 ) {
