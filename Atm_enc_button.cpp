@@ -95,7 +95,7 @@ Atm_enc_button& Atm_enc_button::countUp( void ) {  //==========changed button ra
 	else if ( encBtn == 5){
 		enc_button_counter_5++;
 	}				
-  	if ( enc_button_counter_1 > 2 ){    //number of options for function menu -1 
+  	if ( enc_button_counter_1 > 1 ){    //number of options for function menu -1 
   		enc_button_counter_1 = 0;
   	}
   	if ( enc_button_counter_2 > 1 ){    //track select
@@ -110,13 +110,12 @@ Atm_enc_button& Atm_enc_button::countUp( void ) {  //==========changed button ra
   	if ( enc_button_counter_5 > 0 ){     //effect parameters
   		enc_button_counter_5 = 0;
   	}
-	Serial.println( enc_button_counter_2 );
+	Serial.println( enc_button_counter_1 );
   return *this;
 }
 Atm_enc_button& Atm_enc_button::countDown( void ) {
   	if ( encBtn == 1 ) {				
   		enc_button_counter_1--;
-		Serial.println( enc_button_counter_1 );
   	}
   	else if ( encBtn == 2){
   		enc_button_counter_2--;
@@ -131,11 +130,11 @@ Atm_enc_button& Atm_enc_button::countDown( void ) {
   		enc_button_counter_5--;
   	}									//========================haven't changed ranges like countUp yet			
 	
-  	if ( enc_button_counter_1 < 1 ){    //number of options for function menu -1 
-  		enc_button_counter_1 = 0;
+  	if ( enc_button_counter_1 < 0 ){    //number of options for function menu -1 
+  		enc_button_counter_1 = 1;
   	}
-  	if ( enc_button_counter_2 < 1 ){    //track select
-  		enc_button_counter_2 = 0;
+  	if ( enc_button_counter_2 < 0 ){    //track select
+  		enc_button_counter_2 = 1;
   	}
   	if ( enc_button_counter_3 < 1 ){     //volumes
   		enc_button_counter_3 = 0;
