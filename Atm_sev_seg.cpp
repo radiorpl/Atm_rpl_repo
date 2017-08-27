@@ -41,15 +41,15 @@ Atm_sev_seg& Atm_sev_seg::begin() {
   // clang-format off
   const static state_t state_table[] PROGMEM = {
     /*                ON_ENTER  			ON_LOOP  		ON_EXIT   EVT_HOME		EVT_OFF  EVT_MASTER_VOL  EVT_VOL_WAV_1  EVT_VOL_WAV_2  EVT_TRACK_WAV_1  EVT_TRACK_WAV_2  EVT_PLAY_WAV_1  EVT_PLAY_WAV_2  ELSE */
-    /*        HOME */    ENT_HOME,      		-1,      	 	-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,       -1,             -1,           HOME,
-	/*         OFF */    ENT_OFF,      			-1,      		-1,     HOME,    		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,       -1,             -1,           OFF,       
-    /*  MASTER_VOL */    ENT_MASTER_VOL,  		-1,  			-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,       -1,             -1,           MASTER_VOL,
-    /*   VOL_WAV_1 */    ENT_VOL_WAV_1, 		-1,      		-1,     HOME,     		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,       -1,             -1,           VOL_WAV_1,
-    /*   VOL_WAV_2 */    ENT_VOL_WAV_2,   		-1,      		-1,     HOME,     		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,        -1,             -1,           VOL_WAV_2,
-    /* TRACK_WAV_1 */    ENT_TRACK_WAV_1,  	    -1,    			-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,       -1,             -1,           TRACK_WAV_1,
-    /* TRACK_WAV_2 */    ENT_TRACK_WAV_2, 	    -1,    			-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,       -1,             -1,           TRACK_WAV_2,
-    /*  PLAY_WAV_1 */    ENT_PLAY_WAV_1,  	    -1,     		-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,       -1,             -1,           PLAY_WAV_1,
-    /*  PLAY_WAV_2 */    ENT_PLAY_WAV_2,  	    -1,     		-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,        -1,             -1,           PLAY_WAV_2,
+    /*        HOME */    ENT_HOME,      		-1,      	 	-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     HOME, 
+	/*         OFF */    ENT_OFF,      			-1,      		-1,     HOME,    		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     OFF,       
+    /*  MASTER_VOL */    ENT_MASTER_VOL,  		-1,  			-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     MASTER_VOL,
+    /*   VOL_WAV_1 */    ENT_VOL_WAV_1, 		-1,      		-1,     HOME,     		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     VOL_WAV_1,
+    /*   VOL_WAV_2 */    ENT_VOL_WAV_2,   		-1,      		-1,     HOME,     		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     VOL_WAV_2,
+    /* TRACK_WAV_1 */    ENT_TRACK_WAV_1,  	    -1,    			-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     TRACK_WAV_1,
+    /* TRACK_WAV_2 */    ENT_TRACK_WAV_2, 	    -1,    			-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     TRACK_WAV_2,
+    /*  PLAY_WAV_1 */    ENT_PLAY_WAV_1,  	    -1,     		-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     PLAY_WAV_1,
+    /*  PLAY_WAV_2 */    ENT_PLAY_WAV_2,  	    -1,     		-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     PLAY_WAV_2,
   };
   // clang-format on
   Machine::begin( state_table, ELSE );
@@ -138,14 +138,23 @@ void Atm_sev_seg::action( int id ) {
 	  //Serial.print(level);
       return;
 	case ENT_PLAY_WAV_1:
-	  write(0, 24); write(1, 20); write(2, 30); write(3, 10); ///PLyA
-	  //Serial.println("WAV 1");
+	  level = track_1_level;
+	  if ( level == 0 ) {
+	  	write(0, 10); write(1, 23); write(2, 15); write(3, 15); //Aoff
+	  }
+	  else if ( level != 0 ) {
+	  	write(0, 10); write(1, 36); write(2, 23); write(3, 22); //A on
+	  }
 	  return;
   	case ENT_PLAY_WAV_2:
-  	  write(0, 24); write(1, 20); write(2, 30); write(3, 11); ///PLyb
-	  //Serial.println("WAV 2");
-  	  return;
-	  
+	  level = track_2_level;
+	  if ( level == 0 ) {
+	  	write(0, 11); write(1, 23); write(2, 15); write(3, 15); //boff
+	  }
+	  else if ( level != 0 ) {
+	  	write(0, 11); write(1, 36); write(2, 23); write(3, 22); //b on
+	  }
+	  return;
   }
 }
 
