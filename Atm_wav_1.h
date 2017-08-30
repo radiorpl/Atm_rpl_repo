@@ -16,13 +16,6 @@ total rewrite, branch
 
 
 #include <Automaton.h>
-/*
-#include <Audio.h>
-#include <Wire.h>
-#include <SPI.h>
-#include <SD.h>
-#include <SerialFlash.h>
-*/
 class Atm_wav_1 : public Machine {
 	public:
 		enum { WAV_OFF, WAV_ON, ENC_UP, ENC_DOWN, BTN_1 }; //STATES
@@ -34,6 +27,7 @@ class Atm_wav_1 : public Machine {
 		Atm_wav_1& stop( void );
 		Atm_wav_1& encoderUp( void );
 		Atm_wav_1& encoderDown( void );
+		Atm_wav_1& btn1( void );
 		Atm_wav_1& trace( Stream& stream );
 		Atm_wav_1& onPress( Machine& machine, int event = 0 );
 		Atm_wav_1& onPress( atm_cb_push_t callback, int idx = 0 ); 

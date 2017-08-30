@@ -39,11 +39,12 @@ void setup() {
    volWav2.begin(2);
    enc1.begin(33, 24);
    enc1.debounce(300);
-   enc2.begin(26, 25);
+   enc2.begin(25, 26);
    enc3.begin(27, 28);
    enc3.debounce(30);    //if debounce too fast, trouble reading encoder
    btn1.begin(4);
    btn2.begin(5);
+   //btn2.debounce(10);
    btn3.begin(8);
    encBtn1.begin(1);
    encBtn2.begin(2);
@@ -96,9 +97,32 @@ void loop() {
 	}
 	
 //====================================================	
-	btn2.onPress( wav1, wav1.EVT_WAV_ON );
-	enc2.onChange( ATM_UP, wav1, wav1.EVT_ENC_UP );
-	enc2.onChange( ATM_DOWN, wav1, wav1.EVT_ENC_DOWN );
+	if ( paramTimer.state() == 0 ) {
+		if ( enc_button_counter_2 == 0 ) {
+			btn2.onPress( wav1, wav1.EVT_BTN_1 );
+		}
+		else if ( enc_button_counter_2 == 1 ) {
+			btn2.onPress( wav2, wav2.EVT_BTN_1 );
+		}
+	}
+	else {
+		if ( enc_button_counter_2 == 0 ) {
+			btn2.onPress( wav1, wav1.EVT_BTN_1 );
+			btn2.onPress( 1, encBtn2, encBtn2.EVT_BTN_1 );
+		}
+		else if ( enc_button_counter_2 == 0 ) {
+			btn2.onPress( wav2, wav2.EVT_BTN_1 );
+			btn2.onPress( 1, encBtn2, encBtn2.EVT_BTN_1 );
+		}
+	}
+	if ( enc_button_counter_2 == 0 ) {
+		enc2.onChange( ATM_UP, wav1, wav1.EVT_ENC_UP );
+		enc2.onChange( ATM_DOWN, wav1, wav1.EVT_ENC_DOWN );
+	}
+	else if ( enc_button_counter_2 == 1 ) {
+		enc2.onChange( ATM_UP, wav2, wav2.EVT_ENC_UP );
+		enc2.onChange( ATM_DOWN, wav2, wav2.EVT_ENC_DOWN );
+	}
 	
 //=================================================================	
 	if ( paramTimer.state() == 0 ) {

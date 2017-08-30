@@ -23,6 +23,7 @@ total rewrite, new branch
 #include <SPI.h>
 #include <SD.h>
 #include <SerialFlash.h>
+#include "button_counters.h"
 
 
 // GUItool: begin automatically generated code
@@ -88,7 +89,7 @@ Atm_wav_1& Atm_wav_1::begin( int instance ) {
     Machine::begin( state_table, ELSE );	//r2 moved audio setup to master vol
 	player_instance = instance;
 	track_1_level = 1;
-	track_1_level = 2;
+	track_2_level = 1;
 	display_delay = 100;
     return *this;	
 }
@@ -127,6 +128,7 @@ void Atm_wav_1::action( int id ) {
 			encoderDown();
 			return;
 		case ENT_BTN_1:
+			btn1();
 			return;	
 	}	
 }
@@ -287,6 +289,42 @@ Atm_wav_1& Atm_wav_1::encoderDown( void ) {
 			Serial.println( track_2_level);
 		}		
 		Serial.println("enc down");
+		paramTimer.trigger( paramTimer.EVT_START );
+		if ( last_state == 0 ) {
+			trigger( EVT_WAV_OFF );
+		}
+		else if ( last_state == 1 ) {
+			trigger( EVT_WAV_ON );
+		}
+	}
+	return *this;
+}
+//												===========Btn1
+Atm_wav_1& Atm_wav_1::btn1( void ) {
+	if ( paramTimer.state() == 0 ) {
+		paramTimer.trigger( paramTimer.EVT_START );
+		Serial.println("wait display triggered");
+		if ( player_instance == 1 ){
+			displayMain.trigger( displayMain.EVT_TRACK_WAV_1 );
+		}
+		else if ( player_instance == 2 ){
+			displayMain.trigger( displayMain.EVT_TRACK_WAV_2 );
+		}
+		delay( display_delay );
+		if ( last_state == 0 ) {
+			trigger( EVT_WAV_OFF );
+		}
+		else if ( last_state == 1 ) {
+			trigger( EVT_WAV_ON );
+		}
+	}
+	else {
+		if ( enc_button_counter_2 == 0) {
+			displayMain.trigger( displayMain.EVT_TRACK_WAV_1 );
+		}
+		else if ( enc_button_counter_2 == 1) {
+			displayMain.trigger( displayMain.EVT_TRACK_WAV_2 );
+		}
 		paramTimer.trigger( paramTimer.EVT_START );
 		if ( last_state == 0 ) {
 			trigger( EVT_WAV_OFF );
