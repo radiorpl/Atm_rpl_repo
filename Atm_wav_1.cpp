@@ -77,7 +77,7 @@ Atm_wav_1& Atm_wav_1::begin( int instance ) {
 	static const state_t state_table[] PROGMEM = {
 		/*               	ON_ENTER    		ON_LOOP    	ON_EXIT		EVT_WAV_OFF     EVT_WAV_ON    EVT_ENC_UP	EVT_ENC_DOWN	EVT_BTN_1	  ELSE */
 		/*	WAV_OFF */		ENT_WAV_OFF,		-1,				-1,	     WAV_OFF,		  WAV_ON,		ENC_UP,	 	 ENC_DOWN,		  BTN_1,	   -1,				
-		/*	WAV_ON */		ENT_WAV_ON, 	    -1,				-1,		 WAV_OFF,		  WAV_ON,		ENC_UP,	 	 ENC_DOWN,		  BTN_1,	   -1,
+		/*	WAV_ON */		ENT_WAV_ON, 	    -1,				-1,		 WAV_OFF,		  WAV_ON,		ENC_UP,	 	 ENC_DOWN,		  BTN_1,	   WAV_ON,
 		/*	ENC_UP */		ENT_ENC_UP,		    -1,				-1,		   -1,	 			-1,			 -1,		    -1,			   -1,		   -1,			
 	    /* ENC_DOWN */		ENT_ENC_DOWN,		-1,				-1,		   -1,	 			-1,			 -1,			-1,			   -1,		   -1,	
 		/*	BTN_1 */		ENT_BTN_1,		    -1,				-1,		   -1,	 			-1,			 -1,			-1,			   -1,		   -1,
@@ -89,6 +89,7 @@ Atm_wav_1& Atm_wav_1::begin( int instance ) {
 	player_instance = instance;
 	track_1_level = 1;
 	track_1_level = 2;
+	display_delay = 100;
     return *this;	
 }
 
@@ -120,6 +121,7 @@ void Atm_wav_1::action( int id ) {
 			play();
 			return;
 		case ENT_ENC_UP:
+			encoderUp();
 			return;
 		case ENT_ENC_DOWN:
 			return;
@@ -192,6 +194,7 @@ Atm_wav_1& Atm_wav_1::play( void ) {
 		Serial.println( track_1_level );	
 		}
 	}
+	last_state = 1;
 	return *this;
 }
 
@@ -199,13 +202,54 @@ Atm_wav_1& Atm_wav_1::play( void ) {
 Atm_wav_1& Atm_wav_1::stop( void ) {
 	if ( player_instance == 1 ){
 		playSdWav1.stop(); //stop wav file
-		//track_1_level = 0;
 		Serial.println("stop 1");
 	}
 	else if ( player_instance == 2 ){
 		playSdWav2.stop(); //stop wav file
 		//track_2_level = 0;
 		Serial.println("stop 2");
+	}
+	last_state = 0;
+	return *this;
+}
+//                                     ===========ENCODER UP==============
+Atm_wav_1& Atm_wav_1::encoderUp( void ) {	
+	if ( paramTimer.state() == 0 ) {
+		paramTimer.trigger( paramTimer.EVT_START );
+		Serial.println("wait display triggered");
+		if ( player_instance == 1 ){
+			displayMain.trigger( displayMain.EVT_TRACK_WAV_1 );
+		}
+		else if ( player_instance == 2 ){
+			displayMain.trigger( displayMain.EVT_TRACK_WAV_2 );
+		}
+		delay( display_delay );
+		if ( last_state == 0 ) {
+			trigger( EVT_WAV_OFF );
+		}
+		else if ( last_state == 1 ) {
+			trigger( EVT_WAV_ON );
+		}
+	}
+	else {
+		if ( player_instance == 1 ) {
+			track_1_level += 1;
+			displayMain.trigger( displayMain.EVT_TRACK_WAV_1 );
+			Serial.println( track_1_level);
+		}
+		else if ( player_instance == 2 ) {
+			track_2_level += 1;
+			displayMain.trigger( displayMain.EVT_TRACK_WAV_2 );
+			Serial.println( track_2_level);
+		}		
+		Serial.println("enc up");
+		paramTimer.trigger( paramTimer.EVT_START );
+		if ( last_state == 0 ) {
+			trigger( EVT_WAV_OFF );
+		}
+		else if ( last_state == 1 ) {
+			trigger( EVT_WAV_ON );
+		}
 	}
 	return *this;
 }

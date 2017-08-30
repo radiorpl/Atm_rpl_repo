@@ -32,6 +32,7 @@ class Atm_wav_1 : public Machine {
 		Atm_wav_1& begin( int instance );
 		Atm_wav_1& play( void );   
 		Atm_wav_1& stop( void );
+		Atm_wav_1& encoderUp( void );
 		Atm_wav_1& trace( Stream& stream );
 		Atm_wav_1& onPress( Machine& machine, int event = 0 );
 		Atm_wav_1& onPress( atm_cb_push_t callback, int idx = 0 ); 
@@ -44,6 +45,8 @@ class Atm_wav_1 : public Machine {
      	enum { ON_PRESS, CONN_MAX }; // CONNECTORS
      	atm_connector connectors[CONN_MAX];
 		int player_instance;
+		int last_state;
+		int display_delay;
      	int event( int id ); 
      	void action( int id );	
 };
