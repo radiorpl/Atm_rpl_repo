@@ -110,7 +110,6 @@ Atm_enc_button& Atm_enc_button::countUp( void ) {  //==========changed button ra
   	if ( enc_button_counter_5 > 0 ){     //effect parameters
   		enc_button_counter_5 = 0;
   	}
-	Serial.println( enc_button_counter_1 );
   return *this;
 }
 Atm_enc_button& Atm_enc_button::countDown( void ) {
@@ -128,7 +127,7 @@ Atm_enc_button& Atm_enc_button::countDown( void ) {
   	}
   	else if ( encBtn == 5){
   		enc_button_counter_5--;
-  	}									//========================haven't changed ranges like countUp yet			
+  	}										
 	
   	if ( enc_button_counter_1 < 0 ){    //number of options for function menu -1 
   		enc_button_counter_1 = 1;

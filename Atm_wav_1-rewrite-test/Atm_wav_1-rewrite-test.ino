@@ -107,12 +107,12 @@ void loop() {
 	}
 	else {
 		if ( enc_button_counter_2 == 0 ) {
-			btn2.onPress( wav1, wav1.EVT_BTN_1 );
-			btn2.onPress( 1, encBtn2, encBtn2.EVT_BTN_1 );
+			btn2.onPress( 1, wav1, wav1.EVT_BTN_1 );
+			btn2.onPress( encBtn2, encBtn2.EVT_BTN_1 );
 		}
 		else if ( enc_button_counter_2 == 0 ) {
-			btn2.onPress( wav2, wav2.EVT_BTN_1 );
-			btn2.onPress( 1, encBtn2, encBtn2.EVT_BTN_1 );
+			btn2.onPress( 1, wav2, wav2.EVT_BTN_1 );
+			btn2.onPress( encBtn2, encBtn2.EVT_BTN_1 );
 		}
 	}
 	if ( enc_button_counter_2 == 0 ) {
