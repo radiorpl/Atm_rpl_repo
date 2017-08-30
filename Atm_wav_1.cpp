@@ -151,7 +151,7 @@ Atm_wav_1& Atm_wav_1::play( void ) {
 	last_state = 1;	
 	Serial.println( last_state );
 	if ( player_instance == 1 ) {		//player 1 	
-		if ( playSdWav1.isPlaying() == false ) {
+		if ( (playSdWav1.isPlaying() == false) || (track_1_level != last_track_1_level) ) {
 			if (track_1_level == 1) {
 				playSdWav1.play("DRONE1.WAV"); //play wav file
 			}
@@ -167,23 +167,6 @@ Atm_wav_1& Atm_wav_1::play( void ) {
 			else if (track_1_level == 5) {
 				playSdWav1.play("DRONE5.WAV"); 
 			}
-		}
-		if ( track_1_level != last_track_1_level ) {
-			if (track_1_level == 1) {
-				playSdWav1.play("DRONE1.WAV"); //play wav file
-			}
-			else if (track_1_level == 2) {
-				playSdWav1.play("DRONE2.WAV"); 
-			}
-			else if (track_1_level == 3) {
-				playSdWav1.play("DRONE3.WAV"); 
-			}
-			else if (track_1_level == 4) {
-				playSdWav1.play("DRONE4.WAV"); 
-			}
-			else if (track_1_level == 5) {
-				playSdWav1.play("DRONE5.WAV"); 
-			}	
 		}
 		delay(10);
 		last_track_1_level = track_1_level;
@@ -192,7 +175,7 @@ Atm_wav_1& Atm_wav_1::play( void ) {
 	    }
 		
 	else if ( player_instance == 2 ) {
-		if ( (track_2_level != last_track_2_level) || (playSdWav2.isPlaying() == false) ) {
+		if ( (playSdWav2.isPlaying() == false) || (track_2_level != last_track_2_level) ) {
 			if (track_2_level == 1) {
 				playSdWav2.play("DRONE1.WAV"); //play wav file
 			}
