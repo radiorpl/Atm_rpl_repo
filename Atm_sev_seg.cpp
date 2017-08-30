@@ -115,13 +115,13 @@ void Atm_sev_seg::action( int id ) {
 	  return;
   	case ENT_VOL_WAV_1:
 	  level = vol_wav_1_level;
-  	  write(0, 28); write(1, 26); write(2, 10); writeLevel(level); //trA(level)
+  	  write(0, 10); write(1, 36); write(2, 36); writeLevel(level); //A  (level)
 	  //Serial.println("VOL 1 sev seg");
 	  //Serial.println(level);
 	  return;
     case ENT_VOL_WAV_2:
 	  level = vol_wav_2_level;
-  	  write(0, 28); write(1, 26); write(2, 11); writeLevel(level); //trb(level)
+  	  write(0, 11); write(1, 36); write(2, 36); writeLevel(level); //b (level)
 	  //Serial.println("VOL 1 sev seg");
 	  //Serial.println(level);
   	  return;

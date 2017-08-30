@@ -63,6 +63,7 @@ void setup() {
 
 //===================================================
 void loop() {
+	/*
 	if ( paramTimer.state() == 0) {
 		if ( enc_button_counter_1 == 0 ) {
 			btn1.onPress ( paramTimer, paramTimer.EVT_START );
@@ -95,7 +96,7 @@ void loop() {
 		last_enc_button_counter_1 = enc_button_counter_1;  
 		}
 	}
-	
+	*/
 //====================================================	
 	if ( paramTimer.state() == 0 ) {
 		if ( enc_button_counter_2 == 0 ) {
@@ -110,7 +111,7 @@ void loop() {
 			btn2.onPress( 1, wav1, wav1.EVT_BTN_1 );
 			btn2.onPress( encBtn2, encBtn2.EVT_BTN_1 );
 		}
-		else if ( enc_button_counter_2 == 0 ) {
+		else if ( enc_button_counter_2 == 1 ) {
 			btn2.onPress( 1, wav2, wav2.EVT_BTN_1 );
 			btn2.onPress( encBtn2, encBtn2.EVT_BTN_1 );
 		}
