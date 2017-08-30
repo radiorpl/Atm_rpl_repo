@@ -78,9 +78,9 @@ Atm_wav_1& Atm_wav_1::begin( int instance ) {
 		/*               	ON_ENTER    		ON_LOOP    	ON_EXIT		EVT_WAV_OFF     EVT_WAV_ON    EVT_ENC_UP	EVT_ENC_DOWN	EVT_BTN_1	  ELSE */
 		/*	WAV_OFF */		ENT_WAV_OFF,		-1,				-1,	     WAV_OFF,		  WAV_ON,		ENC_UP,	 	 ENC_DOWN,		  BTN_1,	   -1,				
 		/*	WAV_ON */		ENT_WAV_ON, 	    -1,				-1,		 WAV_OFF,		  WAV_ON,		ENC_UP,	 	 ENC_DOWN,		  BTN_1,	   WAV_ON,
-		/*	ENC_UP */		ENT_ENC_UP,		    -1,				-1,		   -1,	 			-1,			 -1,		    -1,			   -1,		   -1,			
-	    /* ENC_DOWN */		ENT_ENC_DOWN,		-1,				-1,		   -1,	 			-1,			 -1,			-1,			   -1,		   -1,	
-		/*	BTN_1 */		ENT_BTN_1,		    -1,				-1,		   -1,	 			-1,			 -1,			-1,			   -1,		   -1,
+		/*	ENC_UP */		ENT_ENC_UP,		    -1,				-1,		 WAV_OFF,		  WAV_ON,		  -1,		    -1,			   -1,		   -1,			
+	    /* ENC_DOWN */		ENT_ENC_DOWN,		-1,				-1,		 WAV_OFF, 		  WAV_ON,		  -1,			-1,			   -1,		   -1,	
+		/*	BTN_1 */		ENT_BTN_1,		    -1,				-1,		 WAV_OFF, 		  WAV_ON,		  -1,			-1,			   -1,		   -1,
 		
 		
 	};
@@ -124,6 +124,7 @@ void Atm_wav_1::action( int id ) {
 			encoderUp();
 			return;
 		case ENT_ENC_DOWN:
+			encoderDown();
 			return;
 		case ENT_BTN_1:
 			return;	
@@ -146,10 +147,11 @@ int Atm_wav_1::state( void ) {
   return Machine::state();
 }
 //												=============PLAY==============
-Atm_wav_1& Atm_wav_1::play( void ) {	
-	if ( player_instance == 1 ) {
-		//player 1, if track is not on stop and if it has changed or ended playing  
-		if ( (track_1_level != last_track_1_level) || (playSdWav1.isPlaying() == false) ) {
+Atm_wav_1& Atm_wav_1::play( void ) {
+	last_state = 1;	
+	Serial.println( last_state );
+	if ( player_instance == 1 ) {		//player 1 	
+		if ( playSdWav1.isPlaying() == false ) {
 			if (track_1_level == 1) {
 				playSdWav1.play("DRONE1.WAV"); //play wav file
 			}
@@ -165,12 +167,30 @@ Atm_wav_1& Atm_wav_1::play( void ) {
 			else if (track_1_level == 5) {
 				playSdWav1.play("DRONE5.WAV"); 
 			}
+		}
+		if ( track_1_level != last_track_1_level ) {
+			if (track_1_level == 1) {
+				playSdWav1.play("DRONE1.WAV"); //play wav file
+			}
+			else if (track_1_level == 2) {
+				playSdWav1.play("DRONE2.WAV"); 
+			}
+			else if (track_1_level == 3) {
+				playSdWav1.play("DRONE3.WAV"); 
+			}
+			else if (track_1_level == 4) {
+				playSdWav1.play("DRONE4.WAV"); 
+			}
+			else if (track_1_level == 5) {
+				playSdWav1.play("DRONE5.WAV"); 
+			}	
+		}
 		delay(10);
 		last_track_1_level = track_1_level;
 		Serial.print( "player no 1 - track " );
 		Serial.println( track_1_level );
 	    }
-	}	
+		
 	else if ( player_instance == 2 ) {
 		if ( (track_2_level != last_track_2_level) || (playSdWav2.isPlaying() == false) ) {
 			if (track_2_level == 1) {
@@ -194,22 +214,22 @@ Atm_wav_1& Atm_wav_1::play( void ) {
 		Serial.println( track_1_level );	
 		}
 	}
-	last_state = 1;
+	
 	return *this;
 }
 
 //                                 		===========STOP===========
 Atm_wav_1& Atm_wav_1::stop( void ) {
+	last_state = 0;
 	if ( player_instance == 1 ){
 		playSdWav1.stop(); //stop wav file
 		Serial.println("stop 1");
 	}
 	else if ( player_instance == 2 ){
 		playSdWav2.stop(); //stop wav file
-		//track_2_level = 0;
 		Serial.println("stop 2");
 	}
-	last_state = 0;
+	
 	return *this;
 }
 //                                     ===========ENCODER UP==============
@@ -243,6 +263,47 @@ Atm_wav_1& Atm_wav_1::encoderUp( void ) {
 			Serial.println( track_2_level);
 		}		
 		Serial.println("enc up");
+		paramTimer.trigger( paramTimer.EVT_START );
+		if ( last_state == 0 ) {
+			trigger( EVT_WAV_OFF );
+		}
+		else if ( last_state == 1 ) {
+			trigger( EVT_WAV_ON );
+		}
+	}
+	return *this;
+}
+//                                     ===========ENCODER DOWN==============
+Atm_wav_1& Atm_wav_1::encoderDown( void ) {	
+	if ( paramTimer.state() == 0 ) {
+		paramTimer.trigger( paramTimer.EVT_START );
+		Serial.println("wait display triggered");
+		if ( player_instance == 1 ){
+			displayMain.trigger( displayMain.EVT_TRACK_WAV_1 );
+		}
+		else if ( player_instance == 2 ){
+			displayMain.trigger( displayMain.EVT_TRACK_WAV_2 );
+		}
+		delay( display_delay );
+		if ( last_state == 0 ) {
+			trigger( EVT_WAV_OFF );
+		}
+		else if ( last_state == 1 ) {
+			trigger( EVT_WAV_ON );
+		}
+	}
+	else {
+		if ( player_instance == 1 ) {
+			track_1_level -= 1;
+			displayMain.trigger( displayMain.EVT_TRACK_WAV_1 );
+			Serial.println( track_1_level);
+		}
+		else if ( player_instance == 2 ) {
+			track_2_level -= 1;
+			displayMain.trigger( displayMain.EVT_TRACK_WAV_2 );
+			Serial.println( track_2_level);
+		}		
+		Serial.println("enc down");
 		paramTimer.trigger( paramTimer.EVT_START );
 		if ( last_state == 0 ) {
 			trigger( EVT_WAV_OFF );
@@ -287,7 +348,7 @@ Atm_wav_1& Atm_wav_1::onPress( atm_cb_push_t callback, int idx ) {
 
 Atm_wav_1& Atm_wav_1::trace( Stream & stream ) {
   Machine::setTrace( &stream, atm_serial_debug::trace,
-    "WAV_1\0EVT_ENC_UP\0EVT_ENC_DOWN\0EVT_BTN_1\0EVT_PLAY_CHECK\0ELSE\0WAV_OFF\0WAV_1_ON\0WAV_2_ON\0WAV_3_ON\0WAV_4_ON\0WAV_5_ON" );
+    "WAV_1\0EVT_WAV_OFF\0EVT_WAV_ON\0EVT_ENC_UP\0EVT_ENC_DOWN\0EVT_BTN_1\0ELSE\0WAV_OFF\0WAV_ON\0ENC_UP\0ENC_DOWN\0BTN_1" );
   return *this;
 }
 /*

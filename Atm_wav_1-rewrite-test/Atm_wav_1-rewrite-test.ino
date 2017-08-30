@@ -54,7 +54,7 @@ void setup() {
    paramTimer.onFinish( displayMain, displayMain.EVT_HOME );	 
    sgtl5000_1.enable();
    sgtl5000_1.volume(0.3);	   
-   wav1.trace(Serial);
+   //wav1.trace(Serial);
    //displayMain.trace(Serial); 
    encBtn2.trace(Serial); 
    volMaster.trace(Serial);  
@@ -98,6 +98,7 @@ void loop() {
 //====================================================	
 	btn2.onPress( wav1, wav1.EVT_WAV_ON );
 	enc2.onChange( ATM_UP, wav1, wav1.EVT_ENC_UP );
+	enc2.onChange( ATM_DOWN, wav1, wav1.EVT_ENC_DOWN );
 	
 //=================================================================	
 	if ( paramTimer.state() == 0 ) {
