@@ -144,7 +144,6 @@ Atm_enc_button& Atm_enc_button::countDown( void ) {
   	if ( enc_button_counter_5 < 1 ){     //effect parameters
   		enc_button_counter_5 = 0;
   	}
-	//Serial.println( enc_button_counter_1 );
     return *this;
 }
 /* Nothing customizable below this line                          
