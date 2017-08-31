@@ -38,7 +38,7 @@ void setup() {
    volWav1.begin(1);
    volWav2.begin(2);
    enc1.begin(33, 24);
-   //enc1.debounce(300);
+   enc1.debounce(300);
    enc2.begin(25, 26);
    enc2.debounce(125);
    enc3.begin(27, 28);
@@ -78,16 +78,25 @@ void loop() {
 	}
 	else {
 	  	enc1.onChange( ATM_UP, encBtn1, encBtn1.EVT_ENC_UP );    
-	  	enc1.onChange( ATM_DOWN, encBtn1, encBtn1.EVT_ENC_DOWN ); 
+	  	enc1.onChange( ATM_DOWN, encBtn1, encBtn1.EVT_ENC_DOWN );   
 		if ( enc_button_counter_1 == 0 ) {
 		   	btn1.onPress( wav1, wav1.EVT_BTN_2 );
+		  	enc1.onChange2( ATM_UP, displayMain, displayMain.EVT_PLAY_WAV_2 );    
+		  	enc1.onChange2( ATM_DOWN, displayMain, displayMain.EVT_PLAY_WAV_2 );
+		  	enc1.onChange3( ATM_UP, paramTimer, paramTimer.EVT_START );    
+		  	enc1.onChange3( ATM_DOWN, paramTimer, paramTimer.EVT_START );
+			
 	    }
 		else if ( enc_button_counter_1 == 1 ) {
 		  	btn1.onPress( wav2, wav2.EVT_BTN_2 );
+		  	enc1.onChange2( ATM_UP, displayMain, displayMain.EVT_PLAY_WAV_1 );    
+		  	enc1.onChange2( ATM_DOWN, displayMain, displayMain.EVT_PLAY_WAV_1 );
+		  	enc1.onChange3( ATM_UP, paramTimer, paramTimer.EVT_START );    
+		  	enc1.onChange3( ATM_DOWN, paramTimer, paramTimer.EVT_START );	
 	    }
 	}	
 //====================================================	
-	if ( paramTimer.state() == 0 ) {
+	if ( paramTimer.state() == 0 ) {  			//track control
 		if ( enc_button_counter_2 == 0 ) {
 			btn2.onPress( wav1, wav1.EVT_BTN_1 );
 		}
