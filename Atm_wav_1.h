@@ -18,8 +18,8 @@ total rewrite, branch
 #include <Automaton.h>
 class Atm_wav_1 : public Machine {
 	public:
-		enum { WAV_OFF, WAV_ON, ENC_UP, ENC_DOWN, BTN_1 }; //STATES
-		enum { EVT_WAV_OFF, EVT_WAV_ON, EVT_ENC_UP, EVT_ENC_DOWN, EVT_BTN_1, ELSE }; //EVENTS
+		enum { WAV_OFF, WAV_ON, ENC_UP, ENC_DOWN, BTN_1, BTN_2 }; //STATES
+		enum { EVT_WAV_OFF, EVT_WAV_ON, EVT_ENC_UP, EVT_ENC_DOWN, EVT_BTN_1, EVT_BTN_2, ELSE }; //EVENTS
 		
 		Atm_wav_1( void ) : Machine(){};
 		Atm_wav_1& begin( int instance );
@@ -28,6 +28,7 @@ class Atm_wav_1 : public Machine {
 		Atm_wav_1& encoderUp( void );
 		Atm_wav_1& encoderDown( void );
 		Atm_wav_1& btn1( void );
+		Atm_wav_1& btn2( void );
 		Atm_wav_1& trace( Stream& stream );
 		Atm_wav_1& onPress( Machine& machine, int event = 0 );
 		Atm_wav_1& onPress( atm_cb_push_t callback, int idx = 0 ); 
@@ -36,11 +37,10 @@ class Atm_wav_1 : public Machine {
 		
 		
 	private:
-     	enum { ENT_WAV_OFF, ENT_WAV_ON, ENT_ENC_UP, ENT_ENC_DOWN, ENT_BTN_1 }; // ACTIONS
+     	enum { ENT_WAV_OFF, ENT_WAV_ON, ENT_ENC_UP, ENT_ENC_DOWN, ENT_BTN_1, ENT_BTN_2 }; // ACTIONS
      	enum { ON_PRESS, CONN_MAX }; // CONNECTORS
      	atm_connector connectors[CONN_MAX];
 		int player_instance;
-		int last_state;
 		int display_delay;
      	int event( int id ); 
      	void action( int id );	
