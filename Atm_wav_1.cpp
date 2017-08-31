@@ -217,13 +217,13 @@ Atm_wav_1& Atm_wav_1::stop( void ) {
 	
 	if ( player_instance == 1 ){
 		playSdWav1.stop(); //stop wav file
-		Serial.println("stop 1");
 		last_state_1 = 0;
+		Serial.println("stop 1");
 	}
 	else if ( player_instance == 2 ){
 		playSdWav2.stop(); //stop wav file
-		Serial.println("stop 2");
 		last_state_2 = 0;
+		Serial.println("stop 2");		
 	}
 	
 	return *this;
@@ -376,7 +376,7 @@ Atm_wav_1& Atm_wav_1::btn1( void ) {			//triggers display for tracks
 		}
 	}
 	else {
-		if ( enc_button_counter_2 == 0) {
+		if ( player_instance == 1 ) {
 			displayMain.trigger( displayMain.EVT_TRACK_WAV_1 );
 			if ( last_state_1 == 0 ) {
 				trigger( EVT_WAV_OFF );
@@ -385,7 +385,7 @@ Atm_wav_1& Atm_wav_1::btn1( void ) {			//triggers display for tracks
 				trigger( EVT_WAV_ON );
 			}
 		}
-		else if ( enc_button_counter_2 == 1) {
+		else if ( player_instance == 2 ) {
 			displayMain.trigger( displayMain.EVT_TRACK_WAV_2 );
 			if ( last_state_2 == 0 ) {
 				trigger( EVT_WAV_OFF );
