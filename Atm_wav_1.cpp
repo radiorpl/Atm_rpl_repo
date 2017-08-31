@@ -239,11 +239,17 @@ Atm_wav_1& Atm_wav_1::encoderUp( void ) {
 	else {
 		if ( player_instance == 1 ) {
 			track_1_level += 1;
+			if ( track_1_level > 4 ) {			//set range of track values
+				track_1_level = 5;
+			}
 			displayMain.trigger( displayMain.EVT_TRACK_WAV_1 );
 			Serial.println( track_1_level);
 		}
 		else if ( player_instance == 2 ) {
 			track_2_level += 1;
+			if ( track_2_level > 4 ) {			
+				track_2_level = 5;
+			}
 			displayMain.trigger( displayMain.EVT_TRACK_WAV_2 );
 			Serial.println( track_2_level);
 		}		
@@ -280,11 +286,17 @@ Atm_wav_1& Atm_wav_1::encoderDown( void ) {
 	else {
 		if ( player_instance == 1 ) {
 			track_1_level -= 1;
+			if ( track_1_level < 2 ) {
+				track_1_level = 1;
+			}
 			displayMain.trigger( displayMain.EVT_TRACK_WAV_1 );
 			Serial.println( track_1_level);
 		}
 		else if ( player_instance == 2 ) {
 			track_2_level -= 1;
+			if ( track_2_level < 2 ) {
+				track_2_level = 1;
+			}
 			displayMain.trigger( displayMain.EVT_TRACK_WAV_2 );
 			Serial.println( track_2_level);
 		}		

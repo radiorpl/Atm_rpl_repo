@@ -38,6 +38,7 @@ void setup() {
    volWav1.begin(1);
    volWav2.begin(2);
    enc1.begin(33, 24);
+   enc1.debounce(300);
    enc2.begin(26, 25);
    enc3.begin(27, 28);
    enc3.debounce(30);    //if debounce too fast, trouble reading encoder
@@ -65,10 +66,12 @@ void loop() {
 		if ( enc_button_counter_1 == 0 ) {
 			btn1.onPress ( paramTimer, paramTimer.EVT_START );
 			btn1.onPress ( 1, displayMain, displayMain.EVT_PLAY_WAV_1 );
+			//enc1.onChange ( displayMain, displayMain.EVT_PLAY_WAV_1 );
 		}
 		else if ( enc_button_counter_1 == 1 ) {
 			btn1.onPress ( paramTimer, paramTimer.EVT_START );
 			btn1.onPress ( 1, displayMain, displayMain.EVT_PLAY_WAV_2 );
+			//enc1.onChange ( displayMain, displayMain.EVT_PLAY_WAV_1 );
 		}
 	}
 	else {
@@ -76,11 +79,22 @@ void loop() {
 		enc1.onChange( ATM_DOWN, encBtn1, encBtn1.EVT_ENC_DOWN ); //on this one encoders change count and btn does action
 		if ( enc_button_counter_1 == 0 ) {
 		  btn1.onPress( wav1, wav1.EVT_BTN_1 );
+		  if ( enc_button_counter_1 != last_enc_button_counter_1 ){
+		  	displayMain.trigger( displayMain.EVT_PLAY_WAV_1 );
+			paramTimer.trigger( paramTimer.EVT_START );
+		  }
+		last_enc_button_counter_1 = enc_button_counter_1;  
 		}
 		else if ( enc_button_counter_1	 == 1 ) {
 		  btn1.onPress( wav2, wav2.EVT_BTN_1 );
+		  if ( enc_button_counter_1 != last_enc_button_counter_1 ){
+		  	displayMain.trigger( displayMain.EVT_PLAY_WAV_2 );
+			paramTimer.trigger( paramTimer.EVT_START );
+		  }
+		last_enc_button_counter_1 = enc_button_counter_1;  
 		}
 	}
+	
 //====================================================	
 	if ( paramTimer.state() == 0) {		//====================trigger display for wav players if display is home
 		if ( enc_button_counter_2 == 0 ) {
