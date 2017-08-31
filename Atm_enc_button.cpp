@@ -17,7 +17,7 @@ Atm_enc_button& Atm_enc_button::begin(int encButton) {
     /*             	ON_ENTER    ON_LOOP  ON_EXIT  EVT_BTN_1  EVT_ENC_UP   EVT_ENC_DOWN	 ELSE */
 	/* IDLE		*/    -1,  		   -1,      -1,   COUNT_UP,   COUNT_UP,   COUNT_DOWN,	-1,
 	/* COUNT_UP */ ENT_COUNT_UP,   -1,      -1,  	-1,   		-1,			-1,			IDLE,
-  /* COUNT_DOWN */ ENT_COUNT_DOWN, -1,      -1,   -1,   		-1,			-1,			IDLE,
+  /* COUNT_DOWN */ ENT_COUNT_DOWN, -1,      -1,     -1,   		-1,			-1,			IDLE,
   };
   // clang-format on
   Machine::begin( state_table, ELSE );
@@ -144,7 +144,7 @@ Atm_enc_button& Atm_enc_button::countDown( void ) {
   	if ( enc_button_counter_5 < 1 ){     //effect parameters
   		enc_button_counter_5 = 0;
   	}
-	Serial.println( enc_button_counter_1 );
+	//Serial.println( enc_button_counter_1 );
     return *this;
 }
 /* Nothing customizable below this line                          
