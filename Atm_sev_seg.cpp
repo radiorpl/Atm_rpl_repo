@@ -138,7 +138,7 @@ void Atm_sev_seg::action( int id ) {
 	  //Serial.print(level);
       return;
 	case ENT_PLAY_WAV_1:
-	  level = track_1_level;
+	  level = last_state_1;
 	  if ( level == 0 ) {
 	  	write(0, 10); write(1, 23); write(2, 15); write(3, 15); //Aoff
 	  }
@@ -147,7 +147,7 @@ void Atm_sev_seg::action( int id ) {
 	  }
 	  return;
   	case ENT_PLAY_WAV_2:
-	  level = track_2_level;
+	  level = last_state_2;
 	  if ( level == 0 ) {
 	  	write(0, 11); write(1, 23); write(2, 15); write(3, 15); //boff
 	  }
