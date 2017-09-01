@@ -230,7 +230,7 @@ Atm_wav_1& Atm_wav_1::stop( void ) {
 }
 //                                     ===========ENCODER UP==============
 Atm_wav_1& Atm_wav_1::encoderUp( void ) {	
-	if ( paramTimer.state() == 0 ) {
+	  if ( paramTimer.state() == 0 ) {
 		paramTimer.trigger( paramTimer.EVT_START );
 		Serial.println("wait display triggered");
 		if ( player_instance == 1 ){
@@ -376,7 +376,7 @@ Atm_wav_1& Atm_wav_1::btn1( void ) {			//triggers display for tracks
 		}
 	}
 	else {
-		if ( player_instance == 1 ) {
+		if ( enc_button_counter_2 == 0 ) {
 			displayMain.trigger( displayMain.EVT_TRACK_WAV_1 );
 			if ( last_state_1 == 0 ) {
 				trigger( EVT_WAV_OFF );
@@ -385,7 +385,7 @@ Atm_wav_1& Atm_wav_1::btn1( void ) {			//triggers display for tracks
 				trigger( EVT_WAV_ON );
 			}
 		}
-		else if ( player_instance == 2 ) {
+		else if ( enc_button_counter_2 == 1 ) {
 			displayMain.trigger( displayMain.EVT_TRACK_WAV_2 );
 			if ( last_state_2 == 0 ) {
 				trigger( EVT_WAV_OFF );
