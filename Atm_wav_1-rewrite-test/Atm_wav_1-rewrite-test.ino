@@ -38,7 +38,7 @@ void setup() {
    volWav1.begin(1);
    volWav2.begin(2);
    enc1.begin(33, 24);
-   enc1.debounce(300);
+   enc1.debounce(100);
    enc2.begin(25, 26);
    enc2.debounce(125);
    enc3.begin(27, 28);
