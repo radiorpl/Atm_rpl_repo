@@ -40,16 +40,40 @@ int level = 0;
 Atm_sev_seg& Atm_sev_seg::begin() {
   // clang-format off
   const static state_t state_table[] PROGMEM = {
-    /*                ON_ENTER  			ON_LOOP  		ON_EXIT   EVT_HOME		EVT_OFF  EVT_MASTER_VOL  EVT_VOL_WAV_1  EVT_VOL_WAV_2  EVT_TRACK_WAV_1  EVT_TRACK_WAV_2  EVT_PLAY_WAV_1  EVT_PLAY_WAV_2  ELSE */
-    /*        HOME */    ENT_HOME,      		-1,      	 	-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     HOME, 
-	/*         OFF */    ENT_OFF,      			-1,      		-1,     HOME,    		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     OFF,       
-    /*  MASTER_VOL */    ENT_MASTER_VOL,  		-1,  			-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     MASTER_VOL,
-    /*   VOL_WAV_1 */    ENT_VOL_WAV_1, 		-1,      		-1,     HOME,     		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     VOL_WAV_1,
-    /*   VOL_WAV_2 */    ENT_VOL_WAV_2,   		-1,      		-1,     HOME,     		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     VOL_WAV_2,
-    /* TRACK_WAV_1 */    ENT_TRACK_WAV_1,  	    -1,    			-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     TRACK_WAV_1,
-    /* TRACK_WAV_2 */    ENT_TRACK_WAV_2, 	    -1,    			-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     TRACK_WAV_2,
-    /*  PLAY_WAV_1 */    ENT_PLAY_WAV_1,  	    -1,     		-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     PLAY_WAV_1,
-    /*  PLAY_WAV_2 */    ENT_PLAY_WAV_2,  	    -1,     		-1,     HOME,      		-1,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     PLAY_WAV_2,
+    /*                ON_ENTER  			ON_LOOP  		ON_EXIT   EVT_HOME		EVT_OFF  EVT_MASTER_VOL  EVT_VOL_WAV_1  EVT_VOL_WAV_2  EVT_TRACK_WAV_1  EVT_TRACK_WAV_2  EVT_PLAY_WAV_1  EVT_PLAY_WAV_2  EVT_DELAY   EVT_DELAY_SEND_1   EVT_DELAY_SEND_2   EVT_DELAY_TIME_1   EVT_DELAY_TIME_2   EVT_DELAY_TIME_3   EVT_DELAY_TIME_4   EVT_DELAY_FB_1   EVT_DELAY_FB_2   EVT_DELAY_FB_3   EVT_DELAY_FB_4   EVT_DELAY_GAIN_1   EVT_DELAY_GAIN_2   EVT_DELAY_GAIN_3   EVT_DELAY_GAIN_4   EVT_DELAY_MIX   ELSE */
+    /*        HOME */    ENT_HOME,      		-1,      	 	-1,     HOME,      	   OFF,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     DELAY,       DELAY_SEND_1,      DELAY_SEND_2,      DELAY_TIME_1,      DELAY_TIME_2,      DELAY_TIME_3,      DELAY_TIME_4,      DELAY_FB_1,      DELAY_FB_2,      DELAY_FB_3,      DELAY_FB_4,      DELAY_GAIN_1,      DELAY_GAIN_2,      DELAY_GAIN_3,      DELAY_GAIN_4,      DELAY_MIX,     HOME,                                                                                  
+	/*         OFF */    ENT_OFF,      			-1,      		-1,     HOME,    	   OFF,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     DELAY,       DELAY_SEND_1,      DELAY_SEND_2,      DELAY_TIME_1,      DELAY_TIME_2,      DELAY_TIME_3,      DELAY_TIME_4,      DELAY_FB_1,      DELAY_FB_2,      DELAY_FB_3,      DELAY_FB_4,      DELAY_GAIN_1,      DELAY_GAIN_2,      DELAY_GAIN_3,      DELAY_GAIN_4,      DELAY_MIX, 	OFF,
+    /*  MASTER_VOL */    ENT_MASTER_VOL,  		-1,  			-1,     HOME,      	   OFF,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     DELAY,       DELAY_SEND_1,      DELAY_SEND_2,      DELAY_TIME_1,      DELAY_TIME_2,      DELAY_TIME_3,      DELAY_TIME_4,      DELAY_FB_1,      DELAY_FB_2,      DELAY_FB_3,      DELAY_FB_4,      DELAY_GAIN_1,      DELAY_GAIN_2,      DELAY_GAIN_3,      DELAY_GAIN_4,      DELAY_MIX,     MASTER_VOL,
+    /*   VOL_WAV_1 */    ENT_VOL_WAV_1, 		-1,      		-1,     HOME,     	   OFF,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     DELAY,       DELAY_SEND_1,      DELAY_SEND_2,      DELAY_TIME_1,      DELAY_TIME_2,      DELAY_TIME_3,      DELAY_TIME_4,      DELAY_FB_1,      DELAY_FB_2,      DELAY_FB_3,      DELAY_FB_4,      DELAY_GAIN_1,      DELAY_GAIN_2,      DELAY_GAIN_3,      DELAY_GAIN_4,      DELAY_MIX,     VOL_WAV_1,
+    /*   VOL_WAV_2 */    ENT_VOL_WAV_2,   		-1,      		-1,     HOME,     	   OFF,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     DELAY,       DELAY_SEND_1,      DELAY_SEND_2,      DELAY_TIME_1,      DELAY_TIME_2,      DELAY_TIME_3,      DELAY_TIME_4,      DELAY_FB_1,      DELAY_FB_2,      DELAY_FB_3,      DELAY_FB_4,      DELAY_GAIN_1,      DELAY_GAIN_2,      DELAY_GAIN_3,      DELAY_GAIN_4,      DELAY_MIX,     VOL_WAV_2,
+    /* TRACK_WAV_1 */    ENT_TRACK_WAV_1,  	    -1,    			-1,     HOME,      	   OFF,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     DELAY,       DELAY_SEND_1,      DELAY_SEND_2,      DELAY_TIME_1,      DELAY_TIME_2,      DELAY_TIME_3,      DELAY_TIME_4,      DELAY_FB_1,      DELAY_FB_2,      DELAY_FB_3,      DELAY_FB_4,      DELAY_GAIN_1,      DELAY_GAIN_2,      DELAY_GAIN_3,      DELAY_GAIN_4,      DELAY_MIX,     TRACK_WAV_1,
+    /* TRACK_WAV_2 */    ENT_TRACK_WAV_2, 	    -1,    			-1,     HOME,      	   OFF,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     DELAY,       DELAY_SEND_1,      DELAY_SEND_2,      DELAY_TIME_1,      DELAY_TIME_2,      DELAY_TIME_3,      DELAY_TIME_4,      DELAY_FB_1,      DELAY_FB_2,      DELAY_FB_3,      DELAY_FB_4,      DELAY_GAIN_1,      DELAY_GAIN_2,      DELAY_GAIN_3,      DELAY_GAIN_4,      DELAY_MIX,     TRACK_WAV_2,
+    /*  PLAY_WAV_1 */    ENT_PLAY_WAV_1,  	    -1,     		-1,     HOME,      	   OFF,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     DELAY,       DELAY_SEND_1,      DELAY_SEND_2,      DELAY_TIME_1,      DELAY_TIME_2,      DELAY_TIME_3,      DELAY_TIME_4,      DELAY_FB_1,      DELAY_FB_2,      DELAY_FB_3,      DELAY_FB_4,      DELAY_GAIN_1,      DELAY_GAIN_2,      DELAY_GAIN_3,      DELAY_GAIN_4,      DELAY_MIX,	    PLAY_WAV_1,
+    /*  PLAY_WAV_2 */    ENT_PLAY_WAV_2,  	    -1,     		-1,     HOME,      	   OFF,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     DELAY,       DELAY_SEND_1,      DELAY_SEND_2,      DELAY_TIME_1,      DELAY_TIME_2,      DELAY_TIME_3,      DELAY_TIME_4,      DELAY_FB_1,      DELAY_FB_2,      DELAY_FB_3,      DELAY_FB_4,      DELAY_GAIN_1,      DELAY_GAIN_2,      DELAY_GAIN_3,      DELAY_GAIN_4,      DELAY_MIX,     PLAY_WAV_2, 
+	/*  DELAY      */    ENT_DELAY,  	        -1,     		-1,     HOME,      	   OFF,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     DELAY,       DELAY_SEND_1,      DELAY_SEND_2,      DELAY_TIME_1,      DELAY_TIME_2,      DELAY_TIME_3,      DELAY_TIME_4,      DELAY_FB_1,      DELAY_FB_2,      DELAY_FB_3,      DELAY_FB_4,      DELAY_GAIN_1,      DELAY_GAIN_2,      DELAY_GAIN_3,      DELAY_GAIN_4,      DELAY_MIX,     DELAY,
+  /*  DELAY_SEND_1 */    ENT_DELAY_SEND_1,  	-1,     		-1,     HOME,      	   OFF,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     DELAY,       DELAY_SEND_1,      DELAY_SEND_2,      DELAY_TIME_1,      DELAY_TIME_2,      DELAY_TIME_3,      DELAY_TIME_4,      DELAY_FB_1,      DELAY_FB_2,      DELAY_FB_3,      DELAY_FB_4,      DELAY_GAIN_1,      DELAY_GAIN_2,      DELAY_GAIN_3,      DELAY_GAIN_4,      DELAY_MIX,     DELAY_SEND_1, 
+  /*  DELAY_SEND_2 */    ENT_DELAY_SEND_2,      -1,     		-1,     HOME,      	   OFF,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     DELAY,       DELAY_SEND_1,      DELAY_SEND_2,      DELAY_TIME_1,      DELAY_TIME_2,      DELAY_TIME_3,      DELAY_TIME_4,      DELAY_FB_1,      DELAY_FB_2,      DELAY_FB_3,      DELAY_FB_4,      DELAY_GAIN_1,      DELAY_GAIN_2,      DELAY_GAIN_3,      DELAY_GAIN_4,      DELAY_MIX,     DELAY_SEND_2,
+  /*  DELAY_TIME_1 */    ENT_DELAY_TIME_1,      -1,     		-1,     HOME,      	   OFF,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     DELAY,       DELAY_SEND_1,      DELAY_SEND_2,      DELAY_TIME_1,      DELAY_TIME_2,      DELAY_TIME_3,      DELAY_TIME_4,      DELAY_FB_1,      DELAY_FB_2,      DELAY_FB_3,      DELAY_FB_4,      DELAY_GAIN_1,      DELAY_GAIN_2,      DELAY_GAIN_3,      DELAY_GAIN_4,      DELAY_MIX,     DELAY_TIME_1,
+  /*  DELAY_TIME_2 */    ENT_DELAY_TIME_2,  	-1,     		-1,     HOME,      	   OFF,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     DELAY,       DELAY_SEND_1,      DELAY_SEND_2,      DELAY_TIME_1,      DELAY_TIME_2,      DELAY_TIME_3,      DELAY_TIME_4,      DELAY_FB_1,      DELAY_FB_2,      DELAY_FB_3,      DELAY_FB_4,      DELAY_GAIN_1,      DELAY_GAIN_2,      DELAY_GAIN_3,      DELAY_GAIN_4,      DELAY_MIX,     DELAY_TIME_2,
+  /*  DELAY_TIME_3 */    ENT_DELAY_TIME_3,      -1,     		-1,     HOME,      	   OFF,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     DELAY,       DELAY_SEND_1,      DELAY_SEND_2,      DELAY_TIME_1,      DELAY_TIME_2,      DELAY_TIME_3,      DELAY_TIME_4,      DELAY_FB_1,      DELAY_FB_2,      DELAY_FB_3,      DELAY_FB_4,      DELAY_GAIN_1,      DELAY_GAIN_2,      DELAY_GAIN_3,      DELAY_GAIN_4,      DELAY_MIX,     DELAY_TIME_3,
+	/*DELAY_TIME_4 */    ENT_DELAY_TIME_4,      -1,     		-1,     HOME,      	   OFF,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     DELAY,       DELAY_SEND_1,      DELAY_SEND_2,      DELAY_TIME_1,      DELAY_TIME_2,      DELAY_TIME_3,      DELAY_TIME_4,      DELAY_FB_1,      DELAY_FB_2,      DELAY_FB_3,      DELAY_FB_4,      DELAY_GAIN_1,      DELAY_GAIN_2,      DELAY_GAIN_3,      DELAY_GAIN_4,      DELAY_MIX,     DELAY_TIME_4,
+	/*DELAY_FB_1   */    ENT_DELAY_FB_1,  	    -1,     		-1,     HOME,          OFF,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     DELAY,       DELAY_SEND_1,      DELAY_SEND_2,      DELAY_TIME_1,      DELAY_TIME_2,      DELAY_TIME_3,      DELAY_TIME_4,      DELAY_FB_1,      DELAY_FB_2,      DELAY_FB_3,      DELAY_FB_4,      DELAY_GAIN_1,      DELAY_GAIN_2,      DELAY_GAIN_3,      DELAY_GAIN_4,      DELAY_MIX,     DELAY_FB_1,
+    /*DELAY_FB_2   */    ENT_DELAY_FB_2,  	    -1,     		-1,     HOME,      	   OFF,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     DELAY,       DELAY_SEND_1,      DELAY_SEND_2,      DELAY_TIME_1,      DELAY_TIME_2,      DELAY_TIME_3,      DELAY_TIME_4,      DELAY_FB_1,      DELAY_FB_2,      DELAY_FB_3,      DELAY_FB_4,      DELAY_GAIN_1,      DELAY_GAIN_2,      DELAY_GAIN_3,      DELAY_GAIN_4,      DELAY_MIX,     DELAY_FB_2,
+	/*DELAY_FB_3   */    ENT_DELAY_FB_3  	    -1,     		-1,     HOME,      	   OFF,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     DELAY,       DELAY_SEND_1,      DELAY_SEND_2,      DELAY_TIME_1,      DELAY_TIME_2,      DELAY_TIME_3,      DELAY_TIME_4,      DELAY_FB_1,      DELAY_FB_2,      DELAY_FB_3,      DELAY_FB_4,      DELAY_GAIN_1,      DELAY_GAIN_2,      DELAY_GAIN_3,      DELAY_GAIN_4,      DELAY_MIX,     DELAY_FB_3,
+	/*DELAY_FB_4   */    ENT_DELAY_FB_4,  	    -1,     		-1,     HOME,      	   OFF,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     DELAY,       DELAY_SEND_1,      DELAY_SEND_2,      DELAY_TIME_1,      DELAY_TIME_2,      DELAY_TIME_3,      DELAY_TIME_4,      DELAY_FB_1,      DELAY_FB_2,      DELAY_FB_3,      DELAY_FB_4,      DELAY_GAIN_1,      DELAY_GAIN_2,      DELAY_GAIN_3,      DELAY_GAIN_4,      DELAY_MIX,     DELAY_FB_4,
+   /*DELAY_GAIN_1  */    ENT_DELAY_GAIN_1,      -1,     	    -1,     HOME,      	   OFF,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     DELAY,       DELAY_SEND_1,      DELAY_SEND_2,      DELAY_TIME_1,      DELAY_TIME_2,      DELAY_TIME_3,      DELAY_TIME_4,      DELAY_FB_1,      DELAY_FB_2,      DELAY_FB_3,      DELAY_FB_4,      DELAY_GAIN_1,      DELAY_GAIN_2,      DELAY_GAIN_3,      DELAY_GAIN_4,      DELAY_MIX,     DELAY_GAIN_1,
+   /*DELAY_GAIN_2  */    ENT_DELAY_GAIN_2,      -1,     	    -1,     HOME,      	   OFF,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     DELAY,       DELAY_SEND_1,      DELAY_SEND_2,      DELAY_TIME_1,      DELAY_TIME_2,      DELAY_TIME_3,      DELAY_TIME_4,      DELAY_FB_1,      DELAY_FB_2,      DELAY_FB_3,      DELAY_FB_4,      DELAY_GAIN_1,      DELAY_GAIN_2,      DELAY_GAIN_3,      DELAY_GAIN_4,      DELAY_MIX,     DELAY_GAIN_2,
+   /*DELAY_GAIN_3  */    ENT_DELAY_GAIN_3,      -1,    		    -1,     HOME,      	   OFF,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     DELAY,       DELAY_SEND_1,      DELAY_SEND_2,      DELAY_TIME_1,      DELAY_TIME_2,      DELAY_TIME_3,      DELAY_TIME_4,      DELAY_FB_1,      DELAY_FB_2,      DELAY_FB_3,      DELAY_FB_4,      DELAY_GAIN_1,      DELAY_GAIN_2,      DELAY_GAIN_3,      DELAY_GAIN_4,      DELAY_MIX,     DELAY_GAIN_3,
+   /*DELAY_GAIN_4  */    ENT_DELAY_GAIN_4,      -1,    		    -1,     HOME,      	   OFF,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     DELAY,       DELAY_SEND_1,      DELAY_SEND_2,      DELAY_TIME_1,      DELAY_TIME_2,      DELAY_TIME_3,      DELAY_TIME_4,      DELAY_FB_1,      DELAY_FB_2,      DELAY_FB_3,      DELAY_FB_4,      DELAY_GAIN_1,      DELAY_GAIN_2,      DELAY_GAIN_3,      DELAY_GAIN_4,      DELAY_MIX,     DELAY_GAIN_4,
+	/*  DELAY_MIX  */    ENT_DELAY_MIX,  	    -1,     		-1,     HOME,      	   OFF,     MASTER_VOL,    VOL_WAV_1,     VOL_WAV_2,     TRACK_WAV_1,     TRACK_WAV_2,     PLAY_WAV_1,    PLAY_WAV_2,     DELAY,       DELAY_SEND_1,      DELAY_SEND_2,      DELAY_TIME_1,      DELAY_TIME_2,      DELAY_TIME_3,      DELAY_TIME_4,      DELAY_FB_1,      DELAY_FB_2,      DELAY_FB_3,      DELAY_FB_4,      DELAY_GAIN_1,      DELAY_GAIN_2,      DELAY_GAIN_3,      DELAY_GAIN_4,      DELAY_MIX,     DELAY_MIX,
+	              
+  
+  
+  
+  
+  
+  
+  
   };
   // clang-format on
   Machine::begin( state_table, ELSE );
@@ -88,6 +112,40 @@ int Atm_sev_seg::event( int id ) {
     case EVT_PLAY_WAV_1:
       return 0;
     case EVT_PLAY_WAV_2:
+      return 0;
+    case EVT_DELAY:
+       return 0;
+ 	case EVT_DELAY_SEND_1:
+       return 0;
+    case EVT_DELAY_SEND_2:
+       return 0;
+    case EVT_DELAY_TIME_1:
+       return 0;
+    case EVT_DELAY_TIME_2:
+       return 0;
+    case EVT_DELAY_TIME_3:
+       return 0;
+    case EVT_DELAY_TIME_4:
+       return 0;
+    case EVT_DELAY_FB_1:
+       return 0;
+    case EVT_DELAY_FB_2:
+       return 0;
+    case EVT_DELAY_FB_3:
+      return 0;
+	case EVT_DELAY_FB_4:
+      return 0;
+    case EVT_DELAY_GAIN_1:
+      return 0;
+    case EVT_DELAY_GAIN_2:
+      return 0;
+    case EVT_DELAY_GAIN_3:
+      return 0;
+    case EVT_DELAY_GAIN_4:
+      return 0;
+    case EVT_DELAY_TIME_4:
+      return 0;
+    case EVT_DELAY_MIX:
       return 0;
   }
   return 0;
