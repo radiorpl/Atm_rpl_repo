@@ -98,21 +98,21 @@ int Atm_sev_seg::event( int id ) {
      case EVT_HOME:
         return 0;
 	case EVT_OFF:
-      return 0;
+       return 0;
     case EVT_MASTER_VOL:
-      return 0;
+       return 0;
     case EVT_VOL_WAV_1:
-      return 0;
+       return 0;
     case EVT_VOL_WAV_2:
-      return 0;
+       return 0;
     case EVT_TRACK_WAV_1:
-      return 0;
+       return 0;
     case EVT_TRACK_WAV_2:
-      return 0;
+       return 0;
     case EVT_PLAY_WAV_1:
-      return 0;
+       return 0;
     case EVT_PLAY_WAV_2:
-      return 0;
+       return 0;
     case EVT_DELAY:
        return 0;
  	case EVT_DELAY_SEND_1:
@@ -159,41 +159,29 @@ void Atm_sev_seg::action( int id ) {
   switch ( id ) {
   	case ENT_HOME:
 	  write(0, 11); write(1, 11); write(2, 32); write(3, 2); //bb-2
-	  //Serial.println("HOME-sev-seg");
   	  return;
 	case ENT_OFF:
 	  write(0, 36); write(1, 36); write(2, 36); write(3, 36); //all off
-	  //Serial.println("----");
 	  return;
 	case ENT_MASTER_VOL:
 	  level = mas_vol_level;
 	  write(0, 21); write(1, 10); write(2, 27); writeLevel(level); //mAS(level)
-	  //Serial.println("MASTER VOL sev seg");
-	  //Serial.println(level);
 	  return;
   	case ENT_VOL_WAV_1:
 	  level = vol_wav_1_level;
   	  write(0, 10); write(1, 36); write(2, 36); writeLevel(level); //A  (level)
-	  //Serial.println("VOL 1 sev seg");
-	  //Serial.println(level);
 	  return;
     case ENT_VOL_WAV_2:
 	  level = vol_wav_2_level;
   	  write(0, 11); write(1, 36); write(2, 36); writeLevel(level); //b (level)
-	  //Serial.println("VOL 1 sev seg");
-	  //Serial.println(level);
   	  return;
    	case ENT_TRACK_WAV_1:
 	  level = track_1_level;
       write(0, 28); write(1, 26); write(2, 10); writeLevel(level); //trA(level)
-	  //Serial.print("TRACK 1 ");
-	  //Serial.print(level);
   	  return;
     case ENT_TRACK_WAV_2:
 	  level = track_2_level;
       write(0, 28); write(1, 26); write(2, 11); writeLevel(level); //trb(level)
-	  //Serial.print("TRACK 2 ");
-	  //Serial.print(level);
       return;
 	case ENT_PLAY_WAV_1:
 	  level = last_state_1;
@@ -213,6 +201,43 @@ void Atm_sev_seg::action( int id ) {
 	  	write(0, 11); write(1, 36); write(2, 23); write(3, 22); //b on
 	  }
 	  return;
+	case ENT_DELAY:
+	  return;
+  	case ENT_DELAY_SEND_1:
+  	  return;  
+  	case ENT_DELAY_SEND_2:
+  	  return;
+	case ENT_DELAY_TIME_1:
+	  return;  
+  	case ENT_DELAY_TIME_2:
+  	  return;
+	case ENT_DELAY_TIME_3:
+	  return;  
+	case ENT_DELAY_TIME_4:
+	  return;
+  	case ENT_DELAY_FB_1:
+  	  return;    
+  	case ENT_DELAY_FB_2:
+  	  return;
+	case ENT_DELAY_FB_3:
+	  return;  
+	case ENT_DELAY_FB_4:
+	  return;
+	case ENT_DELAY_GAIN_1:
+	  return;  
+	case ENT_DELAY_GAIN_2:
+	  return;
+	case ENT_DELAY_GAIN_3:
+	  return;  
+	case ENT_DELAY_GAIN_4:
+	  return;
+	case ENT_DELAY_MIX:
+	  return;   
+
+  
+  
+  
+  
   }
 }
 
