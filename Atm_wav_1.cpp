@@ -229,7 +229,38 @@ Atm_wav_1& Atm_wav_1::stop( void ) {
 }
 //                                     ===========ENCODER UP==============
 Atm_wav_1& Atm_wav_1::encoderUp( void ) {	
-	  if ( paramTimer.state() == 0 ) {
+	  if ( displayMain.state() == displayMain.TRACK_WAV_1 || displayMain.state() == displayMain.TRACK_WAV_2 ) {
+  		if ( player_instance == 1 ) {
+  			track_1_level += 1;
+  			if ( track_1_level > 4 ) {			//set range of track values
+  				track_1_level = 5;
+  			}
+  			displayMain.trigger( displayMain.EVT_TRACK_WAV_1 );
+  			if ( last_state_1 == 0 ) {
+  				trigger( EVT_WAV_OFF );
+  			}
+  			else if ( last_state_1 == 1 ) {
+  				trigger( EVT_WAV_ON );
+  			}
+  		}
+  		else if ( player_instance == 2 ) {
+  			track_2_level += 1;
+  			if ( track_2_level > 4 ) {			
+  				track_2_level = 5;
+  			}
+  			displayMain.trigger( displayMain.EVT_TRACK_WAV_2 );
+  			//Serial.println( track_2_level);
+  			if ( last_state_2 == 0 ) {
+  				trigger( EVT_WAV_OFF );
+  			}
+  			else if ( last_state_2 == 1 ) {
+  				trigger( EVT_WAV_ON );
+  			}
+  		}		
+  		Serial.println("enc up");
+  		paramTimer.trigger( paramTimer.EVT_START );
+  	}
+	else {
 		paramTimer.trigger( paramTimer.EVT_START );
 		Serial.println("wait display triggered");
 		if ( player_instance == 1 ){
@@ -251,132 +282,74 @@ Atm_wav_1& Atm_wav_1::encoderUp( void ) {
 			else if ( last_state_2 == 1 ) {
 				trigger( EVT_WAV_ON );
 			}
-		}
-
-	}
-	else {
-		if ( player_instance == 1 ) {
-			track_1_level += 1;
-			if ( track_1_level > 4 ) {			//set range of track values
-				track_1_level = 5;
-			}
-			displayMain.trigger( displayMain.EVT_TRACK_WAV_1 );
-			//Serial.println( track_1_level);
-			if ( last_state_1 == 0 ) {
-				trigger( EVT_WAV_OFF );
-			}
-			else if ( last_state_1 == 1 ) {
-				trigger( EVT_WAV_ON );
-			}
-		}
-		else if ( player_instance == 2 ) {
-			track_2_level += 1;
-			if ( track_2_level > 4 ) {			
-				track_2_level = 5;
-			}
-			displayMain.trigger( displayMain.EVT_TRACK_WAV_2 );
-			//Serial.println( track_2_level);
-			if ( last_state_2 == 0 ) {
-				trigger( EVT_WAV_OFF );
-			}
-			else if ( last_state_2 == 1 ) {
-				trigger( EVT_WAV_ON );
-			}
-		}		
-		Serial.println("enc up");
-		paramTimer.trigger( paramTimer.EVT_START );
-	}
+		}	
+	}	
 	return *this;
 }
 //                                     ===========ENCODER DOWN==============
 Atm_wav_1& Atm_wav_1::encoderDown( void ) {	
-	if ( paramTimer.state() == 0 ) {
+	  if ( displayMain.state() == displayMain.TRACK_WAV_1 || displayMain.state() == displayMain.TRACK_WAV_2 ) {
+  		if ( player_instance == 1 ) {
+  			track_1_level -= 1;
+  			if ( track_1_level < 2) {			//set range of track values
+  				track_1_level = 1;
+  			}
+  			displayMain.trigger( displayMain.EVT_TRACK_WAV_1 );
+  			if ( last_state_1 == 0 ) {
+  				trigger( EVT_WAV_OFF );
+  			}
+  			else if ( last_state_1 == 1 ) {
+  				trigger( EVT_WAV_ON );
+  			}
+  		}
+  		else if ( player_instance == 2 ) {
+  			track_2_level -= 1;
+  			if ( track_2_level < 2 ) {			
+  				track_2_level = 1;
+  			}
+  			displayMain.trigger( displayMain.EVT_TRACK_WAV_2 );
+  			//Serial.println( track_2_level);
+  			if ( last_state_2 == 0 ) {
+  				trigger( EVT_WAV_OFF );
+  			}
+  			else if ( last_state_2 == 1 ) {
+  				trigger( EVT_WAV_ON );
+  			}
+  		}		
+  		Serial.println("enc down");
+  		paramTimer.trigger( paramTimer.EVT_START );
+  	}
+	else {
 		paramTimer.trigger( paramTimer.EVT_START );
 		Serial.println("wait display triggered");
 		if ( player_instance == 1 ){
 			displayMain.trigger( displayMain.EVT_TRACK_WAV_1 );
+			delay( display_delay );
 			if ( last_state_1 == 0 ) {
 				trigger( EVT_WAV_OFF );
 			}
 			else if ( last_state_1 == 1 ) {
 				trigger( EVT_WAV_ON );
 			}
-			delay( display_delay );
 		}
 		else if ( player_instance == 2 ){
 			displayMain.trigger( displayMain.EVT_TRACK_WAV_2 );
-			if ( last_state_2 == 0 ) {
-				trigger( EVT_WAV_OFF );
-			}
-			else if ( last_state_2 == 1 ) {
-				trigger( EVT_WAV_ON );
-			}
 			delay( display_delay );
-		}
-	}
-	else {
-		if ( player_instance == 1 ) {
-			track_1_level -= 1;
-			if ( track_1_level < 2 ) {
-				track_1_level = 1;
-			}
-			displayMain.trigger( displayMain.EVT_TRACK_WAV_1 );
-			//Serial.println( track_1_level);
-			if ( last_state_1 == 0 ) {
-				trigger( EVT_WAV_OFF );
-			}
-			else if ( last_state_1 == 1 ) {
-				trigger( EVT_WAV_ON );
-			}
-		}
-		else if ( player_instance == 2 ) {
-			track_2_level -= 1;
-			if ( track_2_level < 2 ) {
-				track_2_level = 1;
-			}
-			displayMain.trigger( displayMain.EVT_TRACK_WAV_2 );
-			//Serial.println( track_2_level);
 			if ( last_state_2 == 0 ) {
 				trigger( EVT_WAV_OFF );
 			}
 			else if ( last_state_2 == 1 ) {
 				trigger( EVT_WAV_ON );
 			}
-		}		
-		Serial.println("enc down");
-		paramTimer.trigger( paramTimer.EVT_START );
-	}
+		}	
+	}	
 	return *this;
 }
 //												===========Btn1
 Atm_wav_1& Atm_wav_1::btn1( void ) {			//triggers display for tracks
-	if ( paramTimer.state() == 0 ) {
-		paramTimer.trigger( paramTimer.EVT_START );
-		Serial.println("wait display triggered");
-		if ( player_instance == 1 ){
-			displayMain.trigger( displayMain.EVT_TRACK_WAV_1 );
-			delay( display_delay );
-			if ( last_state_1 == 0 ) {
-				trigger( EVT_WAV_OFF );
-			}
-			else if ( last_state_1 == 1 ) {
-				trigger( EVT_WAV_ON );
-			}
-		}
-		else if ( player_instance == 2 ){
-			displayMain.trigger( displayMain.EVT_TRACK_WAV_2 );
-			delay( display_delay );
-			if ( last_state_2 == 0 ) {
-				trigger( EVT_WAV_OFF );
-			}
-			else if ( last_state_2 == 1 ) {
-				trigger( EVT_WAV_ON );
-			}
-		}
-	}
-	else {
+	if ( displayMain.state() == displayMain.TRACK_WAV_1 || displayMain.state() == displayMain.TRACK_WAV_2 ) {
 		if ( player_instance == 1 ) {
-			displayMain.trigger( displayMain.EVT_TRACK_WAV_1 );
+			displayMain.trigger( displayMain.EVT_TRACK_WAV_2 );
 			if ( last_state_1 == 0 ) {
 				trigger( EVT_WAV_OFF );
 			}
@@ -385,7 +358,7 @@ Atm_wav_1& Atm_wav_1::btn1( void ) {			//triggers display for tracks
 			}
 		}
 		else if ( player_instance == 2 ) {
-			displayMain.trigger( displayMain.EVT_TRACK_WAV_2 );
+			displayMain.trigger( displayMain.EVT_TRACK_WAV_1 );
 			if ( last_state_2 == 0 ) {
 				trigger( EVT_WAV_OFF );
 			}
@@ -393,17 +366,13 @@ Atm_wav_1& Atm_wav_1::btn1( void ) {			//triggers display for tracks
 				trigger( EVT_WAV_ON );
 			}
 		}
-		paramTimer.trigger( paramTimer.EVT_START );
+		paramTimer.trigger( paramTimer.EVT_START );	
 	}
-	return *this;
-}
-
-Atm_wav_1& Atm_wav_1::btn2( void ) {			//triggers display for tracks
-	if ( paramTimer.state() == 0 ) {
+	else {
 		paramTimer.trigger( paramTimer.EVT_START );
 		Serial.println("wait display triggered");
 		if ( player_instance == 1 ){
-			displayMain.trigger( displayMain.EVT_PLAY_WAV_1 );
+			displayMain.trigger( displayMain.EVT_TRACK_WAV_1 );
 			delay( display_delay );
 			if ( last_state_1 == 0 ) {
 				trigger( EVT_WAV_OFF );
@@ -413,7 +382,7 @@ Atm_wav_1& Atm_wav_1::btn2( void ) {			//triggers display for tracks
 			}
 		}
 		else if ( player_instance == 2 ){
-			displayMain.trigger( displayMain.EVT_PLAY_WAV_2 );
+			displayMain.trigger( displayMain.EVT_TRACK_WAV_2 );
 			delay( display_delay );
 			if ( last_state_2 == 0 ) {
 				trigger( EVT_WAV_OFF );
@@ -422,8 +391,12 @@ Atm_wav_1& Atm_wav_1::btn2( void ) {			//triggers display for tracks
 				trigger( EVT_WAV_ON );
 			}
 		}
-	}
-	else {
+	}	
+	return *this;
+}
+
+Atm_wav_1& Atm_wav_1::btn2( void ) {			//triggers display for tracks
+	if ( displayMain.state() == displayMain.PLAY_WAV_1 || displayMain.state() == displayMain.PLAY_WAV_2 ) {
 		if ( player_instance == 1) {
 			displayMain.trigger( displayMain.EVT_PLAY_WAV_1 );
 			if ( last_state_1 == 0 ) {
@@ -443,6 +416,30 @@ Atm_wav_1& Atm_wav_1::btn2( void ) {			//triggers display for tracks
 			}
 		}
 		paramTimer.trigger( paramTimer.EVT_START );
+	}	
+	else {
+		paramTimer.trigger( paramTimer.EVT_START );
+		Serial.println("wait display triggered");
+		if ( player_instance == 1 ){
+			displayMain.trigger( displayMain.EVT_PLAY_WAV_1 );
+			delay( display_delay );
+			if ( last_state_1 == 0 ) {
+				trigger( EVT_WAV_OFF );
+			}
+			else if ( last_state_1 == 1 ) {
+				trigger( EVT_WAV_ON );
+			}
+		}
+		else if ( player_instance == 2 ){
+			displayMain.trigger( displayMain.EVT_PLAY_WAV_2 );
+			delay( display_delay );
+			if ( last_state_2 == 0 ) {
+				trigger( EVT_WAV_OFF );
+			}
+			else if ( last_state_2 == 1 ) {
+				trigger( EVT_WAV_ON );
+			}
+		}
 	}
 	return *this;
 }
