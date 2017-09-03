@@ -176,8 +176,8 @@ Atm_wav_1& Atm_wav_1::play( void ) {
 			else if (track_1_level == 5) {
 				playSdWav1.play("DRONE5.WAV"); 
 			}
-		}
-		last_state_1 = 1;
+			last_state_1 = 1;
+		}	
 		last_track_1_level = track_1_level;
 		delay(10);
 		Serial.print( "player no 1 - track " );
@@ -201,14 +201,13 @@ Atm_wav_1& Atm_wav_1::play( void ) {
 			else if (track_2_level == 5) {
 				playSdWav2.play("DRONE5.WAV"); 
 			}
-		last_state_2 = 1;
+			last_state_2 = 1;
+		}
 		last_track_2_level = track_2_level;
 		delay(10);	
 		Serial.print( "player no 2 - track " );
 		Serial.println( track_1_level );	
 		}
-	}
-	
 	return *this;
 }
 
@@ -376,7 +375,7 @@ Atm_wav_1& Atm_wav_1::btn1( void ) {			//triggers display for tracks
 		}
 	}
 	else {
-		if ( enc_button_counter_2 == 0 ) {
+		if ( player_instance == 1 ) {
 			displayMain.trigger( displayMain.EVT_TRACK_WAV_1 );
 			if ( last_state_1 == 0 ) {
 				trigger( EVT_WAV_OFF );
@@ -385,7 +384,7 @@ Atm_wav_1& Atm_wav_1::btn1( void ) {			//triggers display for tracks
 				trigger( EVT_WAV_ON );
 			}
 		}
-		else if ( enc_button_counter_2 == 1 ) {
+		else if ( player_instance == 2 ) {
 			displayMain.trigger( displayMain.EVT_TRACK_WAV_2 );
 			if ( last_state_2 == 0 ) {
 				trigger( EVT_WAV_OFF );
@@ -398,6 +397,7 @@ Atm_wav_1& Atm_wav_1::btn1( void ) {			//triggers display for tracks
 	}
 	return *this;
 }
+
 Atm_wav_1& Atm_wav_1::btn2( void ) {			//triggers display for tracks
 	if ( paramTimer.state() == 0 ) {
 		paramTimer.trigger( paramTimer.EVT_START );
@@ -424,7 +424,7 @@ Atm_wav_1& Atm_wav_1::btn2( void ) {			//triggers display for tracks
 		}
 	}
 	else {
-		if ( enc_button_counter_1 == 0) {
+		if ( player_instance == 1) {
 			displayMain.trigger( displayMain.EVT_PLAY_WAV_1 );
 			if ( last_state_1 == 0 ) {
 				trigger( EVT_WAV_ON );
@@ -433,7 +433,7 @@ Atm_wav_1& Atm_wav_1::btn2( void ) {			//triggers display for tracks
 				trigger( EVT_WAV_OFF );
 			}
 		}
-		else if ( enc_button_counter_1 == 1) {
+		else if ( player_instance == 2) {
 			displayMain.trigger( displayMain.EVT_PLAY_WAV_2 );
 			if ( last_state_2 == 0 ) {
 				trigger( EVT_WAV_ON );
