@@ -143,8 +143,6 @@ int Atm_sev_seg::event( int id ) {
       return 0;
     case EVT_DELAY_GAIN_4:
       return 0;
-    case EVT_DELAY_TIME_4:
-      return 0;
     case EVT_DELAY_MIX:
       return 0;
   }
