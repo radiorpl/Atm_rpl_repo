@@ -69,8 +69,8 @@ void setup() {
    paramTimer.onFinish( displayMain, displayMain.EVT_HOME );	 
    sgtl5000_1.enable();
    sgtl5000_1.volume(0.3);	   
-   //delayMix.trace(Serial);
-   displayMain.trace(Serial); 
+   delayMix.trace(Serial);
+   //displayMain.trace(Serial); 
    //encBtn2.trace(Serial); 
    //volMaster.trace(Serial);  
 }
@@ -177,7 +177,6 @@ void loop() {
 	}
 //====================================================================
 	//button 4 - effect selection
-	/*
 	btn4.onPress( encBtn4, encBtn4.EVT_BTN_1 );
 	if ( enc_button_counter_4 == 0 ) {
 	    delaySend1.trigger( delaySend1.EVT_OFF );    
@@ -193,7 +192,6 @@ void loop() {
 	    delayFb1.trigger( delayFb1.EVT_CONTROL );
 	    delayMix.trigger( delayMix.EVT_CONTROL );
 	}
-	*/
 //====================================================================	
 	//encoder/button 5 - delay
 	if ( (displayMain.state() == displayMain.DELAY_SEND_1) || (displayMain.state() == displayMain.DELAY_SEND_2) || (displayMain.state() == displayMain.DELAY_TIME_1) || (displayMain.state() == displayMain.DELAY_FB_1) || (displayMain.state() == displayMain.DELAY_MIX) ) {

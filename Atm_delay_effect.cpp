@@ -31,11 +31,12 @@ int delay_gain_4_level;
 Atm_delay_effect& Atm_delay_effect::begin( int param_con ) {
   // clang-format off
   const static state_t state_table[] PROGMEM = {
-    /*               	ON_ENTER    ON_LOOP  ON_EXIT  EVT_CONTROL  EVT_ENC_UP   EVT_ENC_DOWN  EVT_BTN_1   ELSE */  
-   /*    CONTROL  */   ENT_CONTROL,   -1,      -1,      CONTROL,	  ENC_UP,      ENC_DOWN,    BTN_1,      -1,
-   /*    ENC_UP   */   ENT_ENC_UP,    -1,      -1,   	CONTROL,		-1,          -1,     	 -1,        -1,   
-   /*    ENC_DOWN */   ENT_ENC_DOWN,  -1,      -1,   	CONTROL,		-1,          -1,     	 -1,        -1, 
-   /*    BTN_1    */   ENT_BTN_1,     -1,      -1,   	CONTROL,		-1,          -1,     	 -1,        -1, 	  
+    /*               	ON_ENTER    ON_LOOP  ON_EXIT  EVT_OFF  EVT_CONTROL  EVT_ENC_UP   EVT_ENC_DOWN  EVT_BTN_1   ELSE */  
+   /*    OFF      */   ENT_OFF,       -1,      -1,      -1,     CONTROL,	  -1,            -1,         -1,        -1,
+   /*    CONTROL  */   ENT_CONTROL,   -1,      -1,      OFF,    CONTROL,	  ENC_UP,      ENC_DOWN,    BTN_1,      -1,
+   /*    ENC_UP   */   ENT_ENC_UP,    -1,      -1,   	-1,     CONTROL,		-1,          -1,     	 -1,        -1,   
+   /*    ENC_DOWN */   ENT_ENC_DOWN,  -1,      -1,   	-1,     CONTROL,		-1,          -1,     	 -1,        -1, 
+   /*    BTN_1    */   ENT_BTN_1,     -1,      -1,   	-1,     CONTROL,		-1,          -1,     	 -1,        -1, 	  
 	    
   };
   // clang-format on
@@ -66,6 +67,8 @@ Atm_delay_effect& Atm_delay_effect::begin( int param_con ) {
 
 int Atm_delay_effect::event( int id ) {
   switch ( id ) {
+  	case EVT_OFF:
+  	  return 0;	
 	case EVT_CONTROL:
 	  return 0;
 	case EVT_ENC_UP:
@@ -84,6 +87,9 @@ int Atm_delay_effect::event( int id ) {
 
 void Atm_delay_effect::action( int id ) {
   switch ( id ) {
+  	case ENT_OFF:
+  	  off();
+  	  return;
 	case ENT_CONTROL:
 	  setLevel();
 	  return;
@@ -420,11 +426,11 @@ Atm_delay_effect& Atm_delay_effect::off( void ) {
   	//mixer3.gain(2, 0.0);		//feedback inputs
   	//mixer3.gain(3, 0.0);
   	
-	/*
+	
 	mixer4.gain(0, 0.0);
   	mixer4.gain(1, 0.0);
     mixer9.gain(1, 0.0);		//master effect mix
-	*/
+	
 	return *this;
 }
 /*
@@ -580,7 +586,7 @@ Atm_delay_effect& Atm_delay_effect::encoderDown( void ) {
 
 Atm_delay_effect& Atm_delay_effect::trace( Stream & stream ) {
   Machine::setTrace( &stream, atm_serial_debug::trace,
-    "DELAY_EFFECT\0EVT_CONTROL\0EVT_ENC_UP\0EVT_ENC_DOWN\0EVT_BTN_1\0ELSE\0CONTROL\0ENC_UP\0ENC_DOWN\0BTN_1" );
+    "DELAY_EFFECT\0EVT_OFF\0EVT_CONTROL\0EVT_ENC_UP\0EVT_ENC_DOWN\0EVT_BTN_1\0ELSE\0OFF\0CONTROL\0ENC_UP\0ENC_DOWN\0BTN_1" );
   return *this;
 }
 
