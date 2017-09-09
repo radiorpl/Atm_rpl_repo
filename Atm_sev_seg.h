@@ -5,8 +5,9 @@
 class Atm_sev_seg: public Machine {
 
  public:
-  enum { HOME, OFF, MASTER_VOL, VOL_WAV_1, VOL_WAV_2, TRACK_WAV_1, TRACK_WAV_2, PLAY_WAV_1, PLAY_WAV_2 }; // STATES
-  enum { EVT_HOME, EVT_OFF, EVT_MASTER_VOL, EVT_VOL_WAV_1, EVT_VOL_WAV_2, EVT_TRACK_WAV_1, EVT_TRACK_WAV_2, EVT_PLAY_WAV_1, EVT_PLAY_WAV_2, ELSE }; // EVENTS
+  enum { HOME, OFF, MASTER_VOL, VOL_WAV_1, VOL_WAV_2, TRACK_WAV_1, TRACK_WAV_2, PLAY_WAV_1, PLAY_WAV_2, DELAY, DELAY_SEND_1, DELAY_SEND_2, DELAY_TIME_1, DELAY_TIME_2, DELAY_TIME_3, DELAY_TIME_4, DELAY_FB_1, DELAY_FB_2, DELAY_FB_3, DELAY_FB_4, DELAY_GAIN_1, DELAY_GAIN_2, DELAY_GAIN_3, DELAY_GAIN_4, DELAY_MIX }; // STATES
+  
+  enum { EVT_HOME, EVT_OFF, EVT_MASTER_VOL, EVT_VOL_WAV_1, EVT_VOL_WAV_2, EVT_TRACK_WAV_1, EVT_TRACK_WAV_2, EVT_PLAY_WAV_1, EVT_PLAY_WAV_2, EVT_DELAY, EVT_DELAY_SEND_1, EVT_DELAY_SEND_2, EVT_DELAY_TIME_1, EVT_DELAY_TIME_2, EVT_DELAY_TIME_3, EVT_DELAY_TIME_4, EVT_DELAY_FB_1, EVT_DELAY_FB_2, EVT_DELAY_FB_3, EVT_DELAY_FB_4, EVT_DELAY_GAIN_1, EVT_DELAY_GAIN_2, EVT_DELAY_GAIN_3, EVT_DELAY_GAIN_4, EVT_DELAY_MIX, ELSE }; // EVENTS
   Atm_sev_seg( void ) : Machine() {};
   Atm_sev_seg& begin( void );
   Atm_sev_seg& trace( Stream & stream );
@@ -19,7 +20,8 @@ class Atm_sev_seg: public Machine {
   
 
  private:
-  enum { ENT_OFF, ENT_HOME, ENT_MASTER_VOL, ENT_VOL_WAV_1, ENT_VOL_WAV_2, ENT_TRACK_WAV_1, ENT_TRACK_WAV_2, ENT_PLAY_WAV_1, ENT_PLAY_WAV_2 }; // ACTIONS
+  enum { ENT_OFF, ENT_HOME, ENT_MASTER_VOL, ENT_VOL_WAV_1, ENT_VOL_WAV_2, ENT_TRACK_WAV_1, ENT_TRACK_WAV_2, ENT_PLAY_WAV_1, ENT_PLAY_WAV_2, ENT_DELAY, ENT_DELAY_SEND_1, ENT_DELAY_SEND_2, ENT_DELAY_TIME_1, ENT_DELAY_TIME_2, ENT_DELAY_TIME_3, ENT_DELAY_TIME_4, ENT_DELAY_FB_1, ENT_DELAY_FB_2, ENT_DELAY_FB_3, ENT_DELAY_FB_4, ENT_DELAY_GAIN_1, ENT_DELAY_GAIN_2, ENT_DELAY_GAIN_3, ENT_DELAY_GAIN_4, ENT_DELAY_MIX }; // ACTIONS
+  
   int event( int id ); 
   void action( int id );
   //real pins
@@ -30,7 +32,7 @@ class Atm_sev_seg: public Machine {
   byte pinCountDig = 4;         //number of digits
   byte command [3] = { 21, 19, 20 }; //21 is first led register with auto increment, so send 21, then 2 btyes for led0-3 and then led4-7 19 is psc1, 20 is pwm1
   int last_level;
-  
+  int dig_delay;
   //non-blinking characters
   //               0    1   2  3   4   5   6    7  8    9   10 11   12 13  14  15  16  17  18  19  20  21   22 23  24  25  26  27  28  29  30  31  32  33  34  35  36
   //               0    1   2  3   4   5   6    7  8    9   A  b    c  d    E   F  g   h   i   j   L   m    n  o   p   q   r   s   t   u   y   Z   -    _   ^   .  " "

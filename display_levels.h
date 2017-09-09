@@ -7,7 +7,7 @@ extern int vol_wav_2_level;
 //delay
 extern int send_1_level;
 extern int send_2_level;
-extern int mix_level;
+extern int delay_mix_level;
 extern int time_1_level;
 extern int time_2_level;
 extern int time_3_level;
@@ -23,7 +23,7 @@ extern int delay_gain_4_level;
 //track 
 extern int track_1_level;
 extern int track_2_level;
-extern int last_track_1_level;
-extern int last_track_2_level;
 extern int last_state_1;
 extern int last_state_2;
+//fx_select
+extern int delay_on_off;
