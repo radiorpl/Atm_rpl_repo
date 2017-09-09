@@ -104,7 +104,7 @@ Atm_enc_button& Atm_enc_button::countUp( void ) {  //==========changed button ra
   	if ( enc_button_counter_3 > 2 ){     //volumes
   		enc_button_counter_3 = 0;
   	}
-  	if ( enc_button_counter_4 > 1 ){     //effects
+  	if ( enc_button_counter_4 > 0 ){     //effects
   		enc_button_counter_4 = 0;
   	}
   	if ( enc_button_counter_5 > 4 ){     //effect parameters
@@ -141,7 +141,7 @@ Atm_enc_button& Atm_enc_button::countDown( void ) {
   		enc_button_counter_3 = 2;
   	}
   	if ( enc_button_counter_4 < 0 ){     //effects
-  		enc_button_counter_4 = 1;
+  		enc_button_counter_4 = 0;
   	}
   	if ( enc_button_counter_5 < 0 ){     //effect parameters
   		enc_button_counter_5 = 4;

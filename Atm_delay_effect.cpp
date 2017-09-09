@@ -11,7 +11,6 @@ rewritten based on new atm_master_vol
  * Add extra initialization code
  */
 
-int on_off;
 int send_1_level;
 int send_2_level;
 int delay_mix_level;

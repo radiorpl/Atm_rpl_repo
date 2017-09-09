@@ -111,11 +111,11 @@ int Atm_master_vol::state( void ) {
 
 
 Atm_master_vol& Atm_master_vol::setVolume( void ) {
-	if ( vol_control == 0 ){  		//master
-		if( volume_position < 1 ){		//constrain volume_position to bounds of volume array
+	if ( vol_control == 0 ) {  		//master
+		if( volume_position < 1 ) {		//constrain volume_position to bounds of volume array
 			volume_position = 0; 	              
 		}
-		if( volume_position > 27 ){
+		if( volume_position > 27 ) {
 			volume_position = 28; 	// 0.81, louder will clip master               
 		}			
 		sgtl5000_1.volume(volume_array[volume_position]);
@@ -123,19 +123,19 @@ Atm_master_vol& Atm_master_vol::setVolume( void ) {
 		Serial.println(volume_position);
 		Serial.println("volume");
 		Serial.println(volume_array[volume_position]);
-		if ( volume_position > -1 && volume_position < 3){
+		if ( volume_position > -1 && volume_position < 3) {
 				mas_vol_level = 0;
 			}
-			else if ( volume_position > 2 && volume_position < 6){
+			else if ( volume_position > 2 && volume_position < 6) {
 				mas_vol_level = 1;
 			}
-			else if ( volume_position > 5 && volume_position < 9){
+			else if ( volume_position > 5 && volume_position < 9) {
 				mas_vol_level = 2;
 			}
-			else if ( volume_position > 8 && volume_position < 12){
+			else if ( volume_position > 8 && volume_position < 12) {
 				mas_vol_level = 3;
 			}
-			else if ( volume_position > 11 && volume_position < 15){
+			else if ( volume_position > 11 && volume_position < 15) {
 				mas_vol_level = 4;
 			}
 			else if ( volume_position > 14 && volume_position < 18){

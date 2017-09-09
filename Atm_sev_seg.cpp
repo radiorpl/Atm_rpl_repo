@@ -194,7 +194,7 @@ void Atm_sev_seg::action( int id ) {
 	  }
 	  return;
 	case ENT_DELAY:  		//                                      ==============DELAY===============
-	  level = on_off;
+	  level = delay_on_off;
 	  if ( level == 0 ) {
 	  	write(0, 13); write(1, 20); write(2, 30); write(3, 1); //dLY1
 	  }

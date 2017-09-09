@@ -4,10 +4,12 @@
 #include <button_counters.h> 
 #include <Atm_sev_seg.h>
 #include <Atm_delay_effect.h>
+#include <Atm_fx_select.h>
 #include <Automaton.h>
 #include "display_def.h"
 #include "button_counters.h"
 #include "audio_system.h"
+
 
 
 #define SDCARD_CS_PIN    10      // Use these with the Teensy Audio Shield
@@ -22,6 +24,7 @@ Atm_enc_button encBtn1, encBtn2, encBtn3, encBtn4, encBtn5;
 Atm_sev_seg displayMain;
 Atm_timer delayTimer, paramTimer;
 Atm_delay_effect delaySend1, delaySend2, delayTime1, delayFb1, delayMix;
+Atm_fx_select delaySelect;
 
 void setup() {
    Serial.begin( 9600 );
@@ -43,6 +46,7 @@ void setup() {
    delayTime1.begin(2);
    delayFb1.begin(6);
    delayMix.begin(14);
+   delaySelect.begin(0);
    enc1.begin(33, 24);      //encoders
    enc1.debounce(100);
    enc2.begin(25, 26);
@@ -70,6 +74,7 @@ void setup() {
    sgtl5000_1.enable();
    sgtl5000_1.volume(0.3);	   
    delayMix.trace(Serial);
+   delaySelect.trace(Serial);
    //displayMain.trace(Serial); 
    //encBtn2.trace(Serial); 
    //volMaster.trace(Serial);  
@@ -177,6 +182,17 @@ void loop() {
 	}
 //====================================================================
 	//button 4 - effect selection
+	 if ( (displayMain.state() == displayMain.DELAY) ) {
+		 if ( enc_button_counter_5 == 0 ) {
+			 btn4.onPress( delaySelect, delaySelect.EVT_BTN_1 );
+		 } 
+	 }
+	 else {
+		 if ( enc_button_counter_5 == 0 ) {
+			 btn4.onPress( delaySelect, delaySelect.EVT_BTN_1 );
+		 } 
+	 }
+	/*
 	btn4.onPress( encBtn4, encBtn4.EVT_BTN_1 );
 	if ( enc_button_counter_4 == 0 ) {
 	    delaySend1.trigger( delaySend1.EVT_OFF );    
@@ -192,6 +208,7 @@ void loop() {
 	    delayFb1.trigger( delayFb1.EVT_CONTROL );
 	    delayMix.trigger( delayMix.EVT_CONTROL );
 	}
+	*/
 //====================================================================	
 	//encoder/button 5 - delay
 	if ( (displayMain.state() == displayMain.DELAY_SEND_1) || (displayMain.state() == displayMain.DELAY_SEND_2) || (displayMain.state() == displayMain.DELAY_TIME_1) || (displayMain.state() == displayMain.DELAY_FB_1) || (displayMain.state() == displayMain.DELAY_MIX) ) {
