@@ -31,18 +31,18 @@ int delay_gain_4_level;
 Atm_delay_effect& Atm_delay_effect::begin( int param_con ) {
   // clang-format off
   const static state_t state_table[] PROGMEM = {
-    /*               	ON_ENTER    ON_LOOP  ON_EXIT  EVT_OFF  EVT_CONTROL  EVT_ENC_UP   EVT_ENC_DOWN  EVT_BTN_1   ELSE */
-    /*   OFF      */   ENT_OFF,       -1,      -1,   	  -1,     CONTROL,       -1,          -1,        -1,        -1,  
-   /*    CONTROL  */   ENT_CONTROL,   -1,      -1,   	 OFF,      -1,	      ENC_UP,      ENC_DOWN,    BTN_1,      -1,
-   /*    ENC_UP   */   ENT_ENC_UP,    -1,      -1,   	  -1,     CONTROL,		 -1,          -1,     	 -1,        -1,   
-   /*    ENC_DOWN */   ENT_ENC_DOWN,  -1,      -1,   	  -1,     CONTROL,		 -1,          -1,     	 -1,        -1, 
-   /*    BTN_1    */   ENT_BTN_1,     -1,      -1,   	  -1,     CONTROL,		 -1,          -1,     	 -1,        -1, 	  
+    /*               	ON_ENTER    ON_LOOP  ON_EXIT  EVT_CONTROL  EVT_ENC_UP   EVT_ENC_DOWN  EVT_BTN_1   ELSE */  
+   /*    CONTROL  */   ENT_CONTROL,   -1,      -1,      CONTROL,	  ENC_UP,      ENC_DOWN,    BTN_1,      -1,
+   /*    ENC_UP   */   ENT_ENC_UP,    -1,      -1,   	CONTROL,		-1,          -1,     	 -1,        -1,   
+   /*    ENC_DOWN */   ENT_ENC_DOWN,  -1,      -1,   	CONTROL,		-1,          -1,     	 -1,        -1, 
+   /*    BTN_1    */   ENT_BTN_1,     -1,      -1,   	CONTROL,		-1,          -1,     	 -1,        -1, 	  
 	    
   };
   // clang-format on
   Machine::begin( state_table, ELSE );
   param_control = param_con;
   display_delay = 100;
+  param_position = 17;
   mixer3.gain(0, 0.5);		//signal inputs
   mixer3.gain(1, 0.5);
   mixer3.gain(2, 0.5);		//feedback inputs
@@ -66,8 +66,6 @@ Atm_delay_effect& Atm_delay_effect::begin( int param_con ) {
 
 int Atm_delay_effect::event( int id ) {
   switch ( id ) {
-    case EVT_OFF:
-	  return 0;
 	case EVT_CONTROL:
 	  return 0;
 	case EVT_ENC_UP:
@@ -86,9 +84,6 @@ int Atm_delay_effect::event( int id ) {
 
 void Atm_delay_effect::action( int id ) {
   switch ( id ) {
-	case ENT_OFF:
-	  off();
-	  return;
 	case ENT_CONTROL:
 	  setLevel();
 	  return;
@@ -211,6 +206,7 @@ Atm_delay_effect& Atm_delay_effect::setLevel( void ) {
 		}
 		delay1.delay(0, speed_array[param_position]);
 		//Serial.println( param_array[param_position] );
+		time_1_level = param_position;
 	}
 	else if ( param_control == 3 ) { 	//set delay time 2
 		if( param_position < 1 ){
@@ -248,7 +244,38 @@ Atm_delay_effect& Atm_delay_effect::setLevel( void ) {
 		}
 		mixer3.gain(2, param_array[param_position]);
 		//Serial.println( param_array[param_position] );
+		if ( param_position > -1 && param_position < 4){
+			fb_1_level = 0;
+		}
+		else if ( param_position > 3 && param_position < 7){
+			fb_1_level = 1;
+		}
+		else if ( param_position > 6 && param_position < 10){
+			fb_1_level = 2;
+		}
+		else if ( param_position > 9 && param_position < 13){
+			fb_1_level = 3;
+		}
+		else if ( param_position > 12 && param_position < 16){
+			fb_1_level = 4;
+		}
+		else if ( param_position > 15 && param_position < 19){
+			fb_1_level = 5;
+		}
+		else if ( param_position > 18 && param_position < 23){
+			fb_1_level = 6;
+		}
+		else if ( param_position > 22 && param_position < 27){
+			fb_1_level = 7;
+		}
+		else if ( param_position > 26 && param_position < 31){
+			fb_1_level = 8;
+		}
+		else if ( param_position > 30 && param_position < 33){
+			fb_1_level = 9;
+		}
 	}
+	
 	else if ( param_control == 7 ) { 	//fb delay 2
 		if( param_position < 1 ){
 			param_position = 0; 	                
@@ -257,6 +284,36 @@ Atm_delay_effect& Atm_delay_effect::setLevel( void ) {
 			param_position = 33; 	              
 		}
 		mixer3.gain(3, param_array[param_position]);
+		if ( param_position > -1 && param_position < 4){
+			fb_2_level = 0;
+		}
+		else if ( param_position > 3 && param_position < 7){
+			fb_2_level = 1;
+		}
+		else if ( param_position > 6 && param_position < 10){
+			fb_2_level = 2;
+		}
+		else if ( param_position > 9 && param_position < 13){
+			fb_2_level = 3;
+		}
+		else if ( param_position > 12 && param_position < 16){
+			fb_2_level = 4;
+		}
+		else if ( param_position > 15 && param_position < 19){
+			fb_2_level = 5;
+		}
+		else if ( param_position > 18 && param_position < 23){
+			fb_2_level = 6;
+		}
+		else if ( param_position > 22 && param_position < 27){
+			fb_2_level = 7;
+		}
+		else if ( param_position > 26 && param_position < 31){
+			fb_2_level = 8;
+		}
+		else if ( param_position > 30 && param_position < 33){
+			fb_2_level = 9;
+		}
 	}
 	else if ( param_control == 8 ) { 	//fb delay 3
 		if( param_position < 1 ){
@@ -321,6 +378,36 @@ Atm_delay_effect& Atm_delay_effect::setLevel( void ) {
 		}
 		mixer9.gain(1, param_array[param_position]);
 		mixer9.gain(0, (0.99 - param_array[param_position]));
+		if ( param_position > -1 && param_position < 4){
+			delay_mix_level = 0;
+		}
+		else if ( param_position > 3 && param_position < 7){
+			delay_mix_level = 1;
+		}
+		else if ( param_position > 6 && param_position < 10){
+			delay_mix_level = 2;
+		}
+		else if ( param_position > 9 && param_position < 13){
+			delay_mix_level = 3;
+		}
+		else if ( param_position > 12 && param_position < 16){
+			delay_mix_level = 4;
+		}
+		else if ( param_position > 15 && param_position < 19){
+			delay_mix_level = 5;
+		}
+		else if ( param_position > 18 && param_position < 23){
+			delay_mix_level = 6;
+		}
+		else if ( param_position > 22 && param_position < 27){
+			delay_mix_level = 7;
+		}
+		else if ( param_position > 26 && param_position < 31){
+			delay_mix_level = 8;
+		}
+		else if ( param_position > 30 && param_position < 33){
+			delay_mix_level = 9;
+		}	
 	}
 	return *this;
 }
@@ -379,7 +466,7 @@ Atm_delay_effect& Atm_delay_effect::btn1( void ) {
 		else if ( param_control == 6 ) {
 			displayMain.trigger( displayMain.EVT_DELAY_FB_1 );
 		}
-		else if ( param_control == 13 ) {
+		else if ( param_control == 14 ) {
 			displayMain.trigger( displayMain.EVT_DELAY_MIX );
 		}					
 		delay(display_delay);       	//display wait
@@ -391,19 +478,19 @@ Atm_delay_effect& Atm_delay_effect::btn1( void ) {
 Atm_delay_effect& Atm_delay_effect::encoderUp( void ) {	
 	if ( (displayMain.state() == displayMain.DELAY_SEND_1) || (displayMain.state() == displayMain.DELAY_SEND_2) || (displayMain.state() == displayMain.DELAY_TIME_1) || (displayMain.state() == displayMain.DELAY_FB_1) || (displayMain.state() == displayMain.DELAY_MIX) ) {
 		param_position += 1;
-		if ( param_control == 0) {
+		if ( param_control == 0 ) {
 			displayMain.trigger( displayMain.EVT_DELAY_SEND_1 );
 		}
-		else if ( param_control == 1) {
+		else if ( param_control == 1 ) {
 			displayMain.trigger( displayMain.EVT_DELAY_SEND_2 );
 		}
-		else if ( param_control == 2) {
+		else if ( param_control == 2 ) {
 			displayMain.trigger( displayMain.EVT_DELAY_TIME_1 );
 		}
-		else if ( param_control == 6) {
+		else if ( param_control == 6 ) {
 			displayMain.trigger( displayMain.EVT_DELAY_FB_1 );
 		}
-		else if ( param_control == 14) {
+		else if ( param_control == 14 ) {
 			displayMain.trigger( displayMain.EVT_DELAY_MIX );
 		}
 		trigger( EVT_CONTROL );
@@ -493,7 +580,7 @@ Atm_delay_effect& Atm_delay_effect::encoderDown( void ) {
 
 Atm_delay_effect& Atm_delay_effect::trace( Stream & stream ) {
   Machine::setTrace( &stream, atm_serial_debug::trace,
-    "DELAY_EFFECT\0EVT_OFF\0EVT_CONTROL\0EVT_ENC_UP\0EVT_ENC_DOWN\0EVT_BTN_1\0ELSE\0OFF\0CONTROL\0ENC_UP\0ENC_DOWN\0BTN_1" );
+    "DELAY_EFFECT\0EVT_CONTROL\0EVT_ENC_UP\0EVT_ENC_DOWN\0EVT_BTN_1\0ELSE\0CONTROL\0ENC_UP\0ENC_DOWN\0BTN_1" );
   return *this;
 }
 

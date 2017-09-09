@@ -237,20 +237,19 @@ Atm_master_vol& Atm_master_vol::setVolume( void ) {
 		else if ( volume_position > 30 && volume_position < 33){
 			vol_wav_2_level = 9;
 		}
-
 	}
 	return *this;
 }
 
 Atm_master_vol& Atm_master_vol::btn1( void ) {
     if ( (displayMain.state() == displayMain.MASTER_VOL) || (displayMain.state() == displayMain.VOL_WAV_1) || (displayMain.state() == displayMain.VOL_WAV_2) ) {
-		if ( enc_button_counter_3 == 0) {
+		if ( enc_button_counter_3 == 0 ) {
 			displayMain.trigger( displayMain.EVT_MASTER_VOL );
 		}
-		else if ( enc_button_counter_3 == 1) {
+		else if ( enc_button_counter_3 == 1 ) {
 			displayMain.trigger( displayMain.EVT_VOL_WAV_1 );
 		}
-		else if ( enc_button_counter_3 == 2) {
+		else if ( enc_button_counter_3 == 2 ) {
 			displayMain.trigger( displayMain.EVT_VOL_WAV_2 );
 		}
 		paramTimer.trigger( paramTimer.EVT_START );
@@ -259,13 +258,13 @@ Atm_master_vol& Atm_master_vol::btn1( void ) {
 	else {
    		paramTimer.trigger( paramTimer.EVT_START );   //trigger timer
    		Serial.println("wait display triggered");
-		if ( vol_control == 0) {
+		if ( vol_control == 0 ) {
 			displayMain.trigger( displayMain.EVT_MASTER_VOL );  
 		}
-		else if ( vol_control == 1) {
+		else if ( vol_control == 1 ) {
 			displayMain.trigger( displayMain.EVT_VOL_WAV_1 );
 		}
-		else if ( vol_control == 2) {
+		else if ( vol_control == 2 ) {
 			displayMain.trigger( displayMain.EVT_VOL_WAV_2 );
 		}								
 		delay(display_delay);       					//display wait

@@ -5,8 +5,8 @@
 class Atm_delay_effect: public Machine {
 
  public:
-  enum { OFF, CONTROL, ENC_UP, ENC_DOWN, BTN_1 }; // STATES
-  enum { EVT_OFF, EVT_CONTROL, EVT_ENC_UP, EVT_ENC_DOWN, EVT_BTN_1, ELSE }; // EVENTS
+  enum { CONTROL, ENC_UP, ENC_DOWN, BTN_1 }; // STATES
+  enum { EVT_CONTROL, EVT_ENC_UP, EVT_ENC_DOWN, EVT_BTN_1, ELSE }; // EVENTS
   Atm_delay_effect( void ) : Machine(){};
   Atm_delay_effect& begin( int param_con );
   Atm_delay_effect& trace( Stream & stream );
@@ -19,7 +19,7 @@ class Atm_delay_effect: public Machine {
   int state( void );
  
  private:
-  enum { ENT_OFF, ENT_CONTROL, ENT_ENC_UP, ENT_ENC_DOWN, ENT_BTN_1 }; // ACTIONS
+  enum { ENT_CONTROL, ENT_ENC_UP, ENT_ENC_DOWN, ENT_BTN_1 }; // ACTIONS
   int event( int id ); 
   void action( int id );
   int param_control;
