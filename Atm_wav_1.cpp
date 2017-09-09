@@ -180,8 +180,8 @@ Atm_wav_1& Atm_wav_1::play( void ) {
 		}	
 		last_track_1_level = track_1_level;
 		delay(10);
-		Serial.print( "player no 1 - track " );
-		Serial.println( track_1_level );
+		//Serial.print( "player no 1 - track " );
+		//Serial.println( track_1_level );
 	    }
 		
 	else if ( player_instance == 2 ) {
@@ -205,8 +205,8 @@ Atm_wav_1& Atm_wav_1::play( void ) {
 		}
 		last_track_2_level = track_2_level;
 		delay(10);	
-		Serial.print( "player no 2 - track " );
-		Serial.println( track_1_level );	
+		//Serial.print( "player no 2 - track " );
+		//Serial.println( track_1_level );	
 		}
 	return *this;
 }
