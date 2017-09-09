@@ -166,7 +166,7 @@ Atm_master_vol& Atm_master_vol::setVolume( void ) {
 		Serial.println(volume_position);
 		Serial.println(volume_array[volume_position]);
 		if ( volume_position > -1 && volume_position < 4){
-			mas_vol_level = 0;
+			vol_wav_1_level = 0;
 		}
 		else if ( volume_position > 3 && volume_position < 7){
 			vol_wav_1_level = 1;
@@ -208,7 +208,7 @@ Atm_master_vol& Atm_master_vol::setVolume( void ) {
 		Serial.println(volume_position);
 		Serial.println(volume_array[volume_position]);
 		if ( volume_position > -1 && volume_position < 4){
-			mas_vol_level = 0;
+			vol_wav_2_level = 0;
 		}
 		else if ( volume_position > 3 && volume_position < 7){
 			vol_wav_2_level = 1;
