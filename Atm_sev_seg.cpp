@@ -161,7 +161,7 @@ void Atm_sev_seg::action( int id ) {
 	case ENT_OFF:
 	  write(0, 36); write(1, 36); write(2, 36); write(3, 36); //all off
 	  return;
-	case ENT_MASTER_VOL:
+	case ENT_MASTER_VOL: //						                  ==========VOLUME/WAV PLAYERS===============
 	  level = mas_vol_level;
 	  write(0, 21); write(1, 10); write(2, 27); writeLevel(level); //mAS(level)
 	  return;
@@ -199,43 +199,75 @@ void Atm_sev_seg::action( int id ) {
 	  	write(0, 11); write(1, 36); write(2, 23); write(3, 22); //b on
 	  }
 	  return;
-	case ENT_DELAY:
+	case ENT_DELAY:  		//                                      ==============DELAY===============
+	  level = on_off;
+	  if ( level == 0 ) {
+	  	write(0, 13); write(1, 20); write(2, 30); write(3, 1); //dLY1
+	  }
+	  else if ( level != 0 ) {
+	  	writeBlink(0, 13); writeBlink(1, 20); writeBlink(2, 30); writeBlink(3, 1); //dLY1 (blink)
+	  }
 	  return;
   	case ENT_DELAY_SEND_1:
+	  level = send_1_level;
+	  write(0, 27); write(1, 13); write(2, 1); writeLevel(level); //Sd1(level)
   	  return;  
   	case ENT_DELAY_SEND_2:
+	  level = send_2_level;
+	  write(0, 27); write(1, 13); write(2, 2); writeLevel(level); //Sd2(level)
   	  return;
 	case ENT_DELAY_TIME_1:
+	  level = time_1_level;
+	  write(0, 13); write(1, 28); write(2, 1); writeLevel(level); //Dt1(level)
 	  return;  
   	case ENT_DELAY_TIME_2:
+	  level = time_2_level; 
+	  write(0, 13); write(1, 28); write(2, 2); writeLevel(level); //Dt2(level)	
   	  return;
 	case ENT_DELAY_TIME_3:
+	  level = time_3_level;
+	  write(0, 13); write(1, 28); write(2, 3); writeLevel(level); //Dt3(level)	
 	  return;  
 	case ENT_DELAY_TIME_4:
+	  level = time_4_level;
+	  write(0, 13); write(1, 28); write(2, 4); writeLevel(level); //Dt4(level)
 	  return;
   	case ENT_DELAY_FB_1:
+	  level = fb_1_level;
+	  write(0, 15); write(1, 11); write(2, 1); writeLevel(level); //Fb1(level)
   	  return;    
   	case ENT_DELAY_FB_2:
+	  level = fb_2_level;
+	  write(0, 15); write(1, 11); write(2, 2); writeLevel(level); //Fb2(level)
   	  return;
 	case ENT_DELAY_FB_3:
+	  level = fb_3_level;
+      write(0, 15); write(1, 11); write(2, 3); writeLevel(level); //Fb3(level)
 	  return;  
 	case ENT_DELAY_FB_4:
+	  level = fb_4_level;
+	  write(0, 15); write(1, 11); write(2, 4); writeLevel(level); //Fb4(level)
 	  return;
 	case ENT_DELAY_GAIN_1:
+	  level = delay_gain_1_level;
+	  write(0, 15); write(1, 11); write(2, 1); writeLevel(level); //dy1(level)
 	  return;  
 	case ENT_DELAY_GAIN_2:
+	  level = delay_gain_2_level;
+	  write(0, 13); write(1, 30); write(2, 2); writeLevel(level); //dy2(level)
 	  return;
 	case ENT_DELAY_GAIN_3:
+	  level = delay_gain_3_level;
+	  write(0, 13); write(1, 30); write(2, 3); writeLevel(level); //dy3(level)
 	  return;  
 	case ENT_DELAY_GAIN_4:
+	  level = delay_gain_4_level;
+	  write(0, 13); write(1, 30); write(2, 4); writeLevel(level); //dy4(level)
 	  return;
 	case ENT_DELAY_MIX:
+	  level = delay_mix_level;
+	  write(0, 13); write(1, 21); write(2, 18); writeLevel(level); //dmi(level)
 	  return;   
-
-  
-  
-  
-  
   }
 }
 
