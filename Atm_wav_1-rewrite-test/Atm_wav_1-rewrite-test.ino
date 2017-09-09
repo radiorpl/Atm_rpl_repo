@@ -16,11 +16,12 @@
 
 Atm_wav_1 wav1, wav2;                               //declare atm machines
 Atm_master_vol volMaster, volWav1, volWav2;
-Atm_encoder enc1, enc2, enc3;
-Atm_button btn1, btn2, btn3;
-Atm_enc_button encBtn1, encBtn2, encBtn3;
+Atm_encoder enc1, enc2, enc3, enc4, enc5;
+Atm_button btn1, btn2, btn3, btn4, btn5;
+Atm_enc_button encBtn1, encBtn2, encBtn3, encBtn4, encBtn5;
 Atm_sev_seg displayMain;
 Atm_timer delayTimer, paramTimer;
+Atm_delay_effect delaySend1, delaySend2, delayTime1, delayFb1, delayMix;
 
 void setup() {
    Serial.begin( 9600 );
@@ -34,32 +35,44 @@ void setup() {
    }   
    wav1.begin(1);    //start wav instances
    wav2.begin(2);
-   volMaster.begin(0);
+   volMaster.begin(0);   //volumes
    volWav1.begin(1);
    volWav2.begin(2);
-   enc1.begin(33, 24);
+   delaySend1.begin(0);    //delays
+   delaySend2.begin(1);
+   delayTime1.begin(2);
+   delayFb1.begin(6);
+   delayMix.begin(14);
+   enc1.begin(33, 24);      //encoders
    enc1.debounce(100);
    enc2.begin(25, 26);
    enc2.debounce(125);
    enc3.begin(27, 28);
    enc3.debounce(30);    //if debounce too fast, trouble reading encoder
+   enc4.begin(29, 30);
+   enc5.begin(31, 32);
+   enc5.debounce(30);
    btn1.begin(4);
    btn2.begin(5);
    //btn2.debounce(10);
    btn3.begin(8);
+   btn4.begin(16);
+   btn5.begin(17);
    encBtn1.begin(1);
    encBtn2.begin(2);
    encBtn3.begin(3);
+   encBtn4.begin(4);
+   encBtn5.begin(5);
    displayMain.begin();
    delayTimer.begin(100);
    paramTimer.begin(3000);
    paramTimer.onFinish( displayMain, displayMain.EVT_HOME );	 
    sgtl5000_1.enable();
    sgtl5000_1.volume(0.3);	   
-   wav1.trace(Serial);
-   //displayMain.trace(Serial); 
-   encBtn2.trace(Serial); 
-   volMaster.trace(Serial);  
+   //delayMix.trace(Serial);
+   displayMain.trace(Serial); 
+   //encBtn2.trace(Serial); 
+   //volMaster.trace(Serial);  
 }
 
 //===================================================
@@ -162,7 +175,88 @@ void loop() {
 	  	enc3.onChange( ATM_UP, volWav2, volWav2.EVT_ENC_UP );
 	  	enc3.onChange( ATM_DOWN, volWav2, volWav2.EVT_ENC_DOWN );
 	}
-
+//====================================================================
+	//button 4 - effect selection
+	/*
+	btn4.onPress( encBtn4, encBtn4.EVT_BTN_1 );
+	if ( enc_button_counter_4 == 0 ) {
+	    delaySend1.trigger( delaySend1.EVT_OFF );    
+	    delaySend2.trigger( delaySend2.EVT_OFF );
+	    delayTime1.trigger( delayTime1.EVT_OFF );
+	    delayFb1.trigger( delayFb1.EVT_OFF );
+	    delayMix.trigger( delayMix.EVT_OFF );
+	}
+	else if ( enc_button_counter_4 == 1 ) {
+	    delaySend1.trigger( delaySend1.EVT_CONTROL );    
+	    delaySend2.trigger( delaySend2.EVT_CONTROL );
+	    delayTime1.trigger( delayTime1.EVT_CONTROL );
+	    delayFb1.trigger( delayFb1.EVT_CONTROL );
+	    delayMix.trigger( delayMix.EVT_CONTROL );
+	}
+	*/
 //====================================================================	
+	//encoder/button 5 - delay
+	if ( (displayMain.state() == displayMain.DELAY_SEND_1) || (displayMain.state() == displayMain.DELAY_SEND_2) || (displayMain.state() == displayMain.DELAY_TIME_1) || (displayMain.state() == displayMain.DELAY_FB_1) || (displayMain.state() == displayMain.DELAY_MIX) ) {
+		if ( enc_button_counter_5 == 0 ) {
+			btn5.onPress( encBtn5, encBtn5.EVT_BTN_1 );
+			btn5.onPress( 1, delaySend1, delaySend1.EVT_BTN_1 );
+		}
+		else if ( enc_button_counter_5 == 1 ) {
+			btn5.onPress( encBtn5, encBtn5.EVT_BTN_1 );
+			btn5.onPress( 1, delaySend2, delaySend2.EVT_BTN_1 );
+		}
+		else if ( enc_button_counter_5 == 2 ) {
+			btn5.onPress( encBtn5, encBtn5.EVT_BTN_1 );
+			btn5.onPress( 1, delayTime1, delayTime1.EVT_BTN_1 );
+		}
+		else if ( enc_button_counter_5 == 3 ) {
+			btn5.onPress( encBtn5, encBtn5.EVT_BTN_1 );
+			btn5.onPress( 1, delayFb1, delayFb1.EVT_BTN_1 );
+		}
+		else if ( enc_button_counter_5 == 4 ) {
+			btn5.onPress( encBtn5, encBtn5.EVT_BTN_1 );
+			btn5.onPress( 1, delayMix, delayMix.EVT_BTN_1 );
+		}
+	}
+	else {
+		if ( enc_button_counter_5 == 0 ) {
+			btn5.onPress( delaySend1, delaySend1.EVT_BTN_1 );
+		}
+		else if ( enc_button_counter_5 == 1 ) {
+			btn5.onPress( delaySend2, delaySend2.EVT_BTN_1 );
+		}
+		else if ( enc_button_counter_5 == 2 ) {
+			btn5.onPress( delayTime1, delayTime1.EVT_BTN_1 );
+		}
+		else if ( enc_button_counter_5 == 3 ) {
+			btn5.onPress( delayFb1, delayFb1.EVT_BTN_1 );
+		}
+		else if ( enc_button_counter_5 == 4 ) {
+			btn5.onPress( delayMix, delayMix.EVT_BTN_1 );
+		}
+	}
+	
+	if ( enc_button_counter_5 == 0) {
+		enc5.onChange( ATM_UP, delaySend1, delaySend1.EVT_ENC_UP );
+		enc5.onChange( ATM_DOWN, delaySend1, delaySend1.EVT_ENC_DOWN );
+	}
+	else if ( enc_button_counter_5 == 1) {
+		enc5.onChange( ATM_UP, delaySend2, delaySend2.EVT_ENC_UP );
+		enc5.onChange( ATM_DOWN, delaySend2, delaySend2.EVT_ENC_DOWN );
+	}
+	else if ( enc_button_counter_5 == 2) {
+		enc5.onChange( ATM_UP, delayTime1, delayTime1.EVT_ENC_UP );
+		enc5.onChange( ATM_DOWN, delayTime1, delayTime1.EVT_ENC_DOWN );
+	}
+	else if ( enc_button_counter_5 == 3) {
+		enc5.onChange( ATM_UP, delayFb1, delayFb1.EVT_ENC_UP );
+		enc5.onChange( ATM_DOWN, delayFb1, delayFb1.EVT_ENC_DOWN );
+	}
+	else if ( enc_button_counter_5 == 4) {
+		enc5.onChange( ATM_UP, delayMix, delayMix.EVT_ENC_UP );
+		enc5.onChange( ATM_DOWN, delayMix, delayMix.EVT_ENC_DOWN );
+	}
+	
+//==============================================================
 	automaton.run();
 }
