@@ -73,6 +73,7 @@ Atm_sev_seg& Atm_sev_seg::begin() {
   for ( int pinDig = 0; pinDig < pinCountDig; pinDig++ ) {    // set digit pins as outputs
     pinMode(digPins[pinDig], OUTPUT);
   }
+  dig_delay = 2;
   Wire.begin();					//begin i2c
   Wire.beginTransmission(96);  //set blink time
   Wire.write(command[1]);
@@ -294,7 +295,7 @@ Atm_sev_seg& Atm_sev_seg::write( int digit, int character ){
 		Wire.write(seg0[character]);
 		Wire.write(seg1[character]);
 	  	Wire.endTransmission();
-	    delay(2);
+	    delay(dig_delay);
 	  	Wire.beginTransmission(96);
 	  	Wire.write(command[0]);
 		Wire.write(seg0[36]);
@@ -312,7 +313,7 @@ Atm_sev_seg& Atm_sev_seg::write( int digit, int character ){
 		Wire.write(seg1[character]);
 	  	Wire.endTransmission();
 	    //Serial.println(digit);
-	    delay(2);
+	    delay(dig_delay);
 	  	Wire.beginTransmission(96);
 	  	Wire.write(command[0]);
 		Wire.write(seg0[36]);
@@ -329,7 +330,7 @@ Atm_sev_seg& Atm_sev_seg::write( int digit, int character ){
 		Wire.write(seg0[character]);
 		Wire.write(seg1[character]);
 	  	Wire.endTransmission();
-	    delay(2);
+	    delay(dig_delay);
 	  	Wire.beginTransmission(96);
 	  	Wire.write(command[0]);
 		Wire.write(seg0[36]);
@@ -346,7 +347,7 @@ Atm_sev_seg& Atm_sev_seg::write( int digit, int character ){
 		Wire.write(seg0[character]);
 		Wire.write(seg1[character]);
 	  	Wire.endTransmission();
-	    delay(2);
+	    delay(dig_delay);
 	  	Wire.beginTransmission(96);
 	  	Wire.write(command[0]);
 		Wire.write(seg0[36]);
@@ -369,7 +370,7 @@ Atm_sev_seg& Atm_sev_seg::writeBlink( int digit, int character ){
 		Wire.write(segBlink0[character]);
 		Wire.write(segBlink1[character]);
 	  	Wire.endTransmission();
-	    delay(2);
+	    delay(dig_delay);
 	  	Wire.beginTransmission(96);
 	  	Wire.write(command[0]);
 		Wire.write(segBlink0[36]);
@@ -387,7 +388,7 @@ Atm_sev_seg& Atm_sev_seg::writeBlink( int digit, int character ){
 		Wire.write(segBlink1[character]);
 	  	Wire.endTransmission();
 	    //Serial.println(digit);
-	    delay(2);
+	    delay(dig_delay);
 	  	Wire.beginTransmission(96);
 	  	Wire.write(command[0]);
 		Wire.write(segBlink0[36]);
@@ -404,7 +405,7 @@ Atm_sev_seg& Atm_sev_seg::writeBlink( int digit, int character ){
 		Wire.write(segBlink0[character]);
 		Wire.write(segBlink1[character]);
 	  	Wire.endTransmission();
-	    delay(2);
+	    delay(dig_delay);
 	  	Wire.beginTransmission(96);
 	  	Wire.write(command[0]);
 		Wire.write(segBlink0[36]);
@@ -421,7 +422,7 @@ Atm_sev_seg& Atm_sev_seg::writeBlink( int digit, int character ){
 		Wire.write(segBlink0[character]);
 		Wire.write(segBlink1[character]);
 	  	Wire.endTransmission();
-	    delay(2);
+	    delay(dig_delay);
 	  	Wire.beginTransmission(96);
 	  	Wire.write(command[0]);
 		Wire.write(segBlink0[36]);
@@ -443,7 +444,7 @@ Atm_sev_seg& Atm_sev_seg::writeLevel( int level ) {
 		Wire.write(seg1[level]);
 	  	Wire.endTransmission();
 		//Serial.println(level);
-		delay(2);
+		delay(dig_delay);
 	  	Wire.beginTransmission(96);
 	  	Wire.write(command[0]);
 		Wire.write(segBlink0[36]);
@@ -463,7 +464,7 @@ Atm_sev_seg& Atm_sev_seg::writeLevelBlink( int level ) {
 		Wire.write(segBlink1[level]);
 	  	Wire.endTransmission();
 		//Serial.println(level);
-		delay(2);
+		delay(dig_delay);
 	  	Wire.beginTransmission(96);
 	  	Wire.write(command[0]);
 		Wire.write(segBlink0[36]);

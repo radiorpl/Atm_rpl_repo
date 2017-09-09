@@ -32,7 +32,7 @@ class Atm_sev_seg: public Machine {
   byte pinCountDig = 4;         //number of digits
   byte command [3] = { 21, 19, 20 }; //21 is first led register with auto increment, so send 21, then 2 btyes for led0-3 and then led4-7 19 is psc1, 20 is pwm1
   int last_level;
-  
+  int dig_delay;
   //non-blinking characters
   //               0    1   2  3   4   5   6    7  8    9   10 11   12 13  14  15  16  17  18  19  20  21   22 23  24  25  26  27  28  29  30  31  32  33  34  35  36
   //               0    1   2  3   4   5   6    7  8    9   A  b    c  d    E   F  g   h   i   j   L   m    n  o   p   q   r   s   t   u   y   Z   -    _   ^   .  " "
