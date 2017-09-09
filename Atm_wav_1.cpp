@@ -70,8 +70,6 @@ AudioControlSGTL5000     sgtl5000_1;     //xy=478,626
 //display levels
 int track_1_level;
 int track_2_level;
-int last_track_1_level;
-int last_track_2_level;
 int last_state_1;
 int last_state_2;
 

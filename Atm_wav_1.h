@@ -43,5 +43,8 @@ class Atm_wav_1 : public Machine {
 		int player_instance;
 		int display_delay;
      	int event( int id ); 
-     	void action( int id );	
+     	void action( int id );
+		int last_track_1_level;
+		int last_track_2_level;
+	
 };
