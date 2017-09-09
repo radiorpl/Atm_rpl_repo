@@ -12,10 +12,10 @@ class Atm_delay_effect: public Machine {
   Atm_delay_effect& trace( Stream & stream );
   Atm_delay_effect& trigger( int event );
   Atm_delay_effect& setLevel( void );
-  Atm_delay_effect& encUp( void );
-  Atm_delay_effect& encDown( void );
-   Atm_delay_effect& btn1( void );
-  Atm_delay_effect& off( void );  
+  Atm_delay_effect& off( void );
+  Atm_delay_effect& btn1( void );
+  Atm_delay_effect& encoderUp( void );
+  Atm_delay_effect& encoderDown( void );  
   int state( void );
  
  private:
