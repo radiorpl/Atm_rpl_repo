@@ -100,7 +100,7 @@ void Atm_fx_select::action( int id ) {
 			fx_position += 1;
 			displayMain.trigger( displayMain.EVT_DELAY );
 		}
-		trigger( EVT_CONTROL );			//back to vol control
+		paramTimer.trigger( paramTimer.EVT_START );   //trigger timer
 	}
 	else {
      		paramTimer.trigger( paramTimer.EVT_START );   //trigger timer
@@ -108,35 +108,38 @@ void Atm_fx_select::action( int id ) {
   		if ( fx_control == 0 ) {
   			displayMain.trigger( displayMain.EVT_DELAY );  
   		}							
-  		delay(display_delay);       					//display wait
-  		trigger( EVT_CONTROL );			//back to vol control	
+  		delay(display_delay);       					//display wait	
 	}
+	trigger( EVT_CONTROL );			//back to vol control
   	return *this;
   }
 
   Atm_fx_select& Atm_fx_select::encoderUp( void ) {	
-      if ( (displayMain.state() == displayMain.DELAY) ) {
+    if ( (displayMain.state() == displayMain.DELAY) ) {
 		if ( enc_button_counter_4 == 0 ) {
 			displayMain.trigger( displayMain.EVT_DELAY );
   		}
+		paramTimer.trigger( paramTimer.EVT_START );   //trigger timer
+	}
   	else {
      		paramTimer.trigger( paramTimer.EVT_START );   //trigger timer
      		Serial.println("wait display triggered");
   		if ( fx_control == 0 ) {
   			displayMain.trigger( displayMain.EVT_DELAY );  
   		}							
-  		delay(display_delay);       					//display wait
-  		trigger( EVT_CONTROL );			//back to vol control	
+  		delay(display_delay);       					//display wait	
   	}
-}
+	trigger( EVT_CONTROL );			//back to vol control
   	return *this;
   }
 
   Atm_fx_select& Atm_fx_select::encoderDown( void ) {
-      if ( (displayMain.state() == displayMain.DELAY) ) {
+   if ( (displayMain.state() == displayMain.DELAY) ) {
 		if ( enc_button_counter_4 == 0 ) {
 			displayMain.trigger( displayMain.EVT_DELAY );
   		}
+		paramTimer.trigger( paramTimer.EVT_START );   //trigger timer
+	}
   	else {
      		paramTimer.trigger( paramTimer.EVT_START );   //trigger timer
      		Serial.println("wait display triggered");
@@ -146,7 +149,6 @@ void Atm_fx_select::action( int id ) {
   		delay(display_delay);       					//display wait
   		trigger( EVT_CONTROL );			//back to vol control	
   	}
-}
   	return *this;
   }
 						

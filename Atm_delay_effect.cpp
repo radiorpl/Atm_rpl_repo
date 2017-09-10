@@ -42,20 +42,23 @@ Atm_delay_effect& Atm_delay_effect::begin( int param_con ) {
   Machine::begin( state_table, ELSE );
   param_control = param_con;
   display_delay = 100;
-  param_position = 17;
-  mixer3.gain(0, 0.5);		//signal inputs
-  mixer3.gain(1, 0.5);
-  mixer3.gain(2, 0.5);		//feedback inputs
-  mixer3.gain(3, 0.5);	
+  param_level = 0.5;
+  if ( param_control == 2) {    //set start point for delay time
+	  param_position = 11;
+  }
+  mixer3.gain(0, 0.25);		//signal inputs
+  mixer3.gain(1, 0.25);
+  mixer3.gain(2, 0.25);		//feedback inputs
+  mixer3.gain(3, 0.25);	
   mixer4.gain(0, 0.5);
   mixer4.gain(1, 0.5);
   mixer5.gain(0, 0.5);
   mixer5.gain(1, 0.5);
-  mixer7.gain(0, 0.5);
-  mixer7.gain(1, 0.5);
-  mixer7.gain(2, 0.5);
-  mixer7.gain(3, 0.5);
-  mixer8.gain(0, 0.5);
+  mixer7.gain(0, 0.25);
+  mixer7.gain(1, 0.25);
+  mixer7.gain(2, 0.25);
+  mixer7.gain(3, 0.25);
+  mixer8.gain(0, 1.0);
   mixer9.gain(1, 0.5);		//master effect mix
   return *this;         
 }
@@ -121,7 +124,7 @@ int Atm_delay_effect::state( void ) {
 }
 //my functions
 Atm_delay_effect& Atm_delay_effect::setLevel( void ) {
-	if ( param_control == 0 ) {		//send wav 1
+	if ( param_control == 0 ) {		                       //send wav 1
 			if ( param_position > last_param_position ) {
 				if ( param_level < 0.99 ) {
 					for ( int x = 0; x < 100; x++ ) {
@@ -143,7 +146,7 @@ Atm_delay_effect& Atm_delay_effect::setLevel( void ) {
 			Serial.println("delay send 1");
 			Serial.println(param_level);
 
-			if ( param_level < 0.02 ) {   //range
+			if ( param_level < 0.02 ) {                    //range
 				param_level = 0.0;
 			}	
 			if ( param_level > 0.97 ) {
@@ -182,7 +185,7 @@ Atm_delay_effect& Atm_delay_effect::setLevel( void ) {
 			}
 			last_param_position = param_position;
 		}
-	else if ( param_control == 1 ) {		//send wav 2
+	else if ( param_control == 1 ) {		                    //send wav 2
 			if ( param_position > last_param_position ) {
 				if ( param_level < 0.99 ) {
 					for ( int x = 0; x < 100; x++ ) {
@@ -243,7 +246,7 @@ Atm_delay_effect& Atm_delay_effect::setLevel( void ) {
 			}
 			last_param_position = param_position;
 		}
-	else if ( param_control == 2 ) { 	//set delay time 1
+	else if ( param_control == 2 ) { 	                     //set delay time 1
 		if( param_position < 1 ){
 			param_position = 0; 	                
 		}
@@ -253,7 +256,7 @@ Atm_delay_effect& Atm_delay_effect::setLevel( void ) {
 		delay1.delay(0, speed_array[param_position]);
 		time_1_level = param_position;
 	}
-	else if ( param_control == 3 ) { 	//set delay time 2
+	else if ( param_control == 3 ) { 	                    //set delay time 2
 		if( param_position < 1 ){
 			param_position = 0; 	                
 		}
@@ -262,7 +265,7 @@ Atm_delay_effect& Atm_delay_effect::setLevel( void ) {
 		}
 		delay1.delay(1, speed_array[param_position]);
 	}
-	else if ( param_control == 4 ) { 	//set delay time 3
+	else if ( param_control == 4 ) { 	                    //set delay time 3
 		if( param_position < 1 ){
 			param_position = 0; 	                
 		}
@@ -271,7 +274,7 @@ Atm_delay_effect& Atm_delay_effect::setLevel( void ) {
 		}
 		delay1.delay(2, speed_array[param_position]);
 	}
-	else if ( param_control == 5 ) { 	//set delay time 4
+	else if ( param_control == 5 ) { 	                    //set delay time 4
 		if( param_position < 1 ){
 			param_position = 0; 	                
 		}
@@ -280,7 +283,7 @@ Atm_delay_effect& Atm_delay_effect::setLevel( void ) {
 		}
 		delay1.delay(3, speed_array[param_position]);
 	}
-	if ( param_control == 6 ) {		//send wav 1
+	if ( param_control == 6 ) {		                            //fb 1
 			if ( param_position > last_param_position ) {
 				if ( param_level < 0.99 ) {
 					for ( int x = 0; x < 100; x++ ) {
@@ -341,7 +344,7 @@ Atm_delay_effect& Atm_delay_effect::setLevel( void ) {
 			}
 			last_param_position = param_position;
 		}	
-	else if ( param_control == 7 ) { 	//fb delay 2
+	else if ( param_control == 7 ) { 	                //fb delay 2
 		if( param_position < 1 ){
 			param_position = 0; 	                
 		}
@@ -434,7 +437,7 @@ Atm_delay_effect& Atm_delay_effect::setLevel( void ) {
 		}
 		mixer7.gain(3, param_level);
 	}
-	else if ( param_control == 14 ) { 	//crossfader master wet/dry mix
+	else if ( param_control == 14 ) { 	                     //crossfader master wet/dry mix
 				if ( param_position > last_param_position ) {
 					if ( param_level < 0.99 ) {
 						for ( int x = 0; x < 100; x++ ) {
