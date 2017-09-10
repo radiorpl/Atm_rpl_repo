@@ -540,7 +540,6 @@ Atm_delay_effect& Atm_delay_effect::btn1( void ) {
 			displayMain.trigger( displayMain.EVT_DELAY_MIX );
 		}
 		paramTimer.trigger( paramTimer.EVT_START );
-		trigger( EVT_CONTROL );						//back to control state
     }
 	else {
    		paramTimer.trigger( paramTimer.EVT_START );   //trigger timer
@@ -560,9 +559,9 @@ Atm_delay_effect& Atm_delay_effect::btn1( void ) {
 		else if ( param_control == 14 ) {
 			displayMain.trigger( displayMain.EVT_DELAY_MIX );
 		}					
-		delay(display_delay);       	//display wait
-		trigger( EVT_CONTROL );			
+		delay(display_delay);       	//display wait		
 	}
+	trigger( EVT_CONTROL );						//back to control state
 	return *this;
 }
 
@@ -584,7 +583,6 @@ Atm_delay_effect& Atm_delay_effect::encoderUp( void ) {
 		else if ( param_control == 14 ) {
 			displayMain.trigger( displayMain.EVT_DELAY_MIX );
 		}
-		trigger( EVT_CONTROL );
 		paramTimer.trigger( paramTimer.EVT_START );
 	}										
 	else {
@@ -605,9 +603,9 @@ Atm_delay_effect& Atm_delay_effect::encoderUp( void ) {
 		else if ( param_control == 14 ) {
 			displayMain.trigger( displayMain.EVT_DELAY_MIX );
 		}					
-		delay(display_delay);       	//display wait
-		trigger( EVT_CONTROL );			
+		delay(display_delay);       	//display wait	
 	}
+	trigger( EVT_CONTROL );						//back to control state
 	return *this;
 }
 
@@ -629,7 +627,6 @@ Atm_delay_effect& Atm_delay_effect::encoderDown( void ) {
 		else if ( param_control == 14 ) {
 			displayMain.trigger( displayMain.EVT_DELAY_MIX );
 		}
-		trigger( EVT_CONTROL );
 		paramTimer.trigger( paramTimer.EVT_START );
 	}										
 	else {
@@ -650,9 +647,9 @@ Atm_delay_effect& Atm_delay_effect::encoderDown( void ) {
 		else if ( param_control == 14 ) {
 			displayMain.trigger( displayMain.EVT_DELAY_MIX );
 		}					
-		delay(display_delay);       	//display wait
-		trigger( EVT_CONTROL );			
+		delay(display_delay);       	//display wait			
 	}
+	trigger( EVT_CONTROL );						//back to control state
 	return *this;
 }
 

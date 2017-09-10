@@ -44,7 +44,7 @@ Atm_master_vol& Atm_master_vol::begin( int vol_con ) {
     Machine::begin( state_table, ELSE );
 	vol_control = vol_con;
 	//volume_position = 5;
-	volume_level = 0.4;
+	volume_level = 0.5;
 	AudioMemory(160);	    
 	//sets mixers for 2 wav playback, no effects
 	mixer1.gain(0, 0.5); 	//wav1 stereo to mono
@@ -307,7 +307,6 @@ Atm_master_vol& Atm_master_vol::btn1( void ) {
 			displayMain.trigger( displayMain.EVT_VOL_WAV_2 );
 		}
 		paramTimer.trigger( paramTimer.EVT_START );
-		trigger( EVT_VOL_CONTROL );
     }
 	else {
    		paramTimer.trigger( paramTimer.EVT_START );   //trigger timer
@@ -321,9 +320,9 @@ Atm_master_vol& Atm_master_vol::btn1( void ) {
 		else if ( vol_control == 2 ) {
 			displayMain.trigger( displayMain.EVT_VOL_WAV_2 );
 		}								
-		delay(display_delay);       					//display wait
-		trigger( EVT_VOL_CONTROL );			//back to vol control	
+		delay(display_delay);       					//display wait	
 	}
+	trigger( EVT_VOL_CONTROL );			//back to vol control
 	return *this;
 }
 
@@ -342,7 +341,6 @@ Atm_master_vol& Atm_master_vol::encoderUp( void ) {
 		}		
 		Serial.println("enc up");
 		Serial.println(volume_position);
-		trigger( EVT_VOL_CONTROL );
 		paramTimer.trigger( paramTimer.EVT_START );
 	}
 	else {
@@ -357,9 +355,9 @@ Atm_master_vol& Atm_master_vol::encoderUp( void ) {
 		else if ( vol_control == 2 ){
 			displayMain.trigger( displayMain.EVT_VOL_WAV_2 );	
 		}		
-		delay(display_delay);
-		trigger( EVT_VOL_CONTROL );	
+		delay(display_delay);	
 	}
+	trigger( EVT_VOL_CONTROL );	
 	return *this;
 }
 
@@ -377,7 +375,6 @@ Atm_master_vol& Atm_master_vol::encoderDown( void ) {
 		}		
 		Serial.println("enc down");
 		Serial.println(volume_position);
-		trigger( EVT_VOL_CONTROL );
 		Serial.println(volume_position);
 		paramTimer.trigger( paramTimer.EVT_START );
 	}
@@ -394,8 +391,8 @@ Atm_master_vol& Atm_master_vol::encoderDown( void ) {
 			displayMain.trigger( displayMain.EVT_VOL_WAV_2 );	
 		}		
 		delay(display_delay);
-		trigger( EVT_VOL_CONTROL );
 	}
+	trigger( EVT_VOL_CONTROL );
 	return *this;
 }
 						
