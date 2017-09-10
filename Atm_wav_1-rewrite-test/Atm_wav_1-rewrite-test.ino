@@ -72,7 +72,7 @@ void setup() {
    paramTimer.begin(3000);
    paramTimer.onFinish( displayMain, displayMain.EVT_HOME );	 
    sgtl5000_1.enable();
-   sgtl5000_1.volume(0.3);	   
+   sgtl5000_1.volume(0.5);	   
    delayMix.trace(Serial);
    enc5.trace(Serial);
    //displayMain.trace(Serial); 
