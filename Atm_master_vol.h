@@ -33,6 +33,8 @@ class Atm_master_vol : public Machine {
 		//elapsedMillis m_display;
 		int display_delay;	
 		int volume_position;
+		int last_volume_position;
+		float volume_level;
 		int vol_control;
 		int last_vol_control;
      	int event( int id ); 

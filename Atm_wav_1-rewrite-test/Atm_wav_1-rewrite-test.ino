@@ -52,7 +52,7 @@ void setup() {
    enc2.begin(25, 26);
    enc2.debounce(125);
    enc3.begin(27, 28);
-   enc3.debounce(30);    //if debounce too fast, trouble reading encoder
+   enc3.debounce(150);    //if debounce too fast, trouble reading encoder
    enc4.begin(29, 30);
    enc5.begin(31, 32);
    enc5.debounce(30);

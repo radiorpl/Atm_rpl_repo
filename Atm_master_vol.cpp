@@ -43,7 +43,8 @@ Atm_master_vol& Atm_master_vol::begin( int vol_con ) {
     // clang-format on
     Machine::begin( state_table, ELSE );
 	vol_control = vol_con;
-	volume_position = 17;
+	//volume_position = 5;
+	volume_level = 0.4;
 	AudioMemory(160);	    
 	//sets mixers for 2 wav playback, no effects
 	mixer1.gain(0, 0.5); 	//wav1 stereo to mono
@@ -111,132 +112,189 @@ int Atm_master_vol::state( void ) {
 
 
 Atm_master_vol& Atm_master_vol::setVolume( void ) {
-	if ( vol_control == 0 ) {  		//master
-		if( volume_position < 1 ) {		//constrain volume_position to bounds of volume array
-			volume_position = 0; 	              
+	if ( vol_control == 0 ) {  		      //master
+		if ( volume_position > last_volume_position ) {
+			if ( volume_level < 0.82 ) {
+				for ( int x = 0; x < 90; x++ ) {
+					volume_level += 0.001;
+					sgtl5000_1.volume(volume_level);
+					delay(1);
+			    }
+			}	
 		}
-		if( volume_position > 27 ) {
-			volume_position = 28; 	// 0.81, louder will clip master               
-		}			
-		sgtl5000_1.volume(volume_array[volume_position]);
-		Serial.println("master vol");
-		Serial.println(volume_position);
-		Serial.println("volume");
-		Serial.println(volume_array[volume_position]);
-		if ( volume_position > -1 && volume_position < 3) {
-				mas_vol_level = 0;
+		if ( volume_position < last_volume_position ) {
+			if ( volume_level > 0.02 ) {
+				for ( int x = 0; x < 90; x++ ) {
+					volume_level -= 0.001;
+					sgtl5000_1.volume(volume_level);
+					delay(1);
+		        }
 			}
-			else if ( volume_position > 2 && volume_position < 6) {
-				mas_vol_level = 1;
-			}
-			else if ( volume_position > 5 && volume_position < 9) {
-				mas_vol_level = 2;
-			}
-			else if ( volume_position > 8 && volume_position < 12) {
-				mas_vol_level = 3;
-			}
-			else if ( volume_position > 11 && volume_position < 15) {
-				mas_vol_level = 4;
-			}
-			else if ( volume_position > 14 && volume_position < 18){
-				mas_vol_level = 5;
-			}
-			else if ( volume_position > 17 && volume_position < 21){
-				mas_vol_level = 6;
-			}
-			else if ( volume_position > 20 && volume_position < 24){
-				mas_vol_level = 7;
-			}
-			else if ( volume_position > 23 && volume_position < 27){
-				mas_vol_level = 8;
-			}
-			else if ( volume_position > 26 && volume_position < 29){
-				mas_vol_level = 9;
 		}
+		
+		if ( volume_level < 0.02 ) {       //range
+			volume_level = 0.0;
+		}	
+		if ( volume_level > 0.81 ) {
+			volume_level = 0.82;
+		}
+		
+		if ( volume_level < 0.03) {
+			mas_vol_level = 0;
+		}
+		else if ( volume_level < 0.12 ) {
+			mas_vol_level = 1;
+		}
+		else if ( volume_level < 0.21 ) {
+			mas_vol_level = 2;
+		}
+		else if ( volume_level < 0.30 ) {
+			mas_vol_level = 3;
+		}
+		else if ( volume_level < 0.39 ) {
+			mas_vol_level = 4;
+		}
+		else if ( volume_level < 0.48 ) {
+			mas_vol_level = 5;
+		}
+		else if ( volume_level < 0.57 ) {
+			mas_vol_level = 6;
+		}
+		else if ( volume_level < 0.66 ) {
+			mas_vol_level = 7;
+		}
+		else if ( volume_level < 0.75 ) {
+			mas_vol_level = 8;
+		}
+		else if ( volume_level >= 0.79 ) {
+			mas_vol_level = 9;
+		}
+		last_volume_position = volume_position;
+		Serial.println("master volume");
+		Serial.println(volume_level);
 	}
-	else if ( vol_control == 1 ){  	//wav1
-		if( volume_position < 1 ){
-			volume_position = 0; 	                
+	//===================================//wav1
+	else if ( vol_control == 1 ){  	
+		if ( volume_position > last_volume_position ) {
+			if ( volume_level < 0.99 ) {
+				for ( int x = 0; x < 100; x++ ) {
+					volume_level += 0.001;
+					mixer6.gain(0, volume_level);
+					delay(1);
+			    }
+				Serial.println("bira 1 volume");
+				Serial.println(volume_level);
+			}
+		}	
+		if ( volume_position < last_volume_position ) {
+			if ( volume_level > 0.02 ) {
+				for ( int x = 0; x < 100; x++ ) {
+					volume_level -= 0.001;
+					mixer6.gain(0, volume_level);
+					delay(1);
+		        }
+				Serial.println("bira 1 volume");
+				Serial.println(volume_level);
+			}
 		}
-		if( volume_position > 32 ){
-			volume_position = 33; 	              
-		}		
-		mixer6.gain(0, volume_array[volume_position]);
-		Serial.println("bira 1 volume");
-		Serial.println(volume_position);
-		Serial.println(volume_array[volume_position]);
-		if ( volume_position > -1 && volume_position < 4){
+		
+		if ( volume_level < 0.02 ) {
+			volume_level = 0.0;
+		}	
+		if ( volume_level > 0.97 ) {
+			volume_level = 0.99;
+		}
+			
+		if ( volume_level < 0.09 ) {
 			vol_wav_1_level = 0;
 		}
-		else if ( volume_position > 3 && volume_position < 7){
+		else if ( volume_level < 0.19 ) {
 			vol_wav_1_level = 1;
 		}
-		else if ( volume_position > 6 && volume_position < 10){
+		else if ( volume_level < 0.29 ) {
 			vol_wav_1_level = 2;
 		}
-		else if ( volume_position > 9 && volume_position < 13){
+		else if ( volume_level < 0.39 ) {
 			vol_wav_1_level = 3;
 		}
-		else if ( volume_position > 12 && volume_position < 16){
+		else if ( volume_level < 0.49 ) {
 			vol_wav_1_level = 4;
 		}
-		else if ( volume_position > 15 && volume_position < 19){
+		else if ( volume_level < 0.59 ) {
 			vol_wav_1_level = 5;
 		}
-		else if ( volume_position > 18 && volume_position < 23){
+		else if ( volume_level < 0.69 ) {
 			vol_wav_1_level = 6;
 		}
-		else if ( volume_position > 22 && volume_position < 27){
+		else if ( volume_level < 0.79 ) {
 			vol_wav_1_level = 7;
 		}
-		else if ( volume_position > 26 && volume_position < 31){
+		else if ( volume_level < 0.89 ) {
 			vol_wav_1_level = 8;
 		}
-		else if ( volume_position > 30 && volume_position < 33){
+		else if ( volume_level >= 0.9 ) {
 			vol_wav_1_level = 9;
 		}
+		last_volume_position = volume_position;
 	}
-	else if ( vol_control == 2 ){  	//wav2
-		if( volume_position < 1 ){
-			volume_position = 0; 	              
+//===================================//wav2
+	
+	else if ( vol_control == 2 ){  	
+		if ( volume_level < 0.02 ) {
+			volume_level = 0.0;
+		}	
+		if ( volume_level > 0.97 ) {
+			volume_level = 0.99;
 		}
-		if( volume_position > 32 ){
-			volume_position = 33; 	               
-		}		
-		mixer6.gain(1, volume_array[volume_position]);
-		Serial.println("bira 2 volume");
-		Serial.println(volume_position);
-		Serial.println(volume_array[volume_position]);
-		if ( volume_position > -1 && volume_position < 4){
+		if ( volume_position > last_volume_position ) {
+			for ( int x = 0; x < 100; x++ ) {
+				volume_level += 0.001;
+				mixer6.gain(1, volume_level);
+				Serial.println("bira 1 volume");
+				Serial.println(volume_level);
+				delay(1);
+		    }
+		}
+		if ( volume_position < last_volume_position ) {
+			for ( int x = 0; x < 100; x++ ) {
+				volume_level -= 0.001;
+				mixer6.gain(1, volume_level);
+				Serial.println("bira 1 volume");
+				Serial.println(volume_level);
+				delay(1);
+	        }
+		}
+		if ( volume_level < 0.09 ) {
 			vol_wav_2_level = 0;
 		}
-		else if ( volume_position > 3 && volume_position < 7){
+		else if ( volume_level < 0.2 ) {
 			vol_wav_2_level = 1;
 		}
-		else if ( volume_position > 6 && volume_position < 10){
+		else if ( volume_level < 0.3 ) {
 			vol_wav_2_level = 2;
 		}
-		else if ( volume_position > 9 && volume_position < 13){
+		else if ( volume_level < 0.4 ) {
 			vol_wav_2_level = 3;
 		}
-		else if ( volume_position > 12 && volume_position < 16){
+		else if ( volume_level < 0.5 ) {
 			vol_wav_2_level = 4;
 		}
-		else if ( volume_position > 15 && volume_position < 19){
+		else if ( volume_level < 0.6 ) {
 			vol_wav_2_level = 5;
 		}
-		else if ( volume_position > 18 && volume_position < 23){
+		else if ( volume_level < 0.7 ) {
 			vol_wav_2_level = 6;
 		}
-		else if ( volume_position > 22 && volume_position < 27){
+		else if ( volume_level < 0.8 ) {
 			vol_wav_2_level = 7;
 		}
-		else if ( volume_position > 26 && volume_position < 31){
+		else if ( volume_level < 0.9 ) {
 			vol_wav_2_level = 8;
 		}
-		else if ( volume_position > 30 && volume_position < 33){
+		else if ( volume_level >= 0.9 ) {
 			vol_wav_2_level = 9;
 		}
+		last_volume_position = volume_position;
 	}
 	return *this;
 }
@@ -274,6 +332,7 @@ Atm_master_vol& Atm_master_vol::btn1( void ) {
 }
 
 Atm_master_vol& Atm_master_vol::encoderUp( void ) {	
+	
 	if ( (displayMain.state() == displayMain.MASTER_VOL) || (displayMain.state() == displayMain.VOL_WAV_1) || (displayMain.state() == displayMain.VOL_WAV_2) ) {
 		volume_position += 1;
 		if ( vol_control == 0 ){
