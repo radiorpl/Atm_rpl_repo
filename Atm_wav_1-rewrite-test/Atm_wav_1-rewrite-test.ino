@@ -104,11 +104,15 @@ void loop() {
 			btn1.onPress( wav1, wav1.EVT_BTN_2 );
 		  	enc1.onChange( ATM_UP, wav1, wav1.EVT_BTN_2 );    
 		  	enc1.onChange( ATM_DOWN, wav1, wav1.EVT_BTN_2 ); 
+		  	enc1.onChange3( ATM_UP, displayMain, displayMain.EVT_PLAY_WAV_1 );    
+		  	enc1.onChange3( ATM_DOWN, displayMain, displayMain.EVT_PLAY_WAV_1 );
 		}
 		else if ( enc_button_counter_2 == 1 ) {
 			btn1.onPress( wav2, wav2.EVT_BTN_2 );
 		  	enc1.onChange( ATM_UP, wav2, wav2.EVT_BTN_2 );    
-		  	enc1.onChange( ATM_DOWN, wav2, wav2.EVT_BTN_2 ); 
+		  	enc1.onChange( ATM_DOWN, wav2, wav2.EVT_BTN_2 );
+		  	enc1.onChange3( ATM_UP, displayMain, displayMain.EVT_PLAY_WAV_2 );    
+		  	enc1.onChange3( ATM_DOWN, displayMain, displayMain.EVT_PLAY_WAV_2 ); 
 		}
 	}
 //====================================================	
