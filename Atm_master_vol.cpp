@@ -112,66 +112,68 @@ int Atm_master_vol::state( void ) {
 
 
 Atm_master_vol& Atm_master_vol::setVolume( void ) {
-	if ( vol_control == 0 ) {  		      //master
+	if ( vol_control == 0 ) {  		      //master 	
 		if ( volume_position > last_volume_position ) {
-			if ( volume_level < 0.82 ) {
-				for ( int x = 0; x < 90; x++ ) {
+			if ( volume_level < 0.99 ) {
+				for ( int x = 0; x < 100; x++ ) {
 					volume_level += 0.001;
 					sgtl5000_1.volume(volume_level);
 					delay(1);
 			    }
-			}	
-		}
+			}
+		}	
 		if ( volume_position < last_volume_position ) {
 			if ( volume_level > 0.02 ) {
-				for ( int x = 0; x < 90; x++ ) {
+				for ( int x = 0; x < 100; x++ ) {
 					volume_level -= 0.001;
 					sgtl5000_1.volume(volume_level);
 					delay(1);
 		        }
+				Serial.println("bira 1 volume");
+				Serial.println(volume_level);
 			}
 		}
+		Serial.println("master volume");
+		Serial.println(volume_level);
 		
-		if ( volume_level < 0.02 ) {       //range
+		if ( volume_level < 0.02 ) {   //range
 			volume_level = 0.0;
 		}	
-		if ( volume_level > 0.81 ) {
-			volume_level = 0.82;
+		if ( volume_level > 0.97 ) {
+			volume_level = 0.99;
 		}
-		
-		if ( volume_level < 0.03) {
+			
+		if ( volume_level < 0.09 ) {
 			mas_vol_level = 0;
 		}
-		else if ( volume_level < 0.12 ) {
+		else if ( volume_level < 0.19 ) {
 			mas_vol_level = 1;
 		}
-		else if ( volume_level < 0.21 ) {
+		else if ( volume_level < 0.29 ) {
 			mas_vol_level = 2;
 		}
-		else if ( volume_level < 0.30 ) {
+		else if ( volume_level < 0.39 ) {
 			mas_vol_level = 3;
 		}
-		else if ( volume_level < 0.39 ) {
+		else if ( volume_level < 0.49 ) {
 			mas_vol_level = 4;
 		}
-		else if ( volume_level < 0.48 ) {
+		else if ( volume_level < 0.59 ) {
 			mas_vol_level = 5;
 		}
-		else if ( volume_level < 0.57 ) {
+		else if ( volume_level < 0.69 ) {
 			mas_vol_level = 6;
 		}
-		else if ( volume_level < 0.66 ) {
+		else if ( volume_level < 0.79 ) {
 			mas_vol_level = 7;
 		}
-		else if ( volume_level < 0.75 ) {
+		else if ( volume_level < 0.89 ) {
 			mas_vol_level = 8;
 		}
-		else if ( volume_level >= 0.79 ) {
+		else if ( volume_level >= 0.9 ) {
 			mas_vol_level = 9;
 		}
 		last_volume_position = volume_position;
-		Serial.println("master volume");
-		Serial.println(volume_level);
 	}
 	//===================================//wav1
 	else if ( vol_control == 1 ){  	
@@ -182,8 +184,6 @@ Atm_master_vol& Atm_master_vol::setVolume( void ) {
 					mixer6.gain(0, volume_level);
 					delay(1);
 			    }
-				Serial.println("bira 1 volume");
-				Serial.println(volume_level);
 			}
 		}	
 		if ( volume_position < last_volume_position ) {
@@ -250,8 +250,6 @@ Atm_master_vol& Atm_master_vol::setVolume( void ) {
 			for ( int x = 0; x < 100; x++ ) {
 				volume_level += 0.001;
 				mixer6.gain(1, volume_level);
-				Serial.println("bira 1 volume");
-				Serial.println(volume_level);
 				delay(1);
 		    }
 		}
@@ -259,10 +257,10 @@ Atm_master_vol& Atm_master_vol::setVolume( void ) {
 			for ( int x = 0; x < 100; x++ ) {
 				volume_level -= 0.001;
 				mixer6.gain(1, volume_level);
-				Serial.println("bira 1 volume");
-				Serial.println(volume_level);
 				delay(1);
 	        }
+			Serial.println("bira 2 volume");
+			Serial.println(volume_level);
 		}
 		if ( volume_level < 0.09 ) {
 			vol_wav_2_level = 0;

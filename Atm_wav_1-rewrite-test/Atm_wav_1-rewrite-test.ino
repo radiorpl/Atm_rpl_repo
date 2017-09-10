@@ -52,10 +52,10 @@ void setup() {
    enc2.begin(25, 26);
    enc2.debounce(125);
    enc3.begin(27, 28);
-   enc3.debounce(150);    //if debounce too fast, trouble reading encoder
+   enc3.debounce(225);    //if debounce too fast, trouble reading encoder
    enc4.begin(29, 30);
    enc5.begin(31, 32);
-   enc5.debounce(30);
+   enc5.debounce(225);
    btn1.begin(4);
    btn2.begin(5);
    //btn2.debounce(10);
@@ -74,7 +74,7 @@ void setup() {
    sgtl5000_1.enable();
    sgtl5000_1.volume(0.3);	   
    delayMix.trace(Serial);
-   delaySelect.trace(Serial);
+   enc5.trace(Serial);
    //displayMain.trace(Serial); 
    //encBtn2.trace(Serial); 
    //volMaster.trace(Serial);  
@@ -192,23 +192,6 @@ void loop() {
 			 btn4.onPress( delaySelect, delaySelect.EVT_BTN_1 );
 		 } 
 	 }
-	/*
-	btn4.onPress( encBtn4, encBtn4.EVT_BTN_1 );
-	if ( enc_button_counter_4 == 0 ) {
-	    delaySend1.trigger( delaySend1.EVT_OFF );    
-	    delaySend2.trigger( delaySend2.EVT_OFF );
-	    delayTime1.trigger( delayTime1.EVT_OFF );
-	    delayFb1.trigger( delayFb1.EVT_OFF );
-	    delayMix.trigger( delayMix.EVT_OFF );
-	}
-	else if ( enc_button_counter_4 == 1 ) {
-	    delaySend1.trigger( delaySend1.EVT_CONTROL );    
-	    delaySend2.trigger( delaySend2.EVT_CONTROL );
-	    delayTime1.trigger( delayTime1.EVT_CONTROL );
-	    delayFb1.trigger( delayFb1.EVT_CONTROL );
-	    delayMix.trigger( delayMix.EVT_CONTROL );
-	}
-	*/
 //====================================================================	
 	//encoder/button 5 - delay
 	if ( (displayMain.state() == displayMain.DELAY_SEND_1) || (displayMain.state() == displayMain.DELAY_SEND_2) || (displayMain.state() == displayMain.DELAY_TIME_1) || (displayMain.state() == displayMain.DELAY_FB_1) || (displayMain.state() == displayMain.DELAY_MIX) ) {
