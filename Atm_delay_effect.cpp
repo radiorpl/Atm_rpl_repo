@@ -521,6 +521,7 @@ Atm_delay_effect& Atm_delay_effect::off( void ) {
 	//mixer4.gain(0, 0.0);
   	//mixer4.gain(1, 0.0);
     mixer9.gain(1, 0.0);		//master effect mix
+	mixer9.gain(0, 0.5);		//dry signal
 	return *this;
 }
 /*
