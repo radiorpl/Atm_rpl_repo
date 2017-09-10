@@ -129,8 +129,6 @@ Atm_master_vol& Atm_master_vol::setVolume( void ) {
 					sgtl5000_1.volume(volume_level);
 					delay(1);
 		        }
-				Serial.println("bira 1 volume");
-				Serial.println(volume_level);
 			}
 		}
 		Serial.println("master volume");
