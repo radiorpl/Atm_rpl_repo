@@ -25,8 +25,10 @@ class Atm_delay_effect: public Machine {
   int param_control;
   int param_position;
   int last_param_position;
+  int effect_state;
   int display_delay;
   float param_level;
+  float last_param_level;
   int speed_array [13]{
   	 0, 27, 35, 54, 71, 80, 107, 143, 160, 214, 286, 321, 425
   };

@@ -437,85 +437,90 @@ Atm_delay_effect& Atm_delay_effect::setLevel( void ) {
 		}
 		mixer7.gain(3, param_level);
 	}
-	else if ( param_control == 14 ) { 	                     //crossfader master wet/dry mix
-				if ( param_position > last_param_position ) {
-					if ( param_level < 0.99 ) {
-						for ( int x = 0; x < 100; x++ ) {
-							param_level += 0.001;
-							mixer9.gain(1, param_level);
-							mixer9.gain(0, (0.99 - param_level));
-							delay(1);
-					    }
-					}
-				}	
-				if ( param_position < last_param_position ) {
-					if ( param_level > 0.02 ) {
-						for ( int x = 0; x < 100; x++ ) {
-							param_level -= 0.001;
-							mixer9.gain(1, param_level);
-							mixer9.gain(0, (0.99 - param_level));
-							delay(1);
-				        }
-					}
-				}
-				Serial.println("delay mix");
-				Serial.println(param_level);
-
-				if ( param_level < 0.02 ) {   //range
-					param_level = 0.0;
-				}	
-				if ( param_level > 0.97 ) {
-					param_level = 0.99;
-				}
-			
-				if ( param_level < 0.09 ) {
-					send_1_level = 0;
-				}
-				else if ( param_level < 0.19 ) {
-					delay_mix_level = 1;
-				}
-				else if ( param_level < 0.29 ) {
-					delay_mix_level = 2;
-				}
-				else if ( param_level < 0.39 ) {
-					delay_mix_level = 3;
-				}
-				else if ( param_level < 0.49 ) {
-					delay_mix_level = 4;
-				}
-				else if ( param_level < 0.59 ) {
-					delay_mix_level = 5;
-				}
-				else if ( param_level < 0.69 ) {
-					delay_mix_level = 6;
-				}
-				else if ( param_level < 0.79 ) {
-					delay_mix_level = 7;
-				}
-				else if ( param_level < 0.89 ) {
-					delay_mix_level = 8;
-				}
-				else if ( param_level >= 0.9 ) {
-					delay_mix_level = 9;
-				}
-				last_param_position = param_position;
+	else if ( param_control == 14 ) { //crossfader master wet/dry mix
+		if ( effect_state == 0) {					//remember mix level
+			param_level == last_param_level;
+			mixer9.gain(1, param_level);
+			mixer9.gain(0, (0.99 - param_level));
+			effect_state = 1;
+		}      
+		if ( param_position > last_param_position ) {
+			if ( param_level < 0.99 ) {
+				for ( int x = 0; x < 100; x++ ) {
+					param_level += 0.001;
+					mixer9.gain(1, param_level);
+					mixer9.gain(0, (0.99 - param_level));
+					delay(1);
+			    }
 			}
-			return *this;
+		}	
+		if ( param_position < last_param_position ) {
+			if ( param_level > 0.02 ) {
+				for ( int x = 0; x < 100; x++ ) {
+					param_level -= 0.001;
+					mixer9.gain(1, param_level);
+					mixer9.gain(0, (0.99 - param_level));
+					delay(1);
+		        }
+			}
+		}
+		Serial.println("delay mix");
+		Serial.println(param_level);
+
+		if ( param_level < 0.02 ) {   //range
+			param_level = 0.0;
+		}	
+		if ( param_level > 0.97 ) {
+			param_level = 0.99;
+		}
+	
+		if ( param_level < 0.09 ) {
+			send_1_level = 0;
+		}
+		else if ( param_level < 0.19 ) {
+			delay_mix_level = 1;
+		}
+		else if ( param_level < 0.29 ) {
+			delay_mix_level = 2;
+		}
+		else if ( param_level < 0.39 ) {
+			delay_mix_level = 3;
+		}
+		else if ( param_level < 0.49 ) {
+			delay_mix_level = 4;
+		}
+		else if ( param_level < 0.59 ) {
+			delay_mix_level = 5;
+		}
+		else if ( param_level < 0.69 ) {
+			delay_mix_level = 6;
+		}
+		else if ( param_level < 0.79 ) {
+			delay_mix_level = 7;
+		}
+		else if ( param_level < 0.89 ) {
+			delay_mix_level = 8;
+		}
+		else if ( param_level >= 0.9 ) {
+			delay_mix_level = 9;
+		}
+		last_param_position = param_position;
+		last_param_level = param_level;
+	}
+	return *this;
 }
 
 Atm_delay_effect& Atm_delay_effect::off( void ) {
 	paramTimer.trigger( paramTimer.EVT_START );
 	Serial.println("trigger paramTimer");
+	effect_state = 0;
     //mixer3.gain(0, 0.0);		//signal inputs
     //mixer3.gain(1, 0.0);
   	//mixer3.gain(2, 0.0);		//feedback inputs
   	//mixer3.gain(3, 0.0);
-  	
-	
-	mixer4.gain(0, 0.0);
-  	mixer4.gain(1, 0.0);
+	//mixer4.gain(0, 0.0);
+  	//mixer4.gain(1, 0.0);
     mixer9.gain(1, 0.0);		//master effect mix
-	
 	return *this;
 }
 /*
