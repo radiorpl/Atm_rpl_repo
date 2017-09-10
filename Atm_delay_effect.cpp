@@ -122,86 +122,127 @@ int Atm_delay_effect::state( void ) {
 //my functions
 Atm_delay_effect& Atm_delay_effect::setLevel( void ) {
 	if ( param_control == 0 ) {		//send wav 1
-		if( param_position < 1 ){
-			param_position = 0; 	                
+			if ( param_position > last_param_position ) {
+				if ( param_level < 0.99 ) {
+					for ( int x = 0; x < 100; x++ ) {
+						param_level += 0.001;
+						mixer3.gain(0, param_level);
+						delay(1);
+				    }
+				}
+			}	
+			if ( param_position < last_param_position ) {
+				if ( param_level > 0.02 ) {
+					for ( int x = 0; x < 100; x++ ) {
+						param_level -= 0.001;
+						mixer3.gain(0, param_level);
+						delay(1);
+			        }
+				}
+			}
+			Serial.println("delay send 1");
+			Serial.println(param_level);
+
+			if ( param_level < 0.02 ) {   //range
+				param_level = 0.0;
+			}	
+			if ( param_level > 0.97 ) {
+				param_level = 0.99;
+			}
+			
+			if ( param_level < 0.09 ) {
+				send_1_level = 0;
+			}
+			else if ( param_level < 0.19 ) {
+				send_1_level = 1;
+			}
+			else if ( param_level < 0.29 ) {
+				send_1_level = 2;
+			}
+			else if ( param_level < 0.39 ) {
+				send_1_level = 3;
+			}
+			else if ( param_level < 0.49 ) {
+				send_1_level = 4;
+			}
+			else if ( param_level < 0.59 ) {
+				send_1_level = 5;
+			}
+			else if ( param_level < 0.69 ) {
+				send_1_level = 6;
+			}
+			else if ( param_level < 0.79 ) {
+				send_1_level = 7;
+			}
+			else if ( param_level < 0.89 ) {
+				send_1_level = 8;
+			}
+			else if ( param_level >= 0.9 ) {
+				send_1_level = 9;
+			}
+			last_param_position = param_position;
 		}
-		if( param_position > 32 ){
-			param_position = 33; 	              
+	else if ( param_control == 1 ) {		//send wav 2
+			if ( param_position > last_param_position ) {
+				if ( param_level < 0.99 ) {
+					for ( int x = 0; x < 100; x++ ) {
+						param_level += 0.001;
+						mixer3.gain(1, param_level);
+						delay(1);
+				    }
+				}
+			}	
+			if ( param_position < last_param_position ) {
+				if ( param_level > 0.02 ) {
+					for ( int x = 0; x < 100; x++ ) {
+						param_level -= 0.001;
+						mixer3.gain(1, param_level);
+						delay(1);
+			        }
+				}
+			}
+			Serial.println("delay send 2");
+			Serial.println(param_level);
+
+			if ( param_level < 0.02 ) {   //range
+				param_level = 0.0;
+			}	
+			if ( param_level > 0.97 ) {
+				param_level = 0.99;
+			}
+			
+			if ( param_level < 0.09 ) {
+				send_2_level = 0;
+			}
+			else if ( param_level < 0.19 ) {
+				send_2_level = 1;
+			}
+			else if ( param_level < 0.29 ) {
+				send_2_level = 2;
+			}
+			else if ( param_level < 0.39 ) {
+				send_2_level = 3;
+			}
+			else if ( param_level < 0.49 ) {
+				send_2_level = 4;
+			}
+			else if ( param_level < 0.59 ) {
+				send_2_level = 5;
+			}
+			else if ( param_level < 0.69 ) {
+				send_2_level = 6;
+			}
+			else if ( param_level < 0.79 ) {
+				send_2_level = 7;
+			}
+			else if ( param_level < 0.89 ) {
+				send_2_level = 8;
+			}
+			else if ( param_level >= 0.9 ) {
+				send_2_level = 9;
+			}
+			last_param_position = param_position;
 		}
-		mixer3.gain(0, param_array[param_position]);
-		//Serial.println( "send 1 level:" );
-		//Serial.println( param_array[param_position] );
-		if ( param_position > -1 && param_position < 4){
-			send_1_level = 0;
-		}
-		else if ( param_position > 3 && param_position < 7){
-			send_1_level = 1;
-		}
-		else if ( param_position > 6 && param_position < 10){
-			send_1_level = 2;
-		}
-		else if ( param_position > 9 && param_position < 13){
-			send_1_level = 3;
-		}
-		else if ( param_position > 12 && param_position < 16){
-			send_1_level = 4;
-		}
-		else if ( param_position > 15 && param_position < 19){
-			send_1_level = 5;
-		}
-		else if ( param_position > 18 && param_position < 23){
-			send_1_level = 6;
-		}
-		else if ( param_position > 22 && param_position < 27){
-			send_1_level = 7;
-		}
-		else if ( param_position > 26 && param_position < 31){
-			send_1_level = 8;
-		}
-		else if ( param_position > 30 && param_position < 33){
-			send_1_level = 9;
-		}
-	}
-	else if ( param_control == 1 ) { 	//send wav 2
-		if( param_position < 1 ){
-			param_position = 0; 	                
-		}
-		if( param_position > 32 ){
-			param_position = 33; 	              
-		}
-		mixer3.gain(1, param_array[param_position]);
-		//Serial.println( param_array[param_position] );
-		if ( param_position > -1 && param_position < 4){
-			send_2_level = 0;
-		}
-		else if ( param_position > 3 && param_position < 7){
-			send_2_level = 1;
-		}
-		else if ( param_position > 6 && param_position < 10){
-			send_2_level = 2;
-		}
-		else if ( param_position > 9 && param_position < 13){
-			send_2_level = 3;
-		}
-		else if ( param_position > 12 && param_position < 16){
-			send_2_level = 4;
-		}
-		else if ( param_position > 15 && param_position < 19){
-			send_2_level = 5;
-		}
-		else if ( param_position > 18 && param_position < 23){
-			send_2_level = 6;
-		}
-		else if ( param_position > 22 && param_position < 27){
-			send_2_level = 7;
-		}
-		else if ( param_position > 26 && param_position < 31){
-			send_2_level = 8;
-		}
-		else if ( param_position > 30 && param_position < 33){
-			send_2_level = 9;
-		}
-	}
 	else if ( param_control == 2 ) { 	//set delay time 1
 		if( param_position < 1 ){
 			param_position = 0; 	                
@@ -210,7 +251,6 @@ Atm_delay_effect& Atm_delay_effect::setLevel( void ) {
 			param_position = 12; 	              
 		}
 		delay1.delay(0, speed_array[param_position]);
-		//Serial.println( param_array[param_position] );
 		time_1_level = param_position;
 	}
 	else if ( param_control == 3 ) { 	//set delay time 2
@@ -240,47 +280,67 @@ Atm_delay_effect& Atm_delay_effect::setLevel( void ) {
 		}
 		delay1.delay(3, speed_array[param_position]);
 	}
-	else if ( param_control == 6 ) { 	//fb delay 1
-		if( param_position < 1 ){
-			param_position = 0; 	                
-		}
-		if( param_position > 32 ){
-			param_position = 33; 	              
-		}
-		mixer3.gain(2, param_array[param_position]);
-		//Serial.println( param_array[param_position] );
-		if ( param_position > -1 && param_position < 4){
-			fb_1_level = 0;
-		}
-		else if ( param_position > 3 && param_position < 7){
-			fb_1_level = 1;
-		}
-		else if ( param_position > 6 && param_position < 10){
-			fb_1_level = 2;
-		}
-		else if ( param_position > 9 && param_position < 13){
-			fb_1_level = 3;
-		}
-		else if ( param_position > 12 && param_position < 16){
-			fb_1_level = 4;
-		}
-		else if ( param_position > 15 && param_position < 19){
-			fb_1_level = 5;
-		}
-		else if ( param_position > 18 && param_position < 23){
-			fb_1_level = 6;
-		}
-		else if ( param_position > 22 && param_position < 27){
-			fb_1_level = 7;
-		}
-		else if ( param_position > 26 && param_position < 31){
-			fb_1_level = 8;
-		}
-		else if ( param_position > 30 && param_position < 33){
-			fb_1_level = 9;
-		}
-	}
-	
+	if ( param_control == 6 ) {		//send wav 1
+			if ( param_position > last_param_position ) {
+				if ( param_level < 0.99 ) {
+					for ( int x = 0; x < 100; x++ ) {
+						param_level += 0.001;
+						mixer3.gain(3, param_level);
+						delay(1);
+				    }
+				}
+			}	
+			if ( param_position < last_param_position ) {
+				if ( param_level > 0.02 ) {
+					for ( int x = 0; x < 100; x++ ) {
+						param_level -= 0.001;
+						mixer3.gain(3, param_level);
+						delay(1);
+			        }
+				}
+			}
+			Serial.println("delay fb 1");
+			Serial.println(param_level);
+
+			if ( param_level < 0.02 ) {   //range
+				param_level = 0.0;
+			}	
+			if ( param_level > 0.97 ) {
+				param_level = 0.99;
+			}
+			
+			if ( param_level < 0.09 ) {
+				fb_1_level = 0;
+			}
+			else if ( param_level < 0.19 ) {
+				fb_1_level = 1;
+			}
+			else if ( param_level < 0.29 ) {
+				fb_1_level = 2;
+			}
+			else if ( param_level < 0.39 ) {
+				fb_1_level = 3;
+			}
+			else if ( param_level < 0.49 ) {
+				fb_1_level = 4;
+			}
+			else if ( param_level < 0.59 ) {
+				fb_1_level = 5;
+			}
+			else if ( param_level < 0.69 ) {
+				fb_1_level = 6;
+			}
+			else if ( param_level < 0.79 ) {
+				fb_1_level = 7;
+			}
+			else if ( param_level < 0.89 ) {
+				fb_1_level = 8;
+			}
+			else if ( param_level >= 0.9 ) {
+				fb_1_level = 9;
+			}
+			last_param_position = param_position;
+		}	
 	else if ( param_control == 7 ) { 	//fb delay 2
 		if( param_position < 1 ){
 			param_position = 0; 	                
@@ -288,7 +348,7 @@ Atm_delay_effect& Atm_delay_effect::setLevel( void ) {
 		if( param_position > 32 ){
 			param_position = 33; 	              
 		}
-		mixer3.gain(3, param_array[param_position]);
+		mixer3.gain(3, param_level);
 		if ( param_position > -1 && param_position < 4){
 			fb_2_level = 0;
 		}
@@ -327,7 +387,7 @@ Atm_delay_effect& Atm_delay_effect::setLevel( void ) {
 		if( param_position > 32 ){
 			param_position = 33; 	              
 		}
-		mixer4.gain(0, param_array[param_position]);
+		mixer4.gain(0, param_level);
 	}
 	else if ( param_control == 9 ) { 	//fb delay 4
 		if( param_position < 1 ){
@@ -336,7 +396,7 @@ Atm_delay_effect& Atm_delay_effect::setLevel( void ) {
 		if( param_position > 32 ){
 			param_position = 33; 	              
 		}
-		mixer4.gain(1, param_array[param_position]);
+		mixer4.gain(1, param_level);
 	}
 	else if ( param_control == 10 ) { 	//delay 1 level
 		if( param_position < 1 ){
@@ -345,7 +405,7 @@ Atm_delay_effect& Atm_delay_effect::setLevel( void ) {
 		if( param_position > 32 ){
 			param_position = 33; 	              
 		}
-		mixer7.gain(0, param_array[param_position]);
+		mixer7.gain(0, param_level);
 	}
 	else if ( param_control == 11 ) { 	//delay 2 level
 		if( param_position < 1 ){
@@ -354,7 +414,7 @@ Atm_delay_effect& Atm_delay_effect::setLevel( void ) {
 		if( param_position > 32 ){
 			param_position = 33; 	              
 		}
-		mixer7.gain(1, param_array[param_position]);
+		mixer7.gain(1, param_level);
 	}
 	else if ( param_control == 12 ) { 	//delay 3 level
 		if( param_position < 1 ){
@@ -363,7 +423,7 @@ Atm_delay_effect& Atm_delay_effect::setLevel( void ) {
 		if( param_position > 32 ){
 			param_position = 33; 	              
 		}
-		mixer7.gain(2, param_array[param_position]);
+		mixer7.gain(2, param_level);
 	}
 	else if ( param_control == 13 ) { 	//delay 4 level
 		if( param_position < 1 ){
@@ -372,49 +432,72 @@ Atm_delay_effect& Atm_delay_effect::setLevel( void ) {
 		if( param_position > 32 ){
 			param_position = 33; 	              
 		}
-		mixer7.gain(3, param_array[param_position]);
+		mixer7.gain(3, param_level);
 	}
 	else if ( param_control == 14 ) { 	//crossfader master wet/dry mix
-		if( param_position < 1 ){
-			param_position = 0; 	                
-		}
-		if( param_position > 32 ){
-			param_position = 33; 	              
-		}
-		mixer9.gain(1, param_array[param_position]);
-		mixer9.gain(0, (0.99 - param_array[param_position]));
-		if ( param_position > -1 && param_position < 4){
-			delay_mix_level = 0;
-		}
-		else if ( param_position > 3 && param_position < 7){
-			delay_mix_level = 1;
-		}
-		else if ( param_position > 6 && param_position < 10){
-			delay_mix_level = 2;
-		}
-		else if ( param_position > 9 && param_position < 13){
-			delay_mix_level = 3;
-		}
-		else if ( param_position > 12 && param_position < 16){
-			delay_mix_level = 4;
-		}
-		else if ( param_position > 15 && param_position < 19){
-			delay_mix_level = 5;
-		}
-		else if ( param_position > 18 && param_position < 23){
-			delay_mix_level = 6;
-		}
-		else if ( param_position > 22 && param_position < 27){
-			delay_mix_level = 7;
-		}
-		else if ( param_position > 26 && param_position < 31){
-			delay_mix_level = 8;
-		}
-		else if ( param_position > 30 && param_position < 33){
-			delay_mix_level = 9;
-		}	
-	}
-	return *this;
+				if ( param_position > last_param_position ) {
+					if ( param_level < 0.99 ) {
+						for ( int x = 0; x < 100; x++ ) {
+							param_level += 0.001;
+							mixer9.gain(1, param_level);
+							mixer9.gain(0, (0.99 - param_level));
+							delay(1);
+					    }
+					}
+				}	
+				if ( param_position < last_param_position ) {
+					if ( param_level > 0.02 ) {
+						for ( int x = 0; x < 100; x++ ) {
+							param_level -= 0.001;
+							mixer9.gain(1, param_level);
+							mixer9.gain(0, (0.99 - param_level));
+							delay(1);
+				        }
+					}
+				}
+				Serial.println("delay mix");
+				Serial.println(param_level);
+
+				if ( param_level < 0.02 ) {   //range
+					param_level = 0.0;
+				}	
+				if ( param_level > 0.97 ) {
+					param_level = 0.99;
+				}
+			
+				if ( param_level < 0.09 ) {
+					send_1_level = 0;
+				}
+				else if ( param_level < 0.19 ) {
+					delay_mix_level = 1;
+				}
+				else if ( param_level < 0.29 ) {
+					delay_mix_level = 2;
+				}
+				else if ( param_level < 0.39 ) {
+					delay_mix_level = 3;
+				}
+				else if ( param_level < 0.49 ) {
+					delay_mix_level = 4;
+				}
+				else if ( param_level < 0.59 ) {
+					delay_mix_level = 5;
+				}
+				else if ( param_level < 0.69 ) {
+					delay_mix_level = 6;
+				}
+				else if ( param_level < 0.79 ) {
+					delay_mix_level = 7;
+				}
+				else if ( param_level < 0.89 ) {
+					delay_mix_level = 8;
+				}
+				else if ( param_level >= 0.9 ) {
+					delay_mix_level = 9;
+				}
+				last_param_position = param_position;
+			}
+			return *this;
 }
 
 Atm_delay_effect& Atm_delay_effect::off( void ) {

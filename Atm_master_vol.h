@@ -30,14 +30,12 @@ class Atm_master_vol : public Machine {
      	enum { ENT_BTN_1, ENT_VOL_CONTROL, ENT_VOL_UP, ENT_VOL_DOWN }; // ACTIONS
      	enum { ON_PRESS, CONN_MAX }; // CONNECTORS
      	atm_connector connectors[CONN_MAX];
-		//elapsedMillis m_display;
 		int display_delay;	
 		int volume_position;
+		int last_volume_position;
+		float volume_level;
 		int vol_control;
 		int last_vol_control;
      	int event( int id ); 
      	void action( int id );
-		float volume_array [34]{
-			0.0, 0.03, 0.06, 0.09, 0.12, 0.15, 0.18, 0.21, 0.24, 0.27, 0.30, 0.33, 0.36, 0.39, 0.42, 0.45, 0.48, 0.51, 0.54, 0.57, 0.60, 0.63, 0.66, 0.69, 0.72, 0.75, 0.78, 0.81, 0.84, 0.87, 0.90, 0.93, 0.96, 0.99
-		};	
 };
